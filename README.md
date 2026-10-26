@@ -13,3 +13,7 @@ npm run fix
 Esse comando aplica as correções automáticas do ESLint e formata os arquivos com Prettier. Para conferir sem alterar arquivos, use `npm run lint` e `npm run format:check`.
 
 No VS Code, instale as extensões recomendadas pelo projeto. Os arquivos serão formatados e as correções do ESLint serão aplicadas ao salvar. A regra `@theme` pertence ao Tailwind CSS 4; a configuração do editor evita marcá-la como uma regra CSS desconhecida.
+
+## Editar o mapa de Ilhas
+
+Consulte [o guia do mapa e do roadmap](docs/ILHAS-E-ROADMAP.md) para localizar os dados das ilhas, conexões, formatos, cores e interações.

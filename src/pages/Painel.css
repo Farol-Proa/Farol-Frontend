@@ -1,32 +1,28 @@
-.dashboard-nav-link {
-  padding: 12px 10px;
-  border: 0;
-  border-radius: 8px;
-  background: transparent;
-  color: var(--color-farol-muted);
-  font-size: 13px;
-  text-align: left;
-  text-decoration: none;
+.painel {
+  height: 100dvh;
+  gap: 16px;
+  overflow: hidden;
+  padding: 16px;
 }
 
-.dashboard-nav-link:hover,
-.dashboard-nav-active {
-  background: var(--color-farol-primary);
-  color: white;
+.painel > main {
+  min-height: 0;
+  /* O conteúdo rola sem aumentar a altura da sidebar e esconder seus itens de rodapé. */
+  overflow-y: auto;
 }
 
-.painel-card {
+.painel .painel-card {
   border: 1px solid var(--color-farol-dashboard-border);
   border-radius: 16px;
   background: var(--color-farol-dashboard-card);
 }
 
-.painel-card h3 {
+.painel .painel-card h3 {
   margin: 0 0 16px;
   font-size: 15px;
 }
 
-.painel-card h3 button {
+.painel .painel-card h3 button {
   float: right;
   width: 27px;
   height: 27px;
@@ -39,7 +35,7 @@
   cursor: pointer;
 }
 
-.progresso {
+.painel .progresso {
   width: 112px;
   height: 112px;
   margin: 20px auto;
@@ -50,14 +46,14 @@
   border-radius: 50%;
 }
 
-.progresso span {
+.painel .progresso span {
   padding: 5px 10px;
   border-radius: 20px;
   background: var(--color-farol-primary);
   font-size: 12px;
 }
 
-.ilha {
+.painel .objetivo-card {
   flex: 1;
   min-width: 130px;
   min-height: 120px;
@@ -71,22 +67,28 @@
   overflow-wrap: anywhere;
 }
 
-@media (max-width: 600px) {
-  .dashboard-nav {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 5px;
+@media (max-width: 1023px) {
+  .painel {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
   }
 
-  .dashboard-nav .dashboard-nav-link {
-    padding: 10px 5px;
-    font-size: 11px;
-    text-align: center;
+  .painel > main {
+    flex: 1;
   }
 }
 
-.form-nota input,
-.form-objetivo input,
-.form-tarefa input[type='text'] {
+@media (max-width: 640px) {
+  .painel {
+    gap: 8px;
+    padding: 8px;
+  }
+}
+
+.painel .form-nota input,
+.painel .form-objetivo input,
+.painel .form-tarefa input[type='text'] {
   width: 100%;
   min-width: 0;
   padding: 10px;
@@ -97,20 +99,20 @@
   color: var(--color-farol-text);
 }
 
-.form-nota input {
+.painel .form-nota input {
   padding: 9px;
   font-size: 12px;
 }
 
-.form-nota input:focus,
-.form-objetivo input:focus,
-.form-tarefa input:focus {
+.painel .form-nota input:focus,
+.painel .form-objetivo input:focus,
+.painel .form-tarefa input:focus {
   border-color: var(--color-farol-primary);
 }
 
-.form-nota button,
-.form-objetivo button,
-.form-tarefa button {
+.painel .form-nota button,
+.painel .form-objetivo button,
+.painel .form-tarefa button {
   border: 0;
   border-radius: 8px;
   background: var(--color-farol-primary);
@@ -118,13 +120,13 @@
   cursor: pointer;
 }
 
-.form-nota button {
+.painel .form-nota button {
   flex-shrink: 0;
   padding: 8px 10px;
   font-size: 11px;
 }
 
-.nota {
+.painel .nota {
   display: flex;
   align-items: center;
   gap: 9px;
@@ -136,35 +138,35 @@
   overflow-wrap: anywhere;
 }
 
-.nota input {
+.painel .nota input {
   flex-shrink: 0;
   accent-color: var(--color-farol-primary);
 }
 
-.nota-concluida span {
+.painel .nota-concluida span {
   color: var(--color-farol-text-subtle);
   text-decoration: line-through;
 }
 
-.form-objetivo input {
+.painel .form-objetivo input {
   flex: 1;
   min-width: 180px;
 }
 
-.form-objetivo button {
+.painel .form-objetivo button {
   padding: 9px 12px;
 }
 
-.form-objetivo button[type='button'] {
+.painel .form-objetivo button[type='button'] {
   background: var(--color-farol-surface-muted);
 }
 
-.form-tarefa input[type='text'] {
+.painel .form-tarefa input[type='text'] {
   flex: 1 1 130px;
 }
 
-.form-tarefa input[type='time'],
-.form-tarefa select {
+.painel .form-tarefa input[type='time'],
+.painel .form-tarefa select {
   min-width: 0;
   padding: 10px 8px;
   border: 1px solid var(--color-farol-input-border);
@@ -174,12 +176,12 @@
   font-size: 12px;
 }
 
-.form-tarefa button {
+.painel .form-tarefa button {
   width: 38px;
   font-size: 20px;
 }
 
-.item-tarefa {
+.painel .item-tarefa {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -190,27 +192,27 @@
   font-size: 12px;
 }
 
-.item-tarefa label {
+.painel .item-tarefa label {
   display: flex;
   align-items: center;
   gap: 8px;
   min-width: 0;
 }
 
-.item-tarefa label span {
+.painel .item-tarefa label span {
   overflow-wrap: anywhere;
 }
 
-.item-tarefa input[type='checkbox'] {
+.painel .item-tarefa input[type='checkbox'] {
   accent-color: var(--color-farol-primary);
 }
 
-.tarefa-concluida {
+.painel .tarefa-concluida {
   color: var(--color-farol-text-subtle);
   text-decoration: line-through;
 }
 
-.remover-tarefa {
+.painel .remover-tarefa {
   flex-shrink: 0;
   border: none;
   background: transparent;
@@ -219,7 +221,7 @@
   cursor: pointer;
 }
 
-.barra-progresso {
+.painel .barra-progresso {
   width: 100%;
   height: 10px;
   margin-top: 12px;
@@ -227,19 +229,19 @@
   border-radius: 10px;
   overflow: hidden;
 }
-.barra-progresso-preenchida {
+.painel .barra-progresso-preenchida {
   height: 100%;
   background-color: var(--color-farol-primary-deep);
   border-radius: 10px;
   transition: width 0.3s ease;
 }
 
-.ilha-concluida {
+.painel .objetivo-concluido {
   opacity: 0.7;
   border: 1px solid var(--color-farol-primary-deep);
 }
 
-.dias {
+.painel .dias {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 6px;
@@ -248,7 +250,7 @@
   box-sizing: border-box;
 }
 
-.dia {
+.painel .dia {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -265,27 +267,27 @@
   box-sizing: border-box;
 }
 
-.dia span {
+.painel .dia span {
   color: inherit;
   font-size: 11px;
   text-align: center;
 }
 
-.dia strong {
+.painel .dia strong {
   font-size: 18px;
 }
 
-.dia:hover {
+.painel .dia:hover {
   border-color: var(--color-farol-primary-deep);
 }
 
-.dia-selecionado {
+.painel .dia-selecionado {
   background-color: var(--color-farol-primary-deep);
   border-color: var(--color-farol-primary-deep);
   color: white;
 }
 
-.dia-com-tarefa {
+.painel .dia-com-tarefa {
   display: block;
   width: 6px;
   height: 6px;
@@ -294,8 +296,8 @@
   margin-top: 4px;
 }
 
-.remover-nota,
-.remover-objetivo {
+.painel .remover-nota,
+.painel .remover-objetivo {
   cursor: pointer;
   color: var(--color-farol-danger);
   background: transparent;
@@ -307,13 +309,13 @@
   flex-shrink: 0;
 }
 
-.remover-nota:hover,
-.remover-objetivo:hover {
+.painel .remover-nota:hover,
+.painel .remover-objetivo:hover {
   background-color: var(--color-farol-danger-surface);
   color: var(--color-farol-danger-hover);
 }
 
 /* Apenas a caixa de seleção da nota indica interação. */
-.nota label {
+.painel .nota label {
   cursor: pointer;
 }

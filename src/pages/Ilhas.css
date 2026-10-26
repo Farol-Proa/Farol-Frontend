@@ -1,0 +1,1012 @@
+.ilhas-screen {
+  display: flex;
+  width: 100%;
+  height: 100dvh;
+  min-height: 560px;
+  gap: 16px;
+  overflow: hidden;
+  padding: 16px;
+  background: #070b1c;
+  color: #eef1ff;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.ilhas-main {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ilhas-header {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 4px;
+}
+
+.ilhas-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: #f5d547;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.ilhas-eyebrow span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.ilhas-heading h1 {
+  margin: 4px 0 0;
+  color: #eef1ff;
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.2;
+}
+
+.ilhas-subtitle {
+  margin: 4px 0 0;
+  color: #8e97c2;
+  font-size: 14px;
+}
+
+.ilhas-profile-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ilhas-notifications {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 0.08);
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.05);
+  color: #8e97c2;
+  cursor: pointer;
+  transition: color 160ms ease;
+}
+
+.ilhas-notifications:hover {
+  color: #eef1ff;
+}
+
+.ilhas-profile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 16px 4px 4px;
+  border: 1px solid rgb(255 255 255 / 0.08);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.05);
+}
+
+.ilhas-profile span {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border-radius: 50%;
+  background: #3b5bff;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.ilhas-profile strong {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.roadmap-canvas {
+  /* Personalize estas duas cores para trocar o fundo do mapa e as linhas da grade. */
+  --roadmap-background: RGB(24, 54, 192);
+  --roadmap-grid-line: rgba(252, 252, 252, 0.144);
+  position: relative;
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 0.08);
+  border-radius: 28px;
+  background: var(--roadmap-background);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.04);
+}
+
+/* O tema global usa texto claro; o exemplo padrão do React Flow usa texto escuro nos nós e controles brancos. */
+.roadmap-flow {
+  position: absolute;
+  inset: 0;
+  color: #eef1ff;
+  background: var(--roadmap-background);
+  --xy-node-background-color: transparent;
+  --xy-node-border: 0;
+  --xy-node-boxshadow-hover: none;
+  --xy-node-boxshadow-selected: none;
+}
+
+.roadmap-flow .react-flow__node {
+  overflow: visible;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.roadmap-flow .react-flow__node.selected,
+.roadmap-flow .react-flow__node:focus,
+.roadmap-flow .react-flow__node:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.roadmap-flow .react-flow__handle.roadmap-handle {
+  width: 10px;
+  height: 10px;
+  border: 2px solid #f5d547;
+  background: #0d1333;
+  opacity: 0;
+}
+
+.roadmap-flow .react-flow__node.selected .react-flow__handle.roadmap-handle,
+.roadmap-flow .react-flow__node:hover .react-flow__handle.roadmap-handle {
+  opacity: 1;
+}
+
+.roadmap-edge-glow {
+  fill: none;
+  stroke-width: 10px;
+  stroke-linecap: round;
+  opacity: 0.14;
+  pointer-events: none;
+}
+
+.roadmap-edge-progress .react-flow__edge-path {
+  animation: route-flow 1.2s linear infinite;
+}
+
+.roadmap-select-label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: #8e97c2;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.roadmap-select-label select {
+  max-width: 240px;
+  padding: 8px 32px 8px 12px;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  border-radius: 12px;
+  background: #0d1333;
+  color: #eef1ff;
+  font: inherit;
+  font-size: 13px;
+  letter-spacing: normal;
+  text-transform: none;
+  cursor: pointer;
+}
+
+.roadmap-select-label select:focus-visible {
+  outline: 2px solid #3b5bff;
+  outline-offset: 2px;
+}
+
+.roadmap-viewport {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  touch-action: none;
+  cursor: grab;
+  background-image:
+    linear-gradient(to right, var(--roadmap-grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--roadmap-grid-line) 1px, transparent 1px);
+}
+
+.roadmap-viewport.is-panning {
+  cursor: grabbing;
+}
+
+.roadmap-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 20% 30%, rgb(59 91 255 / 0.22), transparent 55%),
+    radial-gradient(ellipse at 85% 90%, rgb(245 213 71 / 0.06), transparent 50%);
+}
+
+.roadmap-world {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  transform-origin: top left;
+  opacity: 0;
+}
+
+.roadmap-world.is-ready {
+  opacity: 1;
+}
+
+.roadmap-routes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.route-flow {
+  animation: route-flow 1.2s linear infinite;
+}
+
+@keyframes route-flow {
+  to {
+    stroke-dashoffset: -28;
+  }
+}
+
+.lighthouse-node {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid rgb(245 213 71 / 0.25);
+  border-radius: 32px;
+  box-shadow: 0 30px 60px -24px rgb(0 0 0 / 0.9), 0 0 60px -10px rgb(245 213 71 / 0.25);
+  cursor: grab;
+  user-select: none;
+}
+
+.lighthouse-image-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  padding: 7px 10px;
+  border: 1px solid rgb(255 255 255 / 0.2);
+  border-radius: 999px;
+  background: rgb(7 11 28 / 0.7);
+  color: #eef1ff;
+  font-size: 11px;
+  cursor: pointer;
+  opacity: 0.9;
+  transition: opacity 160ms ease, background 160ms ease;
+}
+
+.lighthouse-node:hover .lighthouse-image-button,
+.lighthouse-image-button:focus-visible {
+  opacity: 1;
+}
+
+.lighthouse-image-button:hover {
+  background: rgb(7 11 28 / 0.95);
+}
+
+.lighthouse-file-input {
+  display: none;
+}
+
+.lighthouse-node.dragging {
+  cursor: grabbing;
+}
+
+.lighthouse-node > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.lighthouse-caption {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 48px 20px 20px;
+  background: linear-gradient(to top, #070b1c, rgb(7 11 28 / 0.7), transparent);
+}
+
+.lighthouse-caption p {
+  margin: 0;
+  color: #f5d547;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.lighthouse-caption strong {
+  display: block;
+  margin-top: 4px;
+  color: #eef1ff;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.island-node-wrap {
+  position: relative;
+  width: 248px;
+}
+
+.island-glow {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  width: 85%;
+  height: 40px;
+  border-radius: 100%;
+  transform: translateX(-50%);
+  filter: blur(22px);
+  pointer-events: none;
+}
+
+.island-glow.done,
+.island-glow.progress {
+  background: rgb(143 232 118 / 0.35);
+}
+
+.island-glow.locked {
+  background: rgb(143 232 118 / 0.15);
+}
+
+.island-node {
+  position: relative;
+  min-height: 168px;
+  padding: 27px 28px 24px;
+  border-radius: 36px;
+  color: #0d1a10;
+  cursor: grab;
+  outline: none;
+  user-select: none;
+  transition: transform 180ms ease, filter 180ms ease;
+}
+
+.island-node:hover {
+  transform: translateY(-4px);
+}
+
+.island-node:focus-visible {
+  outline: 2px solid #f5d547;
+  outline-offset: 4px;
+}
+
+.island-node.locked {
+  filter: saturate(0.55);
+}
+
+.island-node.dragging {
+  transform: scale(1.03);
+  cursor: grabbing;
+}
+
+.island-shape {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 18px 24px rgb(0 0 0 / 0.45));
+  pointer-events: none;
+}
+
+.island-shore {
+  fill: #4f9e3f;
+}
+
+.island-fill {
+  fill: #8fe876;
+  stroke: #4f9e3f;
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+  transition: stroke 160ms ease;
+}
+
+.island-node.selected .island-fill {
+  stroke: #f5d547;
+  stroke-width: 3;
+}
+
+.island-node-content {
+  position: relative;
+  z-index: 1;
+}
+
+.island-node-topline {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.island-category-icon {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 12px;
+  background: rgb(13 26 16 / 0.1);
+}
+
+.island-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: #0d1333;
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.island-status-progress {
+  color: #f5d547;
+}
+
+.island-status-locked {
+  background: rgb(13 19 51 / 0.7);
+  color: rgb(255 255 255 / 0.7);
+}
+
+.island-category {
+  margin: 12px 0 2px;
+  color: rgb(13 26 16 / 0.65);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.island-node h3 {
+  margin: 0;
+  color: #0d1a10;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.island-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.island-progress-track {
+  height: 6px;
+  flex: 1;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgb(13 26 16 / 0.15);
+}
+
+.island-progress-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #0d1a10;
+}
+
+.island-progress-count {
+  color: rgb(13 26 16 / 0.75);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.island-continue {
+  position: relative;
+  display: inline-flex;
+  height: 36px;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 12px;
+  background: #3b5bff;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 8px 20px -8px rgb(59 91 255 / 0.9);
+  cursor: pointer;
+}
+
+.island-continue:hover {
+  background: #4d6bff;
+}
+
+.island-tag {
+  position: absolute;
+  top: -12px;
+  left: 32px;
+  z-index: 2;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #f5d547;
+  color: #1a1d2e;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.roadmap-boat {
+  position: absolute;
+  top: 50%;
+  right: -16px;
+  z-index: 40;
+  display: flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(245 213 71 / 0.4);
+  border-radius: 50%;
+  background: #0d1333;
+  color: #f5d547;
+  box-shadow: 0 0 24px rgb(245 213 71 / 0.35);
+  pointer-events: none;
+  animation: boat-float 3.2s ease-in-out infinite;
+  transform: translateY(-50%);
+}
+
+@keyframes boat-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-6deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(6deg);
+  }
+}
+
+.roadmap-overlay {
+  position: absolute;
+  right: 0;
+  left: 0;
+  z-index: 50;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px;
+  pointer-events: none;
+}
+
+.roadmap-overlay-top {
+  top: 0;
+}
+
+.roadmap-map-label,
+.roadmap-progress-label,
+.roadmap-instructions,
+.roadmap-controls {
+  border: 1px solid rgb(255 255 255 / 0.08);
+  background: rgb(11 17 40 / 0.72);
+  backdrop-filter: blur(12px);
+}
+
+.roadmap-map-label {
+  padding: 10px 16px;
+  border-radius: 16px;
+}
+
+.roadmap-map-label p {
+  margin: 0;
+  color: #8e97c2;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.roadmap-map-label strong {
+  display: block;
+  margin-top: 3px;
+  color: #eef1ff;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.roadmap-progress-label {
+  width: 218px;
+  padding: 10px 14px;
+  border-radius: 16px;
+}
+
+.roadmap-progress-label > div:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: #8e97c2;
+  font-size: 12px;
+}
+
+.roadmap-progress-label strong {
+  color: #eef1ff;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.roadmap-progress-label b {
+  color: #f5d547;
+}
+
+.roadmap-progress-dashes {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.roadmap-progress-dashes span {
+  width: 32px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.12);
+}
+
+.roadmap-progress-dashes .status-done {
+  background: #f5d547;
+}
+
+.roadmap-progress-dashes .status-progress {
+  background: #3b5bff;
+}
+
+.roadmap-overlay-bottom {
+  bottom: 0;
+  align-items: flex-end;
+}
+
+.roadmap-instructions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 6px 12px;
+  border-radius: 999px;
+  color: #8e97c2;
+  font-size: 12px;
+}
+
+.roadmap-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  padding: 4px;
+  border-radius: 16px;
+  background: rgb(11 17 40 / 0.82);
+  pointer-events: auto;
+}
+
+.roadmap-controls button {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: #8e97c2;
+  cursor: pointer;
+}
+
+.roadmap-controls button:hover {
+  background: rgb(255 255 255 / 0.08);
+  color: #eef1ff;
+}
+
+.roadmap-controls button:focus-visible,
+.ilhas-notifications:focus-visible,
+.new-map-button:focus-visible {
+  outline: 2px solid #3b5bff;
+  outline-offset: 2px;
+}
+
+.roadmap-controls i {
+  width: 1px;
+  height: 20px;
+  margin: 0 4px;
+  background: rgb(255 255 255 / 0.1);
+}
+
+.roadmap-zoom-value {
+  width: 48px;
+  color: #eef1ff;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.ilhas-goals {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.goal-card {
+  position: relative;
+  display: flex;
+  width: 256px;
+  min-height: 130px;
+  flex: 0 0 256px;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 16px;
+  border: 1px solid rgb(255 255 255 / 0.08);
+  border-radius: 24px;
+  background: #0d1333;
+  color: inherit;
+  text-decoration: none;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 160ms ease;
+}
+
+.goal-card:hover {
+  border-color: rgb(255 255 255 / 0.15);
+}
+
+.goal-card.active {
+  border-color: rgb(245 213 71 / 0.4);
+  background: linear-gradient(135deg, rgb(245 213 71 / 0.15), #10173a);
+}
+
+.goal-card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: #8e97c2;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.goal-card-meta > span:first-child {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: inherit;
+}
+
+.goal-card-meta > span.is-active {
+  color: #f5d547;
+}
+
+.goal-card-title {
+  margin-top: 12px;
+  color: #eef1ff;
+  font-size: 14px;
+}
+
+.goal-card-description {
+  overflow: hidden;
+  color: #8e97c2;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.goal-card-progress {
+  height: 4px;
+  overflow: hidden;
+  margin-top: auto;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.08);
+}
+
+.goal-card-progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #3b5bff;
+}
+
+.goal-card-progress span.is-active {
+  background: #f5d547;
+}
+
+.new-map-button {
+  display: flex;
+  width: 128px;
+  flex: 0 0 128px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px dashed rgb(255 255 255 / 0.15);
+  border-radius: 24px;
+  background: transparent;
+  color: #8e97c2;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 160ms ease, color 160ms ease;
+}
+
+.new-map-button:hover {
+  border-color: #3b5bff;
+  color: #eef1ff;
+}
+
+.new-map-button > span {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border-radius: 50%;
+  background: rgb(59 91 255 / 0.15);
+  color: #3b5bff;
+}
+
+@media (max-width: 1023px) {
+  .ilhas-screen {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .ilhas-main {
+    min-height: 0;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 640px) {
+  .ilhas-screen {
+    min-height: 520px;
+    padding: 8px;
+    gap: 8px;
+  }
+
+  .ilhas-main {
+    gap: 8px;
+  }
+
+  .ilhas-heading h1 {
+    font-size: 26px;
+  }
+
+  .ilhas-subtitle {
+    display: none;
+  }
+
+  .ilhas-notifications {
+    width: 34px;
+    height: 34px;
+  }
+
+  .ilhas-profile {
+    padding-right: 5px;
+  }
+
+  .ilhas-profile strong {
+    display: none;
+  }
+
+  .roadmap-canvas {
+    border-radius: 20px;
+  }
+
+  .roadmap-overlay {
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .roadmap-map-label {
+    padding: 8px 10px;
+  }
+
+  .roadmap-map-label p {
+    font-size: 8px;
+  }
+
+  .roadmap-map-label strong {
+    font-size: 12px;
+  }
+
+  .roadmap-progress-label {
+    display: none;
+  }
+
+  .roadmap-instructions {
+    display: none;
+  }
+
+  .goal-card {
+    width: 220px;
+    flex-basis: 220px;
+  }
+}
+
+@media (max-height: 640px) {
+  .ilhas-subtitle,
+  .ilhas-goals {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-flow,
+  .roadmap-boat {
+    animation: none;
+  }
+}
+.goal-node {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
+  border: 2px solid #1836c0;
+  border-radius: 12px;
+  height: 200px;
+  width: 120px;
+  background: #111d35;
+}
+
+.goal-node-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.goal-node-file-input {
+  display: none;
+}
+
+.goal-node-image-button {
+  position: relative;
+  display: grid;
+  z-index: 1;
+  place-items: center;
+  margin: 8px;
+  padding: 6px 8px;
+  border: 1px solid rgb(255 255 255 / 0.3);
+  border-radius: 6px;
+  background: rgb(5 9 17 / 0.78);
+  color: white;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.goal-node-image-button:hover {
+  background: rgb(5 9 17 / 0.95);
+}

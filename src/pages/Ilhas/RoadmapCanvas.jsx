@@ -45,7 +45,9 @@ function createNodes(roadmap, onSelectIsland) {
 
 function createEdges(roadmap) {
   // O estado da conexão vem do destino: ele representa o avanço necessário para alcançar aquela ilha.
-  const statusById = Object.fromEntries(roadmap.islands.map((island) => [island.id, island.status]));
+  const statusById = Object.fromEntries(
+    roadmap.islands.map((island) => [island.id, island.status]),
+  );
 
   return roadmap.connections.map(({ source, target }) => ({
     id: `${roadmap.id}:${source}->${target}`,
@@ -54,6 +56,33 @@ function createEdges(roadmap) {
     type: 'roadmap',
     data: { status: statusById[target] ?? 'locked' },
   }));
+}
+
+// Cada mapa tem sua própria chave para não reaproveitar posições de outro roadmap.
+function getPositionsStorageKey(roadmapId) {
+  return `farol:roadmap:${roadmapId}:positions`;
+}
+
+// Lê posições guardadas e ignora dados inválidos ou incompletos.
+function loadNodes(roadmap, onSelectIsland) {
+  const initialNodes = createNodes(roadmap, onSelectIsland);
+
+  try {
+    const savedPositions = JSON.parse(
+      localStorage.getItem(getPositionsStorageKey(roadmap.id)) || '{}',
+    );
+
+    return initialNodes.map((node) => {
+      const savedPosition = savedPositions[node.id];
+      const hasValidPosition =
+        Number.isFinite(savedPosition?.x) && Number.isFinite(savedPosition?.y);
+
+      return hasValidPosition ? { ...node, position: savedPosition } : node;
+    });
+  } catch {
+    // Se o navegador bloquear o localStorage ou o JSON estiver inválido, usamos as posições padrão.
+    return initialNodes;
+  }
 }
 
 function RoadmapChrome({ roadmap }) {
@@ -71,10 +100,14 @@ function RoadmapChrome({ roadmap }) {
         <div className="roadmap-progress-label">
           <div>
             <span>Seu percurso</span>
-            <strong><b>{completedCount}</b> de {roadmap.islands.length} ilhas</strong>
+            <strong>
+              <b>{completedCount}</b> de {roadmap.islands.length} ilhas
+            </strong>
           </div>
           <div className="roadmap-progress-dashes" aria-hidden="true">
-            {roadmap.islands.map((island) => <span key={island.id} className={`status-${island.status}`} />)}
+            {roadmap.islands.map((island) => (
+              <span key={island.id} className={`status-${island.status}`} />
+            ))}
           </div>
         </div>
       </div>
@@ -85,15 +118,32 @@ function RoadmapChrome({ roadmap }) {
           Arraste para navegar ou mover ilhas. Role para dar zoom.
         </p>
         <div className="roadmap-controls" role="toolbar" aria-label="Controles de zoom">
-          <button type="button" aria-label="Diminuir zoom" title="Diminuir zoom" onClick={() => zoomOut()}>
+          <button
+            type="button"
+            aria-label="Diminuir zoom"
+            title="Diminuir zoom"
+            onClick={() => zoomOut()}
+          >
             <Icon name="minus" size={16} />
           </button>
-          <span className="roadmap-zoom-value" aria-live="polite">{Math.round(zoom * 100)}%</span>
-          <button type="button" aria-label="Aumentar zoom" title="Aumentar zoom" onClick={() => zoomIn()}>
+          <span className="roadmap-zoom-value" aria-live="polite">
+            {Math.round(zoom * 100)}%
+          </span>
+          <button
+            type="button"
+            aria-label="Aumentar zoom"
+            title="Aumentar zoom"
+            onClick={() => zoomIn()}
+          >
             <Icon name="plus" size={16} />
           </button>
           <i aria-hidden="true" />
-          <button type="button" aria-label="Enquadrar mapa" title="Enquadrar mapa" onClick={() => fitView({ padding: 0.18, duration: 320 })}>
+          <button
+            type="button"
+            aria-label="Enquadrar mapa"
+            title="Enquadrar mapa"
+            onClick={() => fitView({ padding: 0.18, duration: 320 })}
+          >
             <Icon name="maximize" size={16} />
           </button>
         </div>
@@ -103,20 +153,28 @@ function RoadmapChrome({ roadmap }) {
 }
 
 function FlowCanvas({ roadmap, onSelectIsland }) {
-  // React Flow mantém posições e alterações interativas em estado local; createNodes/createEdges fornecem o estado inicial.
-  const [nodes, , onNodesChange] = useNodesState(createNodes(roadmap, onSelectIsland));
+  // React Flow mantém o estado interativo; a carga inicial restaura as posições deste mapa.
+  const [nodes, , onNodesChange] = useNodesState(() => loadNodes(roadmap, onSelectIsland));
   const [edges, setEdges, onEdgesChange] = useEdgesState(createEdges(roadmap));
 
-  const onConnect = useCallback((connection) => {
-    // Ligações criadas arrastando os conectores existem só nesta sessão e começam com aparência de progresso.
-    setEdges((currentEdges) => addEdge({ ...connection, type: 'roadmap', data: { status: 'progress' } }, currentEdges));
-  }, [setEdges]);
+  const onConnect = useCallback(
+    (connection) => {
+      // Ligações criadas arrastando os conectores existem só nesta sessão e começam com aparência de progresso.
+      setEdges((currentEdges) =>
+        addEdge({ ...connection, type: 'roadmap', data: { status: 'progress' } }, currentEdges),
+      );
+    },
+    [setEdges],
+  );
 
-  const onNodeClick = useCallback((_, node) => {
-    if (node.id !== 'farol') onSelectIsland(node.id);
-  }, [onSelectIsland]);
+  const onNodeClick = useCallback(
+    (_, node) => {
+      if (node.id !== 'farol') onSelectIsland(node.id);
+    },
+    [onSelectIsland],
+  );
 
-  // fitView enquadra o conteúdo inicial; key={roadmap.id} no componente pai reinicia o canvas ao trocar de mapa.
+  // A key baseada no id do roadmap remonta o canvas ao trocar de mapa.
   return (
     <ReactFlow
       className="roadmap-flow"
@@ -135,8 +193,27 @@ function FlowCanvas({ roadmap, onSelectIsland }) {
       nodesConnectable
       elementsSelectable
       deleteKeyCode={null}
+      onNodeDragStop={(_, node) => {
+        const positions = Object.fromEntries(
+          nodes.map((n) => [n.id, n.id === node.id ? node.position : n.position]),
+        );
+
+        try {
+          localStorage.setItem(
+            getPositionsStorageKey(roadmap.id),
+            JSON.stringify(positions),
+          );
+        } catch {
+          // O mapa continua funcionando mesmo se o navegador não permitir salvar localmente.
+        }
+      }}
     >
-      <Background variant={BackgroundVariant.Lines} gap={32} size={1} color="rgba(252, 252, 252, 0.14)" />
+      <Background
+        variant={BackgroundVariant.Lines}
+        gap={32}
+        size={1}
+        color="rgba(252, 252, 252, 0.14)"
+      />
       <RoadmapChrome roadmap={roadmap} />
     </ReactFlow>
   );

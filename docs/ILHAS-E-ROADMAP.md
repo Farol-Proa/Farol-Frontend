@@ -49,7 +49,7 @@ Para criar uma ilha, inclua um novo objeto em `initialIslands` com um `id` únic
 
 Para apagar uma ilha comum, remova seu objeto de `initialIslands` e remova de `routes` todas as conexões que mencionam aquele `id`. Uma conexão com uma ponta inexistente não pode ser desenhada.
 
-Para mudar a posição inicial, altere `x` e `y` no objeto. Arrastar uma ilha na tela altera a posição somente no estado temporário do React. Essa posição volta ao valor de `data.js` quando a tela é fechada ou recarregada; o arraste ainda não salva dados.
+Para mudar a posição inicial, altere as coordenadas `position.x` e `position.y` no objeto em `roadmaps`, em `data.js`. Ao arrastar o farol ou uma ilha, o mapa salva as posições no `localStorage` do navegador. Cada roadmap usa uma chave própria baseada em seu `id`, então as posições de mapas diferentes não se misturam. Esses dados continuam locais ao navegador e ainda não são sincronizados entre dispositivos.
 
 O tamanho-base dos cartões fica em `NODE_WIDTH` e `NODE_HEIGHT`, no mesmo `data.js`. Se alterar a altura, ajuste também `min-height` de `.island-node` em `Ilhas.css` para manter o cálculo do enquadramento coerente com o desenho.
 

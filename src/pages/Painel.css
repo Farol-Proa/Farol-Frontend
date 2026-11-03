@@ -55,15 +55,18 @@
 
 .painel .objetivo-card {
   flex: 1;
-  min-width: 130px;
-  min-height: 120px;
+  width: 100%;
+  max-width: 280px;
+  min-height: 180px;
   display: grid;
   place-items: center;
-  padding: 12px;
-  border-radius: 14px;
+  padding: 24px;
+  border-radius: 60% 40% 50% 40% / 40% 50% 40% 60% ;
+  color: rgb(240, 205, 102);
+  box-shadow:  0 7px 5px ;
   background: var(--color-farol-primary);
   text-align: center;
-  font-size: 13px;
+  font-size: 15px;
   overflow-wrap: anywhere;
 }
 
@@ -176,8 +179,13 @@
   font-size: 12px;
 }
 
+<<<<<<< HEAD
 .painel .form-tarefa button {
   width: 38px;
+=======
+.form-tarefa button {
+  width: 100px;
+>>>>>>> 6f50cc8b7da94677539000e3a19ac311b172477f
   font-size: 20px;
 }
 

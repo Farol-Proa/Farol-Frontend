@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 import { useState } from 'react';
 import Sidebar from '../components/Sidebar';
-=======
-import { useRef, useState } from 'react';
-import Sidebar from "../components/Sidebar";
->>>>>>> 6f50cc8b7da94677539000e3a19ac311b172477f
 import './Painel.css';
 import Calendario from './Painel/Calendario';
 import Notas from './Painel/Notas';
@@ -54,25 +49,8 @@ function Painel({
   const progressoGeral = totalItens === 0 ? 0 : Math.round((itensConcluidos / totalItens) * 100);
 
   return (
-<<<<<<< HEAD
     <div className="painel bg-farol-dashboard text-farol-text flex max-[600px]:flex-col">
       <Sidebar activeItem={activeItem} onNavegar={onNavegar} />
-=======
-    <div className="min-h-screen bg-farol-dashboard text-farol-text flex max-[600px]:flex-col">
-      <Sidebar
-    secaoAtiva="inicio"
-    onNavegar={(secao) => {
-        const elemento = document.getElementById(secao);
-
-              if (elemento) {
-                  elemento.scrollIntoView({
-                   behavior: "smooth",
-                    block: "start",
-                  });
-              }
-          }}
-        />
->>>>>>> 6f50cc8b7da94677539000e3a19ac311b172477f
 
       <main className="min-w-0 flex-1 p-[22px] max-[600px]:p-3.5" id="inicio">
         <header className="mb-6 flex items-center justify-between">

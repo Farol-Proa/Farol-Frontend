@@ -87,6 +87,9 @@ function LandingPage({ onEntrar }) {
           </article>
         </div>
       </section>
+      <section className='lading'>
+
+      </section>
 
       <footer
         id="como-funciona"

@@ -49,6 +49,7 @@ function Painel({
   const progressoGeral = totalItens === 0 ? 0 : Math.round((itensConcluidos / totalItens) * 100);
 
   return (
+
     <div className="painel bg-farol-dashboard text-farol-text flex max-[600px]:flex-col">
       <Sidebar activeItem={activeItem} onNavegar={onNavegar} />
 

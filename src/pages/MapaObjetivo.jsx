@@ -1,3 +1,4 @@
+
 import { calcularProgressoEtapas } from '../objetivos/progresso';
 
 function MapaObjetivo({ objetivo, onVoltar, onAlternarEtapa }) {
@@ -11,11 +12,14 @@ function MapaObjetivo({ objetivo, onVoltar, onAlternarEtapa }) {
 
   return (
     <main className="min-h-screen overflow-hidden bg-farol-dashboard text-white">
-      {/* Cabeçalho */}
       <header className="flex items-center justify-between border-b border-white/10 px-6 py-5 md:px-12">
         <div>
-          <p className="text-sm font-bold uppercase tracking-[0.3em] text-cyan-400">Farol</p>
-          <p className="mt-1 text-sm text-slate-400">Sua jornada, no seu ritmo</p>
+          <p className="text-sm font-bold uppercase tracking-[0.3em] text-cyan-400">
+            Farol
+          </p>
+          <p className="mt-1 text-sm text-slate-400">
+            Sua jornada, no seu ritmo
+          </p>
         </div>
 
         <button
@@ -27,20 +31,20 @@ function MapaObjetivo({ objetivo, onVoltar, onAlternarEtapa }) {
         </button>
       </header>
 
-      {/* Conteúdo principal */}
       <div className="mx-auto max-w-6xl px-5 py-10 md:px-10">
         <section className="mb-10">
           <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-cyan-400">
             Meu roadmap
           </p>
-          <h1 className="text-3xl font-bold tracking-tight md:text-5xl">{objetivo.nome}</h1>
+          <h1 className="text-3xl font-bold tracking-tight md:text-5xl">
+            {objetivo.nome}
+          </h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-slate-400">
             Todo grande objetivo começa com um pequeno passo. Continue avançando e ilumine seu
             caminho.
           </p>
         </section>
 
-        {/* Cartão de progresso */}
         <section className="mb-12 rounded-3xl border border-white/10 bg-farol-dashboard-card p-6 shadow-xl md:p-8">
           <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
             <div>
@@ -61,7 +65,6 @@ function MapaObjetivo({ objetivo, onVoltar, onAlternarEtapa }) {
           </div>
         </section>
 
-        {/* Caminho do roadmap */}
         <section>
           <div className="mb-8">
             <h2 className="text-2xl font-bold">Caminho até seu objetivo</h2>
@@ -114,7 +117,9 @@ function MapaObjetivo({ objetivo, onVoltar, onAlternarEtapa }) {
                         onChange={() => onAlternarEtapa(objetivo.id, etapa.id)}
                       />
                       <span className={etapa.concluida ? 'text-emerald-300' : 'text-slate-400'}>
-                        {etapa.concluida ? 'Etapa concluída' : 'Marcar etapa como concluída'}
+                        {etapa.concluida
+                          ? 'Etapa concluída'
+                          : 'Marcar etapa como concluída'}
                       </span>
                     </label>
                   </article>

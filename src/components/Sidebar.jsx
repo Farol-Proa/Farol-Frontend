@@ -1,3 +1,4 @@
+
 import './Sidebar.css';
 import Icon from './Icon';
 
@@ -13,7 +14,6 @@ const itensNavegacao = [
 function Sidebar({ activeItem = 'Início', onNavegar = () => {} }) {
   function selecionarItem(event, nome) {
     event.preventDefault();
-    // O App controla a troca de tela e o destino de rolagem para manter o painel como SPA.
     onNavegar(nome);
   }
 
@@ -54,7 +54,9 @@ function Sidebar({ activeItem = 'Início', onNavegar = () => {} }) {
             <Icon name="flame" size={21} />
           </span>
           <p className="farol-streak-count">7 dias</p>
-          <p className="farol-streak-copy">de sequência. Continue iluminando o caminho.</p>
+          <p className="farol-streak-copy">
+            de sequência. Continue iluminando o caminho.
+          </p>
         </div>
 
         <button className="farol-settings-link" type="button">

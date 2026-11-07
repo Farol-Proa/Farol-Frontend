@@ -1,5 +1,7 @@
 import Header from '../components/Header';
 import heroFarol from '/images/hero_farol.png';
+import heroHome from '/images/foto-da-home.png'
+
 import './LandingPage.css';
 
 function LandingPage({ onEntrar }) {
@@ -86,9 +88,38 @@ function LandingPage({ onEntrar }) {
             </p>
           </article>
         </div>
-      </section>
-      <section className='lading'>
 
+
+        {/* landing-home porque é a parte que mostra a print da home :P*/}
+        {/* ================================================== */}
+
+      </section>
+      <section className="landing-home min-h-screen pt-10 flex-none order-2 self-stretch grow-0">
+        <div className="landing-home-grid" aria-hidden="true" />
+        <div className='landing-home_apresentacao flex flex-col items-center p-0 gap[18px]'>
+        <span className="text-[20px] font-bold tracking-[1.4px] text-farol-accent">
+            <span className="mr-2 text-[24px]">•</span>
+            Conheca seu farol
+          </span>
+        <h2 className="my-6 text-center text-[clamp(30px,3.5vw,46px)] leading-[1.15] tracking-[-1px]">Tudo o que importa.<br/>
+        Um lugar para se encontrar
+        </h2>
+        <p className="hero-description mb-6.5 w-full max-w-[680px] text-center text-[18px] leading-[1.5] text-[#A5B2CD]">
+          Notas, calendário, tarefas e objetivos se encontram em uma visão clara da sua vida. Do que precisa de atenção hoje ao que você quer conquistar amanhã.
+        </p>
+        </div>
+        <div className="landing-home-showcase relative z-10 mx-auto w-full max-w-[1100px] overflow-hidden rounded-2xl border border-white/15 bg-farol-background">
+          <div className="flex h-11 items-center justify-between border-b border-white/10 bg-farol-sidebar px-4 text-[11px] text-farol-muted">
+            <div className="flex items-center gap-1.5" aria-hidden="true">
+              <span className="size-2 rounded-full bg-[#5474c8]" />
+              <span className="size-2 rounded-full bg-[#5474c8]/70" />
+              <span className="size-2 rounded-full bg-[#5474c8]/45" />
+            </div>
+            <span className="absolute left-1/2 -translate-x-1/2">farol.app / painel</span>
+            <span className="text-[9px] font-semibold tracking-[0.12em] text-farol-text-subtle max-[480px]:hidden">VISÃO GERAL</span>
+          </div>
+          <img className="block h-auto w-full object-contain" src={heroHome} alt="Prévia da tela inicial do Farol" />
+        </div>
       </section>
 
       <footer

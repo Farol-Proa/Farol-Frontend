@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 
 @theme {
+  --color-farol-grid: #2D5BF0;
   --color-farol-background: #070e1c;
   --color-farol-surface: #111d35;
   --color-farol-surface-raised: #1c2b49;
@@ -63,4 +64,35 @@ button,
 input,
 textarea {
   font: inherit;
+}
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #426b91 #0c1929;
+}
+
+/* Fallback para navegadores sem suporte ao padrão */
+
+@supports not (scrollbar-color: auto) {
+  html::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  html::-webkit-scrollbar-track {
+    background: #0c1929;
+  }
+
+  html::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+      180deg,
+      #6289ae,
+      #365d82
+    );
+
+    border: 2px solid #0c1929;
+    border-radius: 999px;
+  }
+
+  html::-webkit-scrollbar-thumb:hover {
+    background: #81acd2;
+  }
 }

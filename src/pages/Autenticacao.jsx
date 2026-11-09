@@ -72,13 +72,46 @@ export default function App() {
 
     // LOGIN
 
-    function handleLogin(event) {
+    async function handleLogin(event) {
         event.preventDefault();
 
-        setMessages((previous) => ({
-            ...previous,
-            login: "Interface demonstrativa: conecte a autenticação ao backend para entrar.",
-        }));
+        try {
+            const resposta = await fetch(
+                "http://localhost:8080/api/usuarios/login",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        email: login.email,
+                        senha: login.password,
+                    }),
+                }
+            );
+
+            const resultado = await resposta.json().catch(() => ({}));
+
+            if (!resposta.ok) {
+                throw new Error(
+                    resultado.detail ||
+                    resultado.message ||
+                    resultado.mensagem ||
+                    "E-mail ou senha inválidos."
+                );
+            }
+
+            setMessages((previous) => ({
+                ...previous,
+                login: `Bem-vindo(a), ${resultado.nome}!`,
+            }));
+
+        } catch (erro) {
+            setMessages((previous) => ({
+                ...previous,
+                login: erro.message || "Erro ao conectar com o servidor.",
+            }));
+        }
     }
 
     // RECUPERAÇÃO DE SENHA
@@ -87,7 +120,7 @@ export default function App() {
         if (!login.email.trim()) {
             setMessages((previous) => ({
                 ...previous,
-                login: "Informe seu e-mail primeiro.",
+                login: "Informe seu e-mail.",
             }));
 
             return;
@@ -120,7 +153,7 @@ export default function App() {
 
     // FINALIZAÇÃO DO CADASTRO
 
-    function handleFinish(event) {
+    async function handleFinish(event) {
         event.preventDefault();
 
         const birth = new Date(`${userData.birthDate}T00:00:00`);
@@ -141,10 +174,10 @@ export default function App() {
             return;
         }
 
-        if (password.length < 8) {
+        if (password.length < 8 || password.length > 72) {
             setMessages((previous) => ({
                 ...previous,
-                finish: "A senha precisa ter pelo menos 8 caracteres.",
+                finish: "A senha precisa ter entre 8 e 72 caracteres.",
             }));
 
             return;
@@ -159,10 +192,46 @@ export default function App() {
             return;
         }
 
-        setMessages((previous) => ({
-            ...previous,
-            finish: "Cadastro validado! Agora precisamos conectar o backend.",
-        }));
+        try {
+            const resposta = await fetch(
+                "http://localhost:8080/api/usuarios/cadastro",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        nome: userData.name,
+                        email: userData.email,
+                        senha: password,
+                        telefone: userData.phone,
+                        dataNascimento: userData.birthDate,
+                    }),
+                }
+            );
+
+            const resultado = await resposta.json().catch(() => ({}));
+
+            if (!resposta.ok) {
+                throw new Error(
+                    resultado.detail ||
+                    resultado.message ||
+                    resultado.mensagem ||
+                    "Não foi possível realizar o cadastro."
+                );
+            }
+
+            setMessages((previous) => ({
+                ...previous,
+                finish: "Cadastro realizado com sucesso!",
+            }));
+
+        } catch (erro) {
+            setMessages((previous) => ({
+                ...previous,
+                finish: erro.message || "Erro ao conectar com o servidor.",
+            }));
+        }
     }
 
     // LOGIN SOCIAL DEMONSTRATIVO

@@ -4,15 +4,21 @@ import Ilhas from './pages/Ilhas';
 import LandingPage from './pages/LandingPage';
 import MapaObjetivo from './pages/MapaObjetivo';
 import Painel from './pages/Painel';
+import Autenticacao from './pages/Autenticacao';
 
 function App() {
   const [mostrarPainel, setMostrarPainel] = useState(false);
+  const [mostrarAutenticacao, setMostrarAutenticacao] = useState(false);
   const [objetivoSelecionadoId, setObjetivoSelecionadoId] = useState(null);
   const [paginaAtiva, setPaginaAtiva] = useState('Início');
   const dadosDashboard = useDadosDashboard();
 
-  if (!mostrarPainel) {
-    return <LandingPage onEntrar={() => setMostrarPainel(true)} />;
+  if (!mostrarPainel && !mostrarAutenticacao) {
+    return <LandingPage onEntrar={() => setMostrarAutenticacao(true)} />;
+  }
+
+  if (mostrarAutenticacao) {
+    return <Autenticacao />;
   }
 
   const objetivoSelecionado = dadosDashboard.objetivos.find(

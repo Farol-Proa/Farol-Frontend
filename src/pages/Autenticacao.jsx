@@ -72,6 +72,7 @@ export default function App() {
 
     // LOGIN
 
+
     async function handleLogin(event) {
         event.preventDefault();
 
@@ -101,9 +102,15 @@ export default function App() {
                 );
             }
 
+            sessionStorage.setItem("token", resultado.token);
+            sessionStorage.setItem(
+                "usuario",
+                JSON.stringify(resultado.usuario)
+            );
+
             setMessages((previous) => ({
                 ...previous,
-                login: `Bem-vindo(a), ${resultado.nome}!`,
+                login: `Bem-vindo(a), ${resultado.usuario.nome}!`,
             }));
 
         } catch (erro) {
@@ -113,6 +120,7 @@ export default function App() {
             }));
         }
     }
+
 
     // RECUPERAÇÃO DE SENHA
 

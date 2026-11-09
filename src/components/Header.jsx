@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Logo from './Logo';
 
 function Header({ onEntrar }) {
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -18,13 +19,7 @@ function Header({ onEntrar }) {
         href="#farol"
         aria-label="Farol, início"
       >
-        <span
-          className="brand-mark grid size-[46px] place-items-center rounded-full bg-farol-primary text-[28px] text-farol-accent"
-          aria-hidden="true"
-        >
-          ✦
-        </span>
-        <span>Farol</span>
+        <Logo className="h-10 w-auto" />
       </a>
 
       <nav className="header-nav flex items-center gap-[26px]" aria-label="Navegação principal">

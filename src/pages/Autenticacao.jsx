@@ -317,7 +317,7 @@ export default function App() {
 
 
                             <img
-                                src={screen === "login" ? "/images/Robriel.png" : "/images/menina.png"}
+                                src={screen === "login" ? "/images/robriel.png" : "/images/menina.png"}
                                 alt={screen === "login" ? "Robriel" : "Menina"}
                                 className="max-h-[320px] w-full object-contain"
                             />

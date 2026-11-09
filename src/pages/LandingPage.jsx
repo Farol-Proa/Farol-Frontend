@@ -192,6 +192,79 @@ function LandingPage({ onEntrar }) {
 
       </section>
 
+      <section
+        id="faq"
+        aria-labelledby="faq-title"
+        className="landing-faq grid grid-cols-1 items-start gap-12 px-[6.2%] py-24 lg:grid-cols-[minmax(0,396px)_minmax(0,1fr)] lg:gap-x-[104px]"
+      >
+        {/* Introdução */}
+        <div className="landing-faq__intro flex flex-col items-start gap-[22px]">
+          <span className="flex items-center gap-2.5 text-xs font-semibold uppercase leading-[15px] text-farol-accent">
+            <span className="size-1.5 rounded-[2px] bg-farol-accent" />
+            Antes de zarpar
+          </span>
+
+          <h2
+            id="faq-title"
+            className="text-[clamp(30px,3.5vw,44px)] font-bold leading-[1.12] tracking-[-1px] text-farol-text"
+          >
+            Um pouco mais de clareza.
+          </h2>
+
+          <p className="text-lg font-normal leading-[1.5] text-farol-muted">
+            Respostas para encontrar seu ponto de partida no Farol.
+          </p>
+        </div>
+
+        {/* Perguntas e respostas */}
+        <div className="landing-faq__list w-full border-y border-[#293957]">
+          <article className="landing-faq__item flex flex-col gap-[13px] border-b border-[#293957] py-6">
+            <h3 className="text-xl font-medium leading-[25px] text-farol-text">
+              O Farol é só para grandes objetivos?
+            </h3>
+
+            <p className="text-base font-normal leading-[1.5] text-farol-muted">
+              Não. Você pode começar por uma nota, um lembrete ou o planejamento da semana.
+              Os pequenos passos também fazem parte da jornada.
+            </p>
+          </article>
+
+          <article className="landing-faq__item flex flex-col gap-[13px] border-b border-[#293957] py-6">
+            <h3 className="text-xl font-medium leading-[25px] text-farol-text">
+              Como funcionam as ilhas e as rotas?
+            </h3>
+
+            <p className="text-base font-normal leading-[1.5] text-farol-muted">
+              O objetivo é o destino. As ilhas representam etapas do caminho, e as rotas
+              ajudam a visualizar como uma etapa se conecta à próxima.
+            </p>
+          </article>
+
+          <article className="landing-faq__item flex flex-col gap-[13px] border-b border-[#293957] py-6">
+            <h3 className="text-xl font-medium leading-[25px] text-farol-text">
+              Posso organizar estudos, trabalho e vida pessoal?
+            </h3>
+
+            <p className="text-base font-normal leading-[1.5] text-farol-muted">
+              Essa é a proposta: reunir o que importa no dia a dia sem deixar seus planos
+              de longo prazo fora de vista.
+            </p>
+          </article>
+
+          <article className="landing-faq__item flex flex-col gap-[13px] py-6">
+            <h3 className="text-xl font-medium leading-[25px] text-farol-text">
+              Por onde eu começo?
+            </h3>
+
+            <p className="text-base font-normal leading-[1.5] text-farol-muted">
+              Registre o que está na sua cabeça, escolha algo que merece atenção e defina
+              um próximo passo possível. Não é preciso planejar tudo de uma vez.
+            </p>
+          </article>
+        </div>
+      </section>
+
+
       <footer
         id="como-funciona"
         className="site-footer flex min-h-15.5 flex-wrap items-center justify-between gap-5 border-t border-farol-footer-border px-[6.2%] py-6 text-[11px] text-farol-muted"

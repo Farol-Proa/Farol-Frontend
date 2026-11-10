@@ -21,6 +21,14 @@ const desenhos = {
   maximize: <><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M3 16v3a2 2 0 0 0 2 2h3" /></>,
   pointer: <><path d="m5 3 14 11-7 1-3 6z" /></>,
   edit: <><path d="M12 20h9" /><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L8 18l-4 1 1-4Z" /></>,
+  trash: (
+  <>
+    <path d="M3 6h18" />
+    <path d="M8 6V4h8v2" />
+    <path d="m19 6-1 14H6L5 6" />
+    <path d="M10 11v5M14 11v5" />
+  </>
+),
   sailboat: <><path d="M12 3v12M12 4 5 13h7M12 7l7 6h-7" /><path d="M3 17c2 2 4 2 6 0 2 2 4 2 6 0 2 2 4 2 6 0" /></>,
 };
 

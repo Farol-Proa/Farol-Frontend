@@ -1,4 +1,5 @@
-﻿import { useRef, useState } from 'react';
+﻿import { useRef, useState, useEffect } from 'react';
+import { requisicaoAPI } from '../services/api';
 
 export function useDadosDashboard() {
   // O hook fica em App para manter os dados do painel enquanto as telas alternam.
@@ -22,6 +23,32 @@ export function useDadosDashboard() {
     { id: 3, texto: 'Consolidar anotaÃ§Ãµes da semana', concluida: false },
   ]);
   const [tarefas, setTarefas] = useState([]);
+
+  useEffect(() => {
+    async function carregarObjetivos() {
+      const token = sessionStorage.getItem('token');
+
+      if (!token) return;
+
+      try {
+        const resposta = await requisicaoAPI('/objetivos');
+
+        const objetivosFormatados = resposta.map((objetivo) => ({
+          id: objetivo.id,
+          nome: objetivo.titulo,
+          concluido: objetivo.status === 'CONCLUIDO',
+          etapas: [],
+        }));
+
+        setObjetivos(objetivosFormatados);
+
+      } catch (erro) {
+        console.error('Erro ao carregar objetivos:', erro);
+      }
+    }
+
+    carregarObjetivos();
+  }, []);
 
   function gerarId() {
     // Gera o ID fora do atualizador de estado, que o StrictMode pode chamar duas vezes em desenvolvimento.
@@ -65,9 +92,9 @@ export function useDadosDashboard() {
       atuais.map((objetivo) =>
         objetivo.id === idObjetivo
           ? {
-              ...objetivo,
-              etapas: [...objetivo.etapas, { id: idEtapa, texto: textoLimpo, concluida: false }],
-            }
+            ...objetivo,
+            etapas: [...objetivo.etapas, { id: idEtapa, texto: textoLimpo, concluida: false }],
+          }
           : objetivo,
       ),
     );
@@ -78,11 +105,11 @@ export function useDadosDashboard() {
       atuais.map((objetivo) =>
         objetivo.id === idObjetivo
           ? {
-              ...objetivo,
-              etapas: objetivo.etapas.map((etapa) =>
-                etapa.id === idEtapa ? { ...etapa, concluida: !etapa.concluida } : etapa,
-              ),
-            }
+            ...objetivo,
+            etapas: objetivo.etapas.map((etapa) =>
+              etapa.id === idEtapa ? { ...etapa, concluida: !etapa.concluida } : etapa,
+            ),
+          }
           : objetivo,
       ),
     );
@@ -93,9 +120,9 @@ export function useDadosDashboard() {
       atuais.map((objetivo) =>
         objetivo.id === idObjetivo
           ? {
-              ...objetivo,
-              etapas: objetivo.etapas.filter((etapa) => etapa.id !== idEtapa),
-            }
+            ...objetivo,
+            etapas: objetivo.etapas.filter((etapa) => etapa.id !== idEtapa),
+          }
           : objetivo,
       ),
     );

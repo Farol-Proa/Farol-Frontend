@@ -5,6 +5,7 @@ import LandingPage from './pages/LandingPage';
 import Painel from './pages/Painel';
 import Autenticacao from './pages/Autenticacao';
 
+
 function tokenEstaValido(token) {
   if (!token) return false;
 

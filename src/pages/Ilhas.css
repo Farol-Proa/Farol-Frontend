@@ -311,7 +311,7 @@
   cursor: grabbing;
 }
 
-.lighthouse-node > img {
+.lighthouse-node>img {
   display: block;
   width: 100%;
   height: 100%;
@@ -580,10 +580,12 @@
 }
 
 @keyframes boat-float {
+
   0%,
   100% {
     transform: translateY(0) rotate(-6deg);
   }
+
   50% {
     transform: translateY(-6px) rotate(6deg);
   }
@@ -643,7 +645,7 @@
   border-radius: 16px;
 }
 
-.roadmap-progress-label > div:first-child {
+.roadmap-progress-label>div:first-child {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -795,16 +797,17 @@
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 11px;
   font-variant-numeric: tabular-nums;
+  padding-right: 32px;
 }
 
-.goal-card-meta > span:first-child {
+.goal-card-meta>span:first-child {
   display: flex;
   align-items: center;
   gap: 6px;
   font-family: inherit;
 }
 
-.goal-card-meta > span.is-active {
+.goal-card-meta>span.is-active {
   color: #f5d547;
 }
 
@@ -841,6 +844,40 @@
   background: #f5d547;
 }
 
+.goal-card-wrapper {
+  position: relative;
+  flex: 0 0 256px;
+}
+
+.goal-card-wrapper .goal-card {
+  width: 100%;
+  height: 100%;
+}
+
+.goal-card-delete {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  border-radius: 9px;
+  background: #1a2045;
+  color: #aeb6d9;
+  cursor: pointer;
+  transition: 160ms ease;
+}
+
+.goal-card-delete:hover {
+  border-color: rgb(255 90 90 / 0.4);
+  background: rgb(255 70 70 / 0.15);
+  color: #ff7777;
+}
+
 .new-map-button {
   display: flex;
   width: 128px;
@@ -863,7 +900,7 @@
   color: #eef1ff;
 }
 
-.new-map-button > span {
+.new-map-button>span {
   display: grid;
   width: 36px;
   height: 36px;
@@ -954,6 +991,7 @@
 }
 
 @media (max-height: 640px) {
+
   .ilhas-subtitle,
   .ilhas-goals {
     display: none;
@@ -961,11 +999,13 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .route-flow,
   .roadmap-boat {
     animation: none;
   }
 }
+
 .goal-node {
   position: relative;
   display: flex;
@@ -1009,4 +1049,214 @@
 
 .goal-node-image-button:hover {
   background: rgb(5 9 17 / 0.95);
+}
+
+/* Botão novo objetivo */
+.btn-novo-objetivo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 16px;
+  border: none;
+  border-radius: 10px;
+  background: #315cf5;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.btn-novo-objetivo:hover {
+  background: #2449d8;
+  transform: translateY(-1px);
+}
+
+/* Fundo da janela */
+.objetivo-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(3, 8, 20, 0.78);
+  backdrop-filter: blur(6px);
+}
+
+/* Janela */
+.objetivo-modal {
+  width: 100%;
+  max-width: 520px;
+  padding: 28px;
+  border: 1px solid #26395c;
+  border-radius: 18px;
+  background: #12203e;
+  color: #fff;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.4);
+}
+
+.objetivo-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 25px;
+}
+
+.objetivo-modal-header h2 {
+  margin: 8px 0;
+  font-size: 24px;
+}
+
+.objetivo-modal-header p {
+  margin: 0;
+  color: #aab8d2;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.objetivo-modal-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid #26395c;
+  border-radius: 9px;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Campos */
+.objetivo-modal label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+  color: #dce6fa;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.objetivo-modal input,
+.objetivo-modal textarea,
+.objetivo-modal select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #31466b;
+  border-radius: 9px;
+  outline: none;
+  background: #0b1630;
+  color: #fff;
+  font: inherit;
+  font-weight: 400;
+}
+
+.objetivo-modal input:focus,
+.objetivo-modal textarea:focus,
+.objetivo-modal select:focus {
+  border-color: #5278ff;
+  box-shadow: 0 0 0 3px rgba(49, 92, 245, 0.15);
+}
+
+.objetivo-modal textarea {
+  resize: vertical;
+}
+
+.objetivo-modal-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Ações */
+.objetivo-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.objetivo-modal-actions button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 16px;
+  border: 1px solid #31466b;
+  border-radius: 9px;
+  background: transparent;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.objetivo-modal-actions button[type="submit"] {
+  border-color: #315cf5;
+  background: #315cf5;
+}
+
+.objetivo-modal-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .objetivo-modal {
+    padding: 20px;
+  }
+
+  .objetivo-modal-fields {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .objetivo-modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .objetivo-modal-actions button {
+    width: 100%;
+  }
+}
+
+.ilhas-empty-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 400px;
+  padding: 40px 24px;
+  text-align: center;
+  background: #0c1629;
+  border: 1px dashed #26395c;
+  border-radius: 20px;
+  margin: 20px 24px;
+}
+
+.ilhas-empty-state>svg {
+  color: #6d91ff;
+}
+
+.ilhas-empty-state h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 24px;
+}
+
+.ilhas-empty-state p {
+  max-width: 440px;
+  margin: 0;
+  color: #aab8d0;
+  line-height: 1.6;
+}
+
+.ilhas-empty-state .btn-novo-objetivo {
+  margin-top: 8px;
 }

@@ -1,0 +1,159 @@
+- generic [ref=f6e104]:
+  - complementary "Menu lateral" [ref=f6e105]:
+    - generic [ref=f6e106]:
+      - generic [ref=f6e107]: Farol
+      - navigation "Navegação principal" [ref=f6e113]:
+        - list [ref=f6e114]:
+          - listitem [ref=f6e115]:
+            - link "Início" [ref=f6e116] [cursor=pointer]:
+              - /url: "#inicio"
+          - listitem [ref=f6e122]:
+            - link "Objetivos" [ref=f6e123] [cursor=pointer]:
+              - /url: "#objetivos"
+          - listitem [ref=f6e129]:
+            - link "Ilhas" [ref=f6e130] [cursor=pointer]:
+              - /url: "#ilhas"
+          - listitem [ref=f6e134]:
+            - link "Anotações" [ref=f6e135] [cursor=pointer]:
+              - /url: "#anotacoes"
+          - listitem [ref=f6e141]:
+            - link "Calendário" [ref=f6e142] [cursor=pointer]:
+              - /url: "#calendario"
+          - listitem [ref=f6e147]:
+            - link "Mentoria" [ref=f6e148] [cursor=pointer]:
+              - /url: "#mentoria"
+      - generic [ref=f6e154]:
+        - paragraph [ref=f6e159]: 7 dias
+        - paragraph [ref=f6e160]: de sequência. Continue iluminando o caminho.
+      - button "Configurações" [ref=f6e161] [cursor=pointer]
+  - main [ref=f6e166]:
+    - generic [ref=f6e167]:
+      - generic [ref=f6e168]:
+        - text: SEU ESPAÇO, SEU RITMO
+        - heading "Início" [level=1] [ref=f6e169]
+      - generic "Perfil de Robriel" [ref=f6e170]: R
+    - generic [ref=f6e171]:
+      - generic [ref=f6e172]:
+        - text: BEM-VINDO DE VOLTA
+        - heading "Olá, visitante!" [level=2] [ref=f6e173]
+        - paragraph [ref=f6e174]: “Qualquer ideia é estupidamente útil”
+      - generic [ref=f6e175]:
+        - strong [ref=f6e176]: Minha jornada começa hoje.
+        - generic [aria-hidden] [ref=f6e177]: ☀
+        - paragraph [ref=f6e178]: Bom dia!
+    - generic [ref=f6e179]:
+      - article [ref=f6e180]:
+        - heading [level=3] [ref=f6e181]:
+          - text: Notas Diárias
+          - button "Adicionar nota" [ref=f6e182] [cursor=pointer]: +
+        - generic [ref=f6e183]:
+          - textbox "Escreva uma nova nota..." [ref=f6e184]
+          - button "Adicionar" [ref=f6e185] [cursor=pointer]
+        - generic [ref=f6e186]:
+          - generic [ref=f6e187]:
+            - generic [ref=f6e188] [cursor=pointer]:
+              - checkbox "Revisar resumo do TCC" [checked] [ref=f6e189]
+              - text: Revisar resumo do TCC
+            - button "Excluir nota Revisar resumo do TCC" [ref=f6e190] [cursor=pointer]: ×
+          - generic [ref=f6e191]:
+            - generic [ref=f6e192] [cursor=pointer]:
+              - checkbox "Enviar e-mail para o orientador" [ref=f6e193]
+              - text: Enviar e-mail para o orientador
+            - button "Excluir nota Enviar e-mail para o orientador" [ref=f6e194] [cursor=pointer]: ×
+          - generic [ref=f6e195]:
+            - generic [ref=f6e196] [cursor=pointer]:
+              - checkbox "Consolidar anotações da semana" [ref=f6e197]
+              - text: Consolidar anotações da semana
+            - button "Excluir nota Consolidar anotações da semana" [ref=f6e198] [cursor=pointer]: ×
+      - article [ref=f6e199]:
+        - heading "Meu calendário" [level=3] [ref=f6e200]
+        - paragraph [ref=f6e201]: Organize seu tempo e suas prioridades.
+        - generic [ref=f6e202]:
+          - button "Mês anterior" [ref=f6e203]: ‹
+          - strong [ref=f6e204]: novembro de 2026
+          - button "Próximo mês" [ref=f6e205]: ›
+        - generic [ref=f6e206]:
+          - strong [ref=f6e207]: SEG
+          - strong [ref=f6e208]: TER
+          - strong [ref=f6e209]: QUA
+          - strong [ref=f6e210]: QUI
+          - strong [ref=f6e211]: SEX
+          - strong [ref=f6e212]: SÁB
+          - strong [ref=f6e213]: DOM
+          - button "1" [ref=f6e214] [cursor=pointer]
+          - button "2" [ref=f6e216] [cursor=pointer]
+          - button "3" [ref=f6e218] [cursor=pointer]
+          - button "4" [ref=f6e220] [cursor=pointer]
+          - button "5" [ref=f6e222] [cursor=pointer]
+          - button "6" [ref=f6e224] [cursor=pointer]
+          - button "7" [ref=f6e226] [cursor=pointer]
+          - button "8" [ref=f6e228] [cursor=pointer]
+          - button "9" [ref=f6e230] [cursor=pointer]
+          - button "10" [ref=f6e232] [cursor=pointer]
+          - button "11" [ref=f6e234] [cursor=pointer]
+          - button "12" [ref=f6e236] [cursor=pointer]
+          - button "13" [ref=f6e238] [cursor=pointer]
+          - button "14" [ref=f6e240] [cursor=pointer]
+          - button "15" [ref=f6e242] [cursor=pointer]
+          - button "16" [ref=f6e244] [cursor=pointer]
+          - button "17" [ref=f6e246] [cursor=pointer]
+          - button "18" [ref=f6e248] [cursor=pointer]
+          - button "19" [ref=f6e250] [cursor=pointer]
+          - button "20" [ref=f6e252] [cursor=pointer]
+          - button "21" [ref=f6e254] [cursor=pointer]
+          - button "22" [ref=f6e256] [cursor=pointer]
+          - button "23" [ref=f6e258] [cursor=pointer]
+          - button "24" [ref=f6e260] [cursor=pointer]
+          - button "25" [ref=f6e262] [cursor=pointer]
+          - button "26" [ref=f6e264] [cursor=pointer]
+          - button "27" [ref=f6e266] [cursor=pointer]
+          - button "28" [ref=f6e268] [cursor=pointer]
+          - button "29" [ref=f6e270] [cursor=pointer]
+          - button "30" [ref=f6e272] [cursor=pointer]
+        - paragraph [ref=f6e274]: "Data selecionada: 2026-11-10"
+      - article [ref=f6e275]:
+        - heading "Minha Jornada" [level=3] [ref=f6e276]
+        - generic [ref=f6e277]: 0%
+        - paragraph [ref=f6e279]: Você concluiu 0 de 2 itens.
+    - generic [ref=f6e280]:
+      - article [ref=f6e281]:
+        - heading "Minhas Ilhas" [level=3] [ref=f6e282]
+        - generic [ref=f6e283]:
+          - generic [ref=f6e284]:
+            - generic [ref=f6e285]:
+              - button "Meu primeiro objetivo" [ref=f6e286] [cursor=pointer]
+              - button "Excluir objetivo Meu primeiro objetivo" [ref=f6e287] [cursor=pointer]: ×
+            - generic [ref=f6e288] [cursor=pointer]:
+              - checkbox "Concluído" [ref=f6e289]
+              - text: Concluído
+            - generic [ref=f6e290]:
+              - generic [ref=f6e291]:
+                - text: Progresso
+                - generic [ref=f6e292]: 0%
+              - progressbar [ref=f6e293]
+            - generic [ref=f6e294]:
+              - textbox "Digite uma etapa..." [ref=f6e295]
+              - button "Adicionar etapa" [ref=f6e296]
+            - generic [ref=f6e297]:
+              - generic [ref=f6e298]:
+                - generic [ref=f6e299]:
+                  - checkbox "Primeira etapa" [ref=f6e300]
+                  - text: Primeira etapa
+                - button "Excluir etapa Primeira etapa" [ref=f6e301]: ×
+              - generic [ref=f6e302]:
+                - generic [ref=f6e303]:
+                  - checkbox "Segunda etapa" [ref=f6e304]
+                  - text: Segunda etapa
+                - button "Excluir etapa Segunda etapa" [ref=f6e305]: ×
+          - button "Adicionar objetivo" [ref=f6e306] [cursor=pointer]: +
+      - article [ref=f6e307]:
+        - heading "Tarefas da Semana" [level=3] [ref=f6e308]
+        - generic [ref=f6e309]:
+          - textbox "Digite uma tarefa..." [ref=f6e310]
+          - textbox "Horário da tarefa" [ref=f6e311]: 09:00
+          - combobox "Prioridade da tarefa" [ref=f6e312]:
+            - option "Baixa prioridade"
+            - option "Média prioridade" [selected]
+            - option "Alta prioridade"
+          - button "Adicionar" [ref=f6e313] [cursor=pointer]
+        - paragraph [ref=f6e314]: Nenhuma tarefa cadastrada ainda.

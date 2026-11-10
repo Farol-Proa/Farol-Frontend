@@ -1,0 +1,198 @@
+- generic [ref=f2e104]:
+  - complementary "Menu lateral" [ref=f2e105]:
+    - generic [ref=f2e106]:
+      - generic [ref=f2e107]: Farol
+      - navigation "Navegação principal" [ref=f2e113]:
+        - list [ref=f2e114]:
+          - listitem [ref=f2e115]:
+            - link "Início" [ref=f2e116] [cursor=pointer]:
+              - /url: "#inicio"
+          - listitem [ref=f2e122]:
+            - link "Objetivos" [ref=f2e123] [cursor=pointer]:
+              - /url: "#objetivos"
+          - listitem [ref=f2e129]:
+            - link "Ilhas" [ref=f2e130] [cursor=pointer]:
+              - /url: "#ilhas"
+          - listitem [ref=f2e134]:
+            - link "Anotações" [ref=f2e135] [cursor=pointer]:
+              - /url: "#anotacoes"
+          - listitem [ref=f2e141]:
+            - link "Calendário" [ref=f2e142] [cursor=pointer]:
+              - /url: "#calendario"
+          - listitem [ref=f2e147]:
+            - link "Mentoria" [ref=f2e148] [cursor=pointer]:
+              - /url: "#mentoria"
+      - generic [ref=f2e154]:
+        - paragraph [ref=f2e159]: 7 dias
+        - paragraph [ref=f2e160]: de sequência. Continue iluminando o caminho.
+      - button "Configurações" [ref=f2e161] [cursor=pointer]
+  - main [ref=f2e166]:
+    - generic [ref=f2e167]:
+      - generic [ref=f2e168]:
+        - heading "Farol" [level=1] [ref=f2e169]
+        - paragraph [ref=f2e170]: Início
+      - generic [ref=f2e171]:
+        - button "Ativar tema claro" [ref=f2e172]
+        - generic [ref=f2e175]:
+          - generic [aria-hidden] [ref=f2e176]: R
+          - generic [ref=f2e177]: Robriel
+    - region "Boas-vindas" [ref=f2e178]:
+      - generic [ref=f2e179]:
+        - heading "Olá, Robriel!" [level=1] [ref=f2e180]
+        - figure [ref=f2e181]:
+          - blockquote [ref=f2e182]: “Qualquer ideia é estúpida até resolvermos usá-la” - Richard Bach
+      - generic [ref=f2e183]:
+        - paragraph [ref=f2e184]: Segunda-Feira, 9 de Novembro de 2026
+        - paragraph [ref=f2e185]: Boa noite!
+    - generic [ref=f2e186]:
+      - region "Notas Diárias" [ref=f2e188]:
+        - generic [ref=f2e189]:
+          - heading "Notas Diárias" [level=2] [ref=f2e191]
+          - button "Adicionar nota" [ref=f2e192]
+        - list [ref=f2e194]:
+          - listitem [ref=f2e195]:
+            - 'checkbox "Concluir â€œRevisar resumo do TCCâ€" [checked] [ref=f2e196]'
+            - generic [ref=f2e199]:
+              - paragraph [ref=f2e200]: Revisar resumo do TCC
+              - paragraph [ref=f2e201]: Prioridade média
+          - listitem [ref=f2e202]:
+            - 'checkbox "Concluir â€œEnviar e-mail para o orientadorâ€" [ref=f2e203]'
+            - generic [ref=f2e206]:
+              - paragraph [ref=f2e207]: Enviar e-mail para o orientador
+              - paragraph [ref=f2e208]: Prioridade média
+          - listitem [ref=f2e209]:
+            - 'checkbox "Concluir â€œConsolidar anotações da semanaâ€" [ref=f2e210]'
+            - generic [ref=f2e213]:
+              - paragraph [ref=f2e214]: Consolidar anotações da semana
+              - paragraph [ref=f2e215]: Prioridade média
+      - region "Novembro 2026" [ref=f2e217]:
+        - generic [ref=f2e218]:
+          - heading "Novembro 2026" [level=2] [ref=f2e219]
+          - generic [ref=f2e220]:
+            - button "Mês anterior" [ref=f2e221]
+            - button "Próximo mês" [ref=f2e224]
+        - grid "novembro 2026" [ref=f2e230]:
+          - rowgroup [aria-hidden] [ref=f2e231]:
+            - row [ref=f2e232]:
+              - columnheader [ref=f2e233]: Seg
+              - columnheader [ref=f2e234]: Ter
+              - columnheader [ref=f2e235]: Qua
+              - columnheader [ref=f2e236]: Qui
+              - columnheader [ref=f2e237]: Sex
+              - columnheader [ref=f2e238]: Sáb
+              - columnheader [ref=f2e239]: Dom
+          - rowgroup [ref=f2e240]:
+            - row [ref=f2e241]:
+              - gridcell [ref=f2e242]:
+                - button "segunda-feira, 26 de outubro de 2026" [ref=f2e243]: "26"
+              - gridcell [ref=f2e244]:
+                - button "terça-feira, 27 de outubro de 2026" [ref=f2e245]: "27"
+              - gridcell [ref=f2e246]:
+                - button "quarta-feira, 28 de outubro de 2026" [ref=f2e247]: "28"
+              - gridcell [ref=f2e248]:
+                - button "quinta-feira, 29 de outubro de 2026" [ref=f2e249]: "29"
+              - gridcell [ref=f2e250]:
+                - button "sexta-feira, 30 de outubro de 2026" [ref=f2e251]: "30"
+              - gridcell [ref=f2e252]:
+                - button "sábado, 31 de outubro de 2026" [ref=f2e253]: "31"
+              - gridcell [ref=f2e254]:
+                - button "domingo, 1 de novembro de 2026" [ref=f2e255]: "1"
+            - row [ref=f2e256]:
+              - gridcell [ref=f2e257]:
+                - button "segunda-feira, 2 de novembro de 2026" [ref=f2e258]: "2"
+              - gridcell [ref=f2e259]:
+                - button "terça-feira, 3 de novembro de 2026" [ref=f2e260]: "3"
+              - gridcell [ref=f2e261]:
+                - button "quarta-feira, 4 de novembro de 2026" [ref=f2e262]: "4"
+              - gridcell [ref=f2e263]:
+                - button "quinta-feira, 5 de novembro de 2026" [ref=f2e264]: "5"
+              - gridcell [ref=f2e265]:
+                - button "sexta-feira, 6 de novembro de 2026" [ref=f2e266]: "6"
+              - gridcell [ref=f2e267]:
+                - button "sábado, 7 de novembro de 2026" [ref=f2e268]: "7"
+              - gridcell [ref=f2e269]:
+                - button "domingo, 8 de novembro de 2026" [ref=f2e270]: "8"
+            - row [ref=f2e271]:
+              - gridcell [selected] [ref=f2e272]:
+                - button "Today, segunda-feira, 9 de novembro de 2026, selected" [ref=f2e273]: "9"
+              - gridcell [ref=f2e274]:
+                - button "terça-feira, 10 de novembro de 2026" [ref=f2e275]: "10"
+              - gridcell [ref=f2e276]:
+                - button "quarta-feira, 11 de novembro de 2026" [ref=f2e277]: "11"
+              - gridcell [ref=f2e278]:
+                - button "quinta-feira, 12 de novembro de 2026" [ref=f2e279]: "12"
+              - gridcell [ref=f2e280]:
+                - button "sexta-feira, 13 de novembro de 2026" [ref=f2e281]: "13"
+              - gridcell [ref=f2e282]:
+                - button "sábado, 14 de novembro de 2026" [ref=f2e283]: "14"
+              - gridcell [ref=f2e284]:
+                - button "domingo, 15 de novembro de 2026" [ref=f2e285]: "15"
+            - row [ref=f2e286]:
+              - gridcell [ref=f2e287]:
+                - button "segunda-feira, 16 de novembro de 2026" [ref=f2e288]: "16"
+              - gridcell [ref=f2e289]:
+                - button "terça-feira, 17 de novembro de 2026" [ref=f2e290]: "17"
+              - gridcell [ref=f2e291]:
+                - button "quarta-feira, 18 de novembro de 2026" [ref=f2e292]: "18"
+              - gridcell [ref=f2e293]:
+                - button "quinta-feira, 19 de novembro de 2026" [ref=f2e294]: "19"
+              - gridcell [ref=f2e295]:
+                - button "sexta-feira, 20 de novembro de 2026" [ref=f2e296]: "20"
+              - gridcell [ref=f2e297]:
+                - button "sábado, 21 de novembro de 2026" [ref=f2e298]: "21"
+              - gridcell [ref=f2e299]:
+                - button "domingo, 22 de novembro de 2026" [ref=f2e300]: "22"
+            - row [ref=f2e301]:
+              - gridcell [ref=f2e302]:
+                - button "segunda-feira, 23 de novembro de 2026" [ref=f2e303]: "23"
+              - gridcell [ref=f2e304]:
+                - button "terça-feira, 24 de novembro de 2026" [ref=f2e305]: "24"
+              - gridcell [ref=f2e306]:
+                - button "quarta-feira, 25 de novembro de 2026" [ref=f2e307]: "25"
+              - gridcell [ref=f2e308]:
+                - button "quinta-feira, 26 de novembro de 2026" [ref=f2e309]: "26"
+              - gridcell [ref=f2e310]:
+                - button "sexta-feira, 27 de novembro de 2026" [ref=f2e311]: "27"
+              - gridcell [ref=f2e312]:
+                - button "sábado, 28 de novembro de 2026" [ref=f2e313]: "28"
+              - gridcell [ref=f2e314]:
+                - button "domingo, 29 de novembro de 2026" [ref=f2e315]: "29"
+            - row [ref=f2e316]:
+              - gridcell [ref=f2e317]:
+                - button "segunda-feira, 30 de novembro de 2026" [ref=f2e318]: "30"
+              - gridcell [ref=f2e319]:
+                - button "terça-feira, 1 de dezembro de 2026" [ref=f2e320]: "1"
+              - gridcell [ref=f2e321]:
+                - button "quarta-feira, 2 de dezembro de 2026" [ref=f2e322]: "2"
+              - gridcell [ref=f2e323]:
+                - button "quinta-feira, 3 de dezembro de 2026" [ref=f2e324]: "3"
+              - gridcell [ref=f2e325]:
+                - button "sexta-feira, 4 de dezembro de 2026" [ref=f2e326]: "4"
+              - gridcell [ref=f2e327]:
+                - button "sábado, 5 de dezembro de 2026" [ref=f2e328]: "5"
+              - gridcell [ref=f2e329]:
+                - button "domingo, 6 de dezembro de 2026" [ref=f2e330]: "6"
+      - region "Minha Jornada" [ref=f2e331]:
+        - heading "Minha Jornada" [level=2] [ref=f2e332]
+        - progressbar "Progresso da jornada" [ref=f2e333]:
+          - generic [ref=f2e338]: 0%
+        - paragraph [ref=f2e339]: 0 de 2 objetivos concluídos
+    - generic [ref=f2e340]:
+      - region "Meus Mapas" [ref=f2e341]:
+        - generic [ref=f2e342]:
+          - heading "Meus Mapas" [level=2] [ref=f2e343]
+          - generic [ref=f2e344]: Minha jornada
+        - list [ref=f2e345]:
+          - listitem [ref=f2e346]:
+            - button "Meu primeiro objetivo 0%" [ref=f2e347] [cursor=pointer]:
+              - strong [ref=f2e362]: Meu primeiro objetivo
+              - generic [ref=f2e364]: 0%
+          - listitem [ref=f2e365]:
+            - button [ref=f2e366] [cursor=pointer]:
+              - generic [aria-hidden] [ref=f2e367]: ï¼‹
+              - strong [ref=f2e368]: Novo mapa
+      - region "Tarefas da Semana" [ref=f2e369]:
+        - generic [ref=f2e370]:
+          - heading "Tarefas da Semana" [level=2] [ref=f2e371]
+          - button "Adicionar tarefa" [ref=f2e372]
+        - paragraph [ref=f2e374]: Nenhuma tarefa para esta semana.

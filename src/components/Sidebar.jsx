@@ -1,4 +1,3 @@
-
 import './Sidebar.css';
 import Icon from './Icon';
 
@@ -54,9 +53,7 @@ function Sidebar({ activeItem = 'Início', onNavegar = () => {} }) {
             <Icon name="flame" size={21} />
           </span>
           <p className="farol-streak-count">7 dias</p>
-          <p className="farol-streak-copy">
-            de sequência. Continue iluminando o caminho.
-          </p>
+          <p className="farol-streak-copy">de sequência. Continue iluminando o caminho.</p>
         </div>
 
         <button className="farol-settings-link" type="button">

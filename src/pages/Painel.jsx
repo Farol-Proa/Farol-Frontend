@@ -12,6 +12,7 @@ function Painel({
   tarefas,
   activeItem,
   onNavegar,
+  onLogout,
   onAbrirObjetivo,
   onAdicionarObjetivo,
   onAlternarObjetivo,
@@ -26,6 +27,8 @@ function Painel({
   onAlternarTarefa,
   onRemoverTarefa,
 }) {
+  const usuario = JSON.parse(sessionStorage.getItem("usuario") || "{}");
+
   const [dataSelecionada, setDataSelecionada] = useState(new Date().toLocaleDateString('en-CA'));
   const [mesExibido, setMesExibido] = useState(() => {
     const hoje = new Date();
@@ -51,7 +54,7 @@ function Painel({
   return (
 
     <div className="painel bg-farol-dashboard text-farol-text flex max-[600px]:flex-col">
-      <Sidebar activeItem={activeItem} onNavegar={onNavegar} />
+      <Sidebar activeItem={activeItem} onNavegar={onNavegar} onLogout={onLogout} />
 
       <main className="min-w-0 flex-1 p-[22px] max-[600px]:p-3.5" id="inicio">
         <header className="mb-6 flex items-center justify-between">
@@ -61,7 +64,7 @@ function Painel({
 
         <section className="mb-4 flex items-center justify-between gap-5 rounded-[18px] bg-farol-dashboard-card px-6 py-5 max-[600px]:items-start max-[600px]:flex-col">
           <div>
-            <h2 className="mb-3 mt-0 text-[22px]">Olá, visitante!</h2>
+            <h2 className="mb-3 mt-0 text-[22px]">Olá, {usuario.nome?.split(' ')[0] || 'visitante'}!</h2>
             <p className="text-xs text-farol-muted">“Qualquer ideia é estupidamente útil”</p>
           </div>
 

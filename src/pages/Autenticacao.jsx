@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Logo from "../components/Logo";
 
-export default function App() {
+export default function Autenticacao({ onLoginSuccess }) {
     const [screen, setScreen] = useState("login");
 
     const [userData, setUserData] = useState({
@@ -108,10 +108,7 @@ export default function App() {
                 JSON.stringify(resultado.usuario)
             );
 
-            setMessages((previous) => ({
-                ...previous,
-                login: `Bem-vindo(a), ${resultado.usuario.nome}!`,
-            }));
+            onLoginSuccess();
 
         } catch (erro) {
             setMessages((previous) => ({

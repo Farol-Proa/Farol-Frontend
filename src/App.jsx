@@ -1,22 +1,90 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDadosDashboard } from './dashboard/useDadosDashboard';
 import Ilhas from './pages/Ilhas';
 import LandingPage from './pages/LandingPage';
 import Painel from './pages/Painel';
 import Autenticacao from './pages/Autenticacao';
 
+function tokenEstaValido(token) {
+  if (!token) return false;
+
+  try {
+    const payload = JSON.parse(
+      atob(
+        token.split(".")[1]
+          .replace(/-/g, "+")
+          .replace(/_/g, "/")
+      )
+    );
+
+    return payload.exp * 1000 > Date.now();
+
+  } catch {
+    return false;
+  }
+}
+
 function App() {
-  const [mostrarPainel, setMostrarPainel] = useState(false);
+  const [mostrarPainel, setMostrarPainel] = useState(() =>
+    tokenEstaValido(sessionStorage.getItem("token")));
   const [mostrarAutenticacao, setMostrarAutenticacao] = useState(false);
   const [paginaAtiva, setPaginaAtiva] = useState('Início');
   const dadosDashboard = useDadosDashboard();
 
+  function fazerLogout() {
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("usuario");
+
+    setMostrarPainel(false);
+    setMostrarAutenticacao(false);
+    setPaginaAtiva('Início');
+  }
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("token");
+
+    if (!token || !mostrarPainel) return;
+
+    try {
+      const payload = JSON.parse(
+        atob(
+          token.split(".")[1]
+            .replace(/-/g, "+")
+            .replace(/_/g, "/")
+        )
+      );
+
+      const tempoRestante = payload.exp * 1000 - Date.now();
+
+      if (tempoRestante <= 0) {
+        fazerLogout();
+        return;
+      }
+
+      const temporizador = setTimeout(() => {
+        fazerLogout();
+      }, tempoRestante);
+
+      return () => clearTimeout(temporizador);
+
+    } catch {
+      fazerLogout();
+    }
+  }, [mostrarPainel]);
+
   if (!mostrarPainel && !mostrarAutenticacao) {
-    return <LandingPage onEntrar={() => setMostrarPainel(true)} />;
+    return <LandingPage onEntrar={() => setMostrarAutenticacao(true)} />;
   }
 
   if (mostrarAutenticacao) {
-    return <Autenticacao />;
+    return (
+      <Autenticacao
+        onLoginSuccess={() => {
+          setMostrarAutenticacao(false);
+          setMostrarPainel(true);
+        }}
+      />
+    );
   }
 
   function navegar(destino) {
@@ -64,6 +132,7 @@ function App() {
           onAdicionarTarefa={dadosDashboard.adicionarTarefa}
           onAlternarTarefa={dadosDashboard.alternarTarefa}
           onRemoverTarefa={dadosDashboard.removerTarefa}
+          onLogout={fazerLogout}
         />
       </div>
 

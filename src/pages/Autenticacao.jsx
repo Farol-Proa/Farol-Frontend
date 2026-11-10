@@ -1,7 +1,7 @@
-
 import { useState } from "react";
+import Logo from "../components/Logo";
 
-export default function App() {
+export default function Autenticacao({ onLoginSuccess }) {
     const [screen, setScreen] = useState("login");
 
     const [userData, setUserData] = useState({
@@ -108,10 +108,7 @@ export default function App() {
                 JSON.stringify(resultado.usuario)
             );
 
-            setMessages((previous) => ({
-                ...previous,
-                login: `Bem-vindo(a), ${resultado.usuario.nome}!`,
-            }));
+            onLoginSuccess();
 
         } catch (erro) {
             setMessages((previous) => ({
@@ -287,360 +284,338 @@ export default function App() {
                             }}
                         />
 
-                        {/* LOGO */}
-
-                        <div className="relative z-10 flex items-center gap-3">
-                            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-lg font-extrabold text-blue-600">
-                                ✦
-                            </div>
-
-                            <h2 className="text-xl font-bold">Farol</h2>
+                        {/* LOGO OFICIAL */}
+                        <div className="relative z-20 flex items-center">
+                            <Logo className="h-12 w-auto" />
                         </div>
 
-                        {/* TEXTO PRINCIPAL */}
 
-                        <div className="relative z-10 mt-9">
+                {/* IMAGEM PRINCIPAL */}
 
-                            <h1 className="text-3xl font-extrabold leading-tight md:text-4xl">
-                                Se junte ao <span className="text-yellow-300">Farol!</span>
-                            </h1>
+                <div className="absolute inset-0 z-0 flex items-center justify-center">
 
-                            <p className="mt-5 max-w-sm text-base font-semibold leading-relaxed text-blue-100 md:text-lg">
-                                E organize os seus estudos como milhares de brasileiros.
+                    <img
+                        src={screen === "login" ? "/images/robriel.png" : "/images/menina.png"}
+                        alt={screen === "login" ? "Robriel" : "Menina"}
+                        className={`h-full w-full object-contain ${screen === "login" ? "" : "scale-[1.08]"
+                            }`}
+                    />
+
+                </div>
+
+            </section>
+
+            {/* PAINEL DOS FORMULÁRIOS */}
+
+            <section className="flex items-center justify-center bg-[#18243A] px-6 py-10 text-white md:px-9">
+
+                <div className="w-full max-w-[350px]">
+
+                    {/* TELA 1 - LOGIN */}
+
+                    {screen === "login" && (
+
+                        <div>
+
+                            <h2 className="mb-8 text-3xl font-bold">
+                                Login
+                            </h2>
+
+                            <form onSubmit={handleLogin}>
+
+                                <div className="mb-5">
+                                    <label className={labelClass}>
+                                        E-mail
+                                    </label>
+
+                                    <input
+                                        type="email"
+                                        placeholder="Insira seu e-mail"
+                                        className={inputClass}
+                                        value={login.email}
+                                        onChange={(e) =>
+                                            setLogin({
+                                                ...login,
+                                                email: e.target.value,
+                                            })
+                                        }
+                                        required
+                                    />
+                                </div>
+
+                                <div className="mb-3">
+                                    <label className={labelClass}>
+                                        Senha
+                                    </label>
+
+                                    <input
+                                        type="password"
+                                        placeholder="Insira a sua senha"
+                                        className={inputClass}
+                                        value={login.password}
+                                        onChange={(e) =>
+                                            setLogin({
+                                                ...login,
+                                                password: e.target.value,
+                                            })
+                                        }
+                                        required
+                                    />
+                                </div>
+
+                                <button
+                                    type="button"
+                                    onClick={handleForgotPassword}
+                                    className="mb-4 block w-full text-right text-xs text-yellow-300 hover:underline"
+                                >
+                                    Esqueceu sua senha?
+                                </button>
+
+                                <button type="submit" className={buttonClass}>
+                                    Entrar
+                                </button>
+
+                                {messages.login && (
+                                    <p className="mt-3 text-xs text-red-300">
+                                        {messages.login}
+                                    </p>
+                                )}
+
+                            </form>
+
+                            <div className="my-6 flex items-center gap-3 text-xs text-slate-400">
+                                <div className="h-px flex-1 bg-slate-500" />
+                                ou
+                                <div className="h-px flex-1 bg-slate-500" />
+                            </div>
+
+                            <SocialButtons onSocial={handleSocial} />
+
+                            <p className="mt-6 text-center text-xs text-slate-300">
+                                Não tem uma conta?{" "}
+
+                                <button
+                                    onClick={() => showScreen("register")}
+                                    className="font-bold text-yellow-300 hover:underline"
+                                >
+                                    Inscreva-se
+                                </button>
                             </p>
 
                         </div>
 
-                        {/* ESPAÇO RESERVADO PARA O PERSONAGEM */}
+                    )}
 
-                        <div className="relative z-10 mt-5 flex min-h-[220px] flex-1 items-center justify-center md:min-h-[260px]">
+                    {/* TELA 2 - CADASTRO */}
 
+                    {screen === "register" && (
 
-                            <img
-                                src={screen === "login" ? "/images/robriel.png" : "/images/menina.png"}
-                                alt={screen === "login" ? "Robriel" : "Menina"}
-                                className="max-h-[320px] w-full object-contain"
-                            />
+                        <div>
+
+                            <button
+                                onClick={() => showScreen("login")}
+                                className="mb-5 text-sm text-slate-300 hover:text-yellow-300"
+                            >
+                                ← Voltar para login
+                            </button>
+
+                            <h2 className="mb-7 text-3xl font-bold">
+                                Cadastre-se
+                            </h2>
+
+                            <form onSubmit={handleRegister}>
+
+                                <div className="mb-4">
+                                    <label className={labelClass}>
+                                        Nome
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        placeholder="Insira o seu nome"
+                                        className={inputClass}
+                                        value={userData.name}
+                                        onChange={(e) =>
+                                            updateUser("name", e.target.value)
+                                        }
+                                        maxLength={80}
+                                        required
+                                    />
+                                </div>
+
+                                <div className="mb-4">
+                                    <label className={labelClass}>
+                                        E-mail
+                                    </label>
+
+                                    <input
+                                        type="email"
+                                        placeholder="Insira seu e-mail"
+                                        className={inputClass}
+                                        value={userData.email}
+                                        onChange={(e) =>
+                                            updateUser("email", e.target.value)
+                                        }
+                                        required
+                                    />
+                                </div>
+
+                                <div className="mb-4">
+                                    <label className={labelClass}>
+                                        Telefone
+                                    </label>
+
+                                    <input
+                                        type="tel"
+                                        placeholder="(00) 00000-0000"
+                                        className={inputClass}
+                                        value={userData.phone}
+                                        onChange={(e) =>
+                                            updateUser("phone", formatPhone(e.target.value))
+                                        }
+                                        maxLength={15}
+                                        required
+                                    />
+                                </div>
+
+                                <button type="submit" className={buttonClass}>
+                                    Continuar
+                                </button>
+
+                                {messages.register && (
+                                    <p className="mt-3 text-xs text-red-300">
+                                        {messages.register}
+                                    </p>
+                                )}
+
+                            </form>
+
+                            <div className="my-5 flex items-center gap-3 text-xs text-slate-400">
+                                <div className="h-px flex-1 bg-slate-500" />
+                                ou
+                                <div className="h-px flex-1 bg-slate-500" />
+                            </div>
+
+                            <SocialButtons onSocial={handleSocial} />
+
+                            <p className="mt-6 text-center text-xs text-slate-300">
+                                Já tem uma conta?{" "}
+
+                                <button
+                                    onClick={() => showScreen("login")}
+                                    className="font-bold text-yellow-300 hover:underline"
+                                >
+                                    Entre
+                                </button>
+                            </p>
 
                         </div>
 
-                        <p className="relative z-10 mt-5 text-xs text-blue-100">
-                            Seu futuro começa com uma direção.
-                        </p>
+                    )}
 
-                    </section>
+                    {/* TELA 3 - FINALIZAR CADASTRO */}
 
-                    {/* PAINEL DOS FORMULÁRIOS */}
+                    {screen === "finish" && (
 
-                    <section className="flex items-center justify-center bg-[#18243A] px-6 py-10 text-white md:px-9">
+                        <div>
 
-                        <div className="w-full max-w-[350px]">
+                            <button
+                                onClick={() => showScreen("register")}
+                                className="mb-5 text-sm text-slate-300 hover:text-yellow-300"
+                            >
+                                ← Voltar
+                            </button>
 
-                            {/* TELA 1 - LOGIN */}
+                            <h2 className="mb-7 text-3xl font-bold">
+                                Quase lá!
+                            </h2>
 
-                            {screen === "login" && (
+                            <form onSubmit={handleFinish}>
 
-                                <div>
+                                <div className="mb-4">
+                                    <label className={labelClass}>
+                                        Data de nascimento
+                                    </label>
 
-                                    <h2 className="mb-8 text-3xl font-bold">
-                                        Login
-                                    </h2>
-
-                                    <form onSubmit={handleLogin}>
-
-                                        <div className="mb-5">
-                                            <label className={labelClass}>
-                                                E-mail
-                                            </label>
-
-                                            <input
-                                                type="email"
-                                                placeholder="Insira seu e-mail"
-                                                className={inputClass}
-                                                value={login.email}
-                                                onChange={(e) =>
-                                                    setLogin({
-                                                        ...login,
-                                                        email: e.target.value,
-                                                    })
-                                                }
-                                                required
-                                            />
-                                        </div>
-
-                                        <div className="mb-3">
-                                            <label className={labelClass}>
-                                                Senha
-                                            </label>
-
-                                            <input
-                                                type="password"
-                                                placeholder="Insira a sua senha"
-                                                className={inputClass}
-                                                value={login.password}
-                                                onChange={(e) =>
-                                                    setLogin({
-                                                        ...login,
-                                                        password: e.target.value,
-                                                    })
-                                                }
-                                                required
-                                            />
-                                        </div>
-
-                                        <button
-                                            type="button"
-                                            onClick={handleForgotPassword}
-                                            className="mb-4 block w-full text-right text-xs text-yellow-300 hover:underline"
-                                        >
-                                            Esqueceu sua senha?
-                                        </button>
-
-                                        <button type="submit" className={buttonClass}>
-                                            Entrar
-                                        </button>
-
-                                        {messages.login && (
-                                            <p className="mt-3 text-xs text-red-300">
-                                                {messages.login}
-                                            </p>
-                                        )}
-
-                                    </form>
-
-                                    <div className="my-6 flex items-center gap-3 text-xs text-slate-400">
-                                        <div className="h-px flex-1 bg-slate-500" />
-                                        ou
-                                        <div className="h-px flex-1 bg-slate-500" />
-                                    </div>
-
-                                    <SocialButtons onSocial={handleSocial} />
-
-                                    <p className="mt-6 text-center text-xs text-slate-300">
-                                        Não tem uma conta?{" "}
-
-                                        <button
-                                            onClick={() => showScreen("register")}
-                                            className="font-bold text-yellow-300 hover:underline"
-                                        >
-                                            Inscreva-se
-                                        </button>
-                                    </p>
-
+                                    <input
+                                        type="date"
+                                        className={inputClass}
+                                        value={userData.birthDate}
+                                        onChange={(e) =>
+                                            updateUser("birthDate", e.target.value)
+                                        }
+                                        required
+                                    />
                                 </div>
 
-                            )}
+                                <div className="mb-4">
+                                    <label className={labelClass}>
+                                        Senha
+                                    </label>
 
-                            {/* TELA 2 - CADASTRO */}
-
-                            {screen === "register" && (
-
-                                <div>
-
-                                    <button
-                                        onClick={() => showScreen("login")}
-                                        className="mb-5 text-sm text-slate-300 hover:text-yellow-300"
-                                    >
-                                        ← Voltar para login
-                                    </button>
-
-                                    <h2 className="mb-7 text-3xl font-bold">
-                                        Cadastre-se
-                                    </h2>
-
-                                    <form onSubmit={handleRegister}>
-
-                                        <div className="mb-4">
-                                            <label className={labelClass}>
-                                                Nome
-                                            </label>
-
-                                            <input
-                                                type="text"
-                                                placeholder="Insira o seu nome"
-                                                className={inputClass}
-                                                value={userData.name}
-                                                onChange={(e) =>
-                                                    updateUser("name", e.target.value)
-                                                }
-                                                maxLength={80}
-                                                required
-                                            />
-                                        </div>
-
-                                        <div className="mb-4">
-                                            <label className={labelClass}>
-                                                E-mail
-                                            </label>
-
-                                            <input
-                                                type="email"
-                                                placeholder="Insira seu e-mail"
-                                                className={inputClass}
-                                                value={userData.email}
-                                                onChange={(e) =>
-                                                    updateUser("email", e.target.value)
-                                                }
-                                                required
-                                            />
-                                        </div>
-
-                                        <div className="mb-4">
-                                            <label className={labelClass}>
-                                                Telefone
-                                            </label>
-
-                                            <input
-                                                type="tel"
-                                                placeholder="(00) 00000-0000"
-                                                className={inputClass}
-                                                value={userData.phone}
-                                                onChange={(e) =>
-                                                    updateUser("phone", formatPhone(e.target.value))
-                                                }
-                                                maxLength={15}
-                                                required
-                                            />
-                                        </div>
-
-                                        <button type="submit" className={buttonClass}>
-                                            Continuar
-                                        </button>
-
-                                        {messages.register && (
-                                            <p className="mt-3 text-xs text-red-300">
-                                                {messages.register}
-                                            </p>
-                                        )}
-
-                                    </form>
-
-                                    <div className="my-5 flex items-center gap-3 text-xs text-slate-400">
-                                        <div className="h-px flex-1 bg-slate-500" />
-                                        ou
-                                        <div className="h-px flex-1 bg-slate-500" />
-                                    </div>
-
-                                    <SocialButtons onSocial={handleSocial} />
-
-                                    <p className="mt-6 text-center text-xs text-slate-300">
-                                        Já tem uma conta?{" "}
-
-                                        <button
-                                            onClick={() => showScreen("login")}
-                                            className="font-bold text-yellow-300 hover:underline"
-                                        >
-                                            Entre
-                                        </button>
-                                    </p>
-
+                                    <input
+                                        type="password"
+                                        placeholder="Insira sua senha"
+                                        className={inputClass}
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        minLength={8}
+                                        required
+                                    />
                                 </div>
 
-                            )}
+                                <div className="mb-5">
+                                    <label className={labelClass}>
+                                        Confirme a senha
+                                    </label>
 
-                            {/* TELA 3 - FINALIZAR CADASTRO */}
-
-                            {screen === "finish" && (
-
-                                <div>
-
-                                    <button
-                                        onClick={() => showScreen("register")}
-                                        className="mb-5 text-sm text-slate-300 hover:text-yellow-300"
-                                    >
-                                        ← Voltar
-                                    </button>
-
-                                    <h2 className="mb-7 text-3xl font-bold">
-                                        Quase lá!
-                                    </h2>
-
-                                    <form onSubmit={handleFinish}>
-
-                                        <div className="mb-4">
-                                            <label className={labelClass}>
-                                                Data de nascimento
-                                            </label>
-
-                                            <input
-                                                type="date"
-                                                className={inputClass}
-                                                value={userData.birthDate}
-                                                onChange={(e) =>
-                                                    updateUser("birthDate", e.target.value)
-                                                }
-                                                required
-                                            />
-                                        </div>
-
-                                        <div className="mb-4">
-                                            <label className={labelClass}>
-                                                Senha
-                                            </label>
-
-                                            <input
-                                                type="password"
-                                                placeholder="Insira sua senha"
-                                                className={inputClass}
-                                                value={password}
-                                                onChange={(e) => setPassword(e.target.value)}
-                                                minLength={8}
-                                                required
-                                            />
-                                        </div>
-
-                                        <div className="mb-5">
-                                            <label className={labelClass}>
-                                                Confirme a senha
-                                            </label>
-
-                                            <input
-                                                type="password"
-                                                placeholder="Confirme sua senha"
-                                                className={inputClass}
-                                                value={confirmPassword}
-                                                onChange={(e) =>
-                                                    setConfirmPassword(e.target.value)
-                                                }
-                                                minLength={8}
-                                                required
-                                            />
-                                        </div>
-
-                                        <button type="submit" className={buttonClass}>
-                                            Finalizar cadastro
-                                        </button>
-
-                                        {messages.finish && (
-                                            <p className="mt-3 text-xs text-green-300">
-                                                {messages.finish}
-                                            </p>
-                                        )}
-
-                                    </form>
-
-                                    <p className="mt-6 text-center text-xs text-slate-300">
-                                        Já tem uma conta?{" "}
-
-                                        <button
-                                            onClick={() => showScreen("login")}
-                                            className="font-bold text-yellow-300 hover:underline"
-                                        >
-                                            Entre
-                                        </button>
-                                    </p>
-
+                                    <input
+                                        type="password"
+                                        placeholder="Confirme sua senha"
+                                        className={inputClass}
+                                        value={confirmPassword}
+                                        onChange={(e) =>
+                                            setConfirmPassword(e.target.value)
+                                        }
+                                        minLength={8}
+                                        required
+                                    />
                                 </div>
 
-                            )}
+                                <button type="submit" className={buttonClass}>
+                                    Finalizar cadastro
+                                </button>
+
+                                {messages.finish && (
+                                    <p className="mt-3 text-xs text-green-300">
+                                        {messages.finish}
+                                    </p>
+                                )}
+
+                            </form>
+
+                            <p className="mt-6 text-center text-xs text-slate-300">
+                                Já tem uma conta?{" "}
+
+                                <button
+                                    onClick={() => showScreen("login")}
+                                    className="font-bold text-yellow-300 hover:underline"
+                                >
+                                    Entre
+                                </button>
+                            </p>
 
                         </div>
 
-                    </section>
+                    )}
 
                 </div>
 
-            </main>
+            </section>
+
+        </div >
+
+            </main >
         </>
     );
 }

@@ -10,7 +10,7 @@ const itensNavegacao = [
   { nome: 'Mentoria', id: 'mentoria', icone: 'users' },
 ];
 
-function Sidebar({ activeItem = 'Início', onNavegar = () => {} }) {
+function Sidebar({ activeItem = 'Início', onNavegar = () => { }, onLogout = () => { } }) {
   function selecionarItem(event, nome) {
     event.preventDefault();
     onNavegar(nome);
@@ -60,6 +60,16 @@ function Sidebar({ activeItem = 'Início', onNavegar = () => {} }) {
           <Icon name="settings" size={17} />
           <span>Configurações</span>
         </button>
+
+        <button
+          className="farol-settings-link"
+          type="button"
+          onClick={onLogout}
+        >
+          <Icon name="log-out" size={17} />
+          <span>Sair da conta</span>
+        </button>
+
       </div>
     </aside>
   );

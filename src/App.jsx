@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useDadosDashboard } from './dashboard/useDadosDashboard';
 import Ilhas from './pages/Ilhas';
 import LandingPage from './pages/LandingPage';
-import MapaObjetivo from './pages/MapaObjetivo';
 import Painel from './pages/Painel';
 import Autenticacao from './pages/Autenticacao';
 
@@ -29,7 +28,6 @@ function App() {
   const [mostrarPainel, setMostrarPainel] = useState(() =>
     tokenEstaValido(sessionStorage.getItem("token")));
   const [mostrarAutenticacao, setMostrarAutenticacao] = useState(false);
-  const [objetivoSelecionadoId, setObjetivoSelecionadoId] = useState(null);
   const [paginaAtiva, setPaginaAtiva] = useState('Início');
   const dadosDashboard = useDadosDashboard();
 
@@ -39,7 +37,6 @@ function App() {
 
     setMostrarPainel(false);
     setMostrarAutenticacao(false);
-    setObjetivoSelecionadoId(null);
     setPaginaAtiva('Início');
   }
 
@@ -90,10 +87,6 @@ function App() {
     );
   }
 
-  const objetivoSelecionado = dadosDashboard.objetivos.find(
-    (objetivo) => objetivo.id === objetivoSelecionadoId,
-  );
-
   function navegar(destino) {
     setPaginaAtiva(destino);
     if (destino === 'Ilhas') return;
@@ -120,25 +113,30 @@ function App() {
   return (
     <>
       {/* hidden mantém o estado local do painel ao alternar entre as telas. */}
-      <div hidden={Boolean(objetivoSelecionado) || paginaAtiva === 'Ilhas'}>
+      <div hidden={paginaAtiva === 'Ilhas'}>
         <Painel
-          {...dadosDashboard}
+          objetivos={dadosDashboard.objetivos}
+          notas={dadosDashboard.notas}
+          tarefas={dadosDashboard.tarefas}
           activeItem={paginaAtiva}
           onNavegar={navegar}
-          onAbrirObjetivo={(id) => setObjetivoSelecionadoId(id)}
+          onAdicionarObjetivo={dadosDashboard.adicionarObjetivo}
+          onAlternarObjetivo={dadosDashboard.alternarObjetivo}
+          onRemoverObjetivo={dadosDashboard.removerObjetivo}
+          onAdicionarEtapa={dadosDashboard.adicionarEtapa}
+          onAlternarEtapa={dadosDashboard.alternarEtapa}
+          onRemoverEtapa={dadosDashboard.removerEtapa}
+          onAdicionarNota={dadosDashboard.adicionarNota}
+          onAlternarNota={dadosDashboard.alternarNota}
+          onRemoverNota={dadosDashboard.removerNota}
+          onAdicionarTarefa={dadosDashboard.adicionarTarefa}
+          onAlternarTarefa={dadosDashboard.alternarTarefa}
+          onRemoverTarefa={dadosDashboard.removerTarefa}
           onLogout={fazerLogout}
         />
       </div>
 
-      {paginaAtiva === 'Ilhas' && !objetivoSelecionado && <Ilhas onNavegar={navegar} />}
-
-      {objetivoSelecionado && (
-        <MapaObjetivo
-          objetivo={objetivoSelecionado}
-          onVoltar={() => setObjetivoSelecionadoId(null)}
-          onAlternarEtapa={dadosDashboard.alternarEtapa}
-        />
-      )}
+      {paginaAtiva === 'Ilhas' && <Ilhas onNavegar={navegar} />}
     </>
   );
 }

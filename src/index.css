@@ -2,7 +2,13 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-farol-grid: #2D5BF0;
+  --color-farol-bg: #050c1a;
+  --color-farol-raised: #1a2849;
+  --color-farol-primary-deep: #2347b8;
+  --color-farol-accent: #7b8cf5;
+  --color-farol-border: #27385f;
+  --font-display: 'Outfit', ui-sans-serif, system-ui, sans-serif;
+  --color-farol-grid: #2d5bf0;
   --color-farol-background: #070e1c;
   --color-farol-surface: #111d35;
   --color-farol-surface-raised: #1c2b49;
@@ -83,11 +89,7 @@ html {
   }
 
   html::-webkit-scrollbar-thumb {
-    background: linear-gradient(
-      180deg,
-      #6289ae,
-      #365d82
-    );
+    background: linear-gradient(180deg, #6289ae, #365d82);
 
     border: 2px solid #0c1929;
     border-radius: 999px;

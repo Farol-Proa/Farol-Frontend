@@ -1,4 +1,5 @@
 .painel {
+  display: flex;
   height: 100dvh;
   gap: 16px;
   overflow: hidden;
@@ -322,4 +323,351 @@
 /* Apenas a caixa de seleção da nota indica interação. */
 .painel .nota label {
   cursor: pointer;
+}
+
+/* Mantém os componentes funcionais do Farol dentro da nova composição visual. */
+.painel-main {
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 8px clamp(12px, 2vw, 28px) 32px;
+}
+
+.painel-topbar,
+.painel-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.painel-topbar {
+  margin-bottom: 24px;
+}
+
+.painel-topbar h1 {
+  margin: 3px 0 0;
+  font-size: 28px;
+  letter-spacing: -0.04em;
+}
+
+.painel-eyebrow {
+  color: #9aa7c7;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.painel-avatar {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border: 2px solid #607cf9;
+  border-radius: 50%;
+  background: #2b5cf0;
+  font-weight: 700;
+}
+
+.painel-welcome {
+  display: flex;
+  min-height: 170px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 26px 32px;
+  margin-bottom: 20px;
+  border: 1px solid rgb(123 140 245 / 0.18);
+  border-radius: 26px;
+  background: radial-gradient(ellipse at 85% 50%, rgb(43 92 240 / 0.28), transparent 45%), #101e3b;
+}
+
+.painel-welcome h2 {
+  margin: 8px 0;
+  font-size: clamp(24px, 3vw, 34px);
+}
+
+.painel-welcome p {
+  margin: 0;
+  color: #aebaf0;
+  font-size: 13px;
+}
+
+.painel-greeting {
+  display: grid;
+  gap: 6px;
+  min-width: 200px;
+  text-align: right;
+}
+
+.painel-greeting span {
+  color: #ffe64a;
+  font-size: 28px;
+}
+
+.painel-greeting p {
+  color: #9aa7c7;
+}
+
+.painel-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) minmax(190px, 0.72fr);
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.painel-grid-secondary {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(280px, 1fr);
+  align-items: start;
+  gap: 18px;
+}
+
+.painel-grid-secondary > #mapas {
+  grid-column: auto;
+}
+
+.painel-ilhas-lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+  align-items: start;
+  gap: 14px;
+}
+
+.painel-ilha-card,
+.painel-ilha-adicionar {
+  width: 100%;
+  aspect-ratio: 374 / 547;
+  overflow: hidden;
+  border: 0;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.painel-ilha-card { display: block; padding: 0; background: #315cf5; }
+.painel-ilha-card img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.painel-ilha-adicionar { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; border: 2px dashed #4267ff; background: #101e3b; color: #8fa3ff; }
+.painel-ilha-adicionar span { font-size: 42px; line-height: 1; }
+.painel-ilha-adicionar strong { padding: 0 8px; font-size: 13px; text-align: center; }
+
+.painel .painel-card {
+  padding: 20px;
+  border-color: rgb(154 167 199 / 0.14);
+  border-radius: 24px;
+  background: #101e3b;
+}
+
+.painel .painel-card h3 {
+  font-size: 20px;
+}
+
+.painel-journey {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.painel-journey-ring {
+  position: relative;
+  display: grid;
+  width: min(100%, 176px);
+  aspect-ratio: 1;
+  place-items: center;
+  margin: 12px auto;
+  border-radius: 50%;
+  background: conic-gradient(#2b5cf0 var(--progresso), #1a2849 0);
+}
+
+.painel-journey-ring::before {
+  position: absolute;
+  inset: 14px;
+  border-radius: inherit;
+  background: #101e3b;
+  content: '';
+}
+
+.painel-journey-ring span {
+  z-index: 1;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+
+.painel .form-etapa {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.painel .form-etapa input {
+  flex: 1;
+  min-width: 0;
+  padding: 9px 10px;
+  border: 1px solid #344667;
+  border-radius: 9px;
+  background: #0b1529;
+  color: #f4f5ff;
+}
+
+.painel .form-etapa button {
+  flex: 0 0 auto;
+  padding: 8px 10px;
+  align-self: flex-end;
+  white-space: nowrap;
+}
+
+.painel .progresso-objetivo {
+  width: 100%;
+  margin-top: 12px;
+  text-align: left;
+}
+
+.painel .progresso-objetivo-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  color: #aab8d3;
+  font-size: 12px;
+}
+
+.painel .progresso-objetivo progress {
+  width: 100%;
+  height: 8px;
+  accent-color: #5475ff;
+}
+
+.painel .lista-etapas {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.painel .item-etapa {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px 9px;
+  border-radius: 8px;
+  background: #101e3b;
+  font-size: 12px;
+}
+
+.painel .item-etapa label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.painel .item-etapa button {
+  border: 0;
+  background: transparent;
+  color: #ff8c8c;
+  cursor: pointer;
+}
+
+.painel .form-tarefa button {
+  width: auto;
+  min-height: 38px;
+  padding: 8px 12px;
+  font-size: 12px;
+}
+
+.painel #mapas > .flex {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  align-items: stretch;
+  gap: 12px;
+}
+
+.painel .calendario-mensal {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 5px;
+  margin: 16px 0;
+}
+
+.painel .nome-dia {
+  padding: 5px 0;
+  color: #9aa7c7;
+  font-size: 10px;
+  text-align: center;
+}
+
+.painel .dia-vazio {
+  min-height: 34px;
+}
+
+.painel .calendario-mensal .dia {
+  min-height: 36px;
+  padding: 5px 0;
+  border-color: transparent;
+  border-radius: 10px;
+  background: #172747;
+  color: #eef1ff;
+}
+
+.painel .calendario-mensal .dia:hover,
+.painel .calendario-mensal .dia-selecionado {
+  border-color: #4267ff;
+  background: #315cf5;
+  color: white;
+}
+
+.painel .dia-com-tarefa {
+  width: 5px;
+  height: 5px;
+  margin-top: 3px;
+  border-radius: 50%;
+  background: #ffe64a;
+}
+
+.painel .navegacao-mes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 16px;
+  color: #eef1ff;
+}
+
+.painel .navegacao-mes button {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #27385f;
+  border-radius: 10px;
+  background: #172747;
+  color: white;
+  cursor: pointer;
+}
+
+@media (max-width: 1100px) {
+  .painel-grid,
+  .painel-grid-secondary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .painel-main {
+    padding: 18px 14px 28px;
+  }
+
+  .painel-grid,
+  .painel-grid-secondary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .painel-welcome {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 22px;
+  }
+
+  .painel-greeting {
+    min-width: 0;
+    text-align: left;
+  }
 }

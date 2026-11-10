@@ -6,6 +6,13 @@ import Notas from './Painel/Notas';
 import Objetivos from './Painel/Objetivos';
 import Tarefas from './Painel/Tarefas';
 
+function chaveDataLocal(data) {
+  const ano = data.getFullYear();
+  const mes = String(data.getMonth() + 1).padStart(2, '0');
+  const dia = String(data.getDate()).padStart(2, '0');
+  return `${ano}-${mes}-${dia}`;
+}
+
 function Painel({
   objetivos,
   notas,
@@ -13,7 +20,6 @@ function Painel({
   activeItem,
   onNavegar,
   onLogout,
-  onAbrirObjetivo,
   onAdicionarObjetivo,
   onAlternarObjetivo,
   onRemoverObjetivo,
@@ -27,9 +33,8 @@ function Painel({
   onAlternarTarefa,
   onRemoverTarefa,
 }) {
-  const usuario = JSON.parse(sessionStorage.getItem("usuario") || "{}");
-
-  const [dataSelecionada, setDataSelecionada] = useState(new Date().toLocaleDateString('en-CA'));
+  const usuario = JSON.parse(sessionStorage.getItem('usuario') || '{}');
+  const [dataSelecionada, setDataSelecionada] = useState(() => chaveDataLocal(new Date()));
   const [mesExibido, setMesExibido] = useState(() => {
     const hoje = new Date();
     return new Date(hoje.getFullYear(), hoje.getMonth(), 1);
@@ -53,28 +58,34 @@ function Painel({
 
   return (
 
-    <div className="painel bg-farol-dashboard text-farol-text flex max-[600px]:flex-col">
+    <div className="painel painel-farol bg-farol-dashboard text-farol-text flex max-[600px]:flex-col">
       <Sidebar activeItem={activeItem} onNavegar={onNavegar} onLogout={onLogout} />
 
-      <main className="min-w-0 flex-1 p-[22px] max-[600px]:p-3.5" id="inicio">
-        <header className="mb-6 flex items-center justify-between">
-          <h1 className="m-0 text-[26px]">{activeItem || 'Início'}</h1>
           <div className="grid size-9 place-items-center rounded-full bg-farol-primary">{usuario.nome?.charAt(0).toUpperCase() || 'U'}</div>
+      <main className="painel-main min-w-0 flex-1" id="inicio">
+        <header className="painel-topbar">
+          <div>
+            <span className="painel-eyebrow">SEU ESPAÇO, SEU RITMO</span>
+            <h1>{activeItem || 'Início'}</h1>
+          </div>
+          <div className="painel-avatar" aria-label="Perfil de Robriel">R</div>
         </header>
 
-        <section className="mb-4 flex items-center justify-between gap-5 rounded-[18px] bg-farol-dashboard-card px-6 py-5 max-[600px]:items-start max-[600px]:flex-col">
+        <section className="painel-welcome">
           <div>
-            <h2 className="mb-3 mt-0 text-[22px]">Olá, {usuario.nome?.split(' ')[0] || 'visitante'}!</h2>
-            <p className="text-xs text-farol-muted">“Qualquer ideia é estupidamente útil”</p>
+            <span className="painel-eyebrow">BEM-VINDO DE VOLTA</span>
+            <h2>Olá, {usuario.nome?.split(' ')[0] || 'visitante'}!</h2>
+            <p>“Qualquer ideia é estupidamente útil”</p>
           </div>
 
-          <div className="grid gap-3.5 text-right max-[600px]:text-left">
+          <div className="painel-greeting">
             <strong>Minha jornada começa hoje.</strong>
-            <span className="text-xs text-farol-muted">Bom dia! ☀️</span>
+            <span aria-hidden="true">☀</span>
+            <p>Bom dia!</p>
           </div>
         </section>
 
-        <section className="grid grid-cols-[1.2fr_1fr_1fr] gap-3.5 max-[950px]:grid-cols-2 max-[600px]:grid-cols-1">
+        <section className="painel-grid">
           <Notas
             notas={notas}
             onAdicionarNota={onAdicionarNota}
@@ -90,16 +101,10 @@ function Painel({
             onSelecionarData={setDataSelecionada}
           />
 
-          <article className="painel-card min-w-0 p-4 text-center" id="objetivos">
+          <article className="painel-card painel-journey min-w-0 p-4 text-center" id="objetivos">
             <h3>Minha Jornada</h3>
-            <div className="progresso">
+            <div className="painel-journey-ring" style={{ '--progresso': `${progressoGeral}%` }}>
               <span>{progressoGeral}%</span>
-              <div className="barra-progresso">
-                <div
-                  className="barra-progresso-preenchida"
-                  style={{ width: `${progressoGeral}%` }}
-                />
-              </div>
             </div>
             <p className="text-xs leading-relaxed text-farol-muted">
               {totalItens === 0
@@ -108,9 +113,11 @@ function Painel({
             </p>
           </article>
 
+        </section>
+
+        <section className="painel-grid-secondary">
           <Objetivos
             objetivos={objetivos}
-            onAbrirObjetivo={onAbrirObjetivo}
             onAdicionarObjetivo={onAdicionarObjetivo}
             onAlternarObjetivo={onAlternarObjetivo}
             onRemoverObjetivo={onRemoverObjetivo}

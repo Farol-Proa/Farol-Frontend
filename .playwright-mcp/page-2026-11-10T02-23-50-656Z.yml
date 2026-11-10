@@ -1,0 +1,98 @@
+- generic [ref=f3e3]:
+  - banner [ref=f3e4]:
+    - link "Farol, início" [ref=f3e5] [cursor=pointer]:
+      - /url: "#farol"
+      - generic [aria-hidden] [ref=f3e6]: ✦
+      - generic [ref=f3e7]: Farol
+    - navigation "Navegação principal" [ref=f3e8]:
+      - link "O Farol" [ref=f3e9] [cursor=pointer]:
+        - /url: "#farol"
+      - link "Recursos" [ref=f3e10] [cursor=pointer]:
+        - /url: "#recursos"
+      - link "Como funciona" [ref=f3e11] [cursor=pointer]:
+        - /url: "#como-funciona"
+    - generic [ref=f3e12]:
+      - button "Entrar" [ref=f3e13] [cursor=pointer]
+      - link "Começar agora" [ref=f3e14] [cursor=pointer]:
+        - /url: "#jornada"
+        - text: Começar agora
+        - generic [aria-hidden] [ref=f3e15]: →
+  - main [ref=f3e16]:
+    - generic [ref=f3e17]:
+      - generic [ref=f3e18]: •SUA VIDA, COM MAIS DIREÇÃO
+      - heading "Menos à deriva. Mais perto do seu horizonte." [level=1] [ref=f3e19]: Menos à deriva.Mais perto doseu horizonte.
+      - paragraph [ref=f3e20]: Anote ideias, organize o dia e trace rotas para seus objetivos. O Farol ilumina o caminho. Você conduz a jornada.
+      - generic [ref=f3e21]:
+        - link "Começar minha jornada →" [ref=f3e22] [cursor=pointer]:
+          - /url: "#jornada"
+          - text: Começar minha jornada
+          - generic [ref=f3e23]: →
+        - link "Conhecer o Farol →" [ref=f3e24] [cursor=pointer]:
+          - /url: "#como-funciona"
+          - text: Conhecer o Farol
+          - generic [ref=f3e25]: →
+      - paragraph [ref=f3e26]: Um espaço para suas notas, seus planos e seu próximo passo.
+  - generic [ref=f3e27]:
+    - generic [ref=f3e28]:
+      - heading "Não é sobre fazer mais. É sobre saber para onde ir." [level=2] [ref=f3e29]: Não é sobre fazer mais.É sobre saber para onde ir.
+      - paragraph [ref=f3e30]: Entre uma ideia, uma tarefa e um sonho, existe um caminho. O Farol ajuda você a dar sentido a cada passo.
+    - generic [ref=f3e31]:
+      - article [ref=f3e32]:
+        - generic [ref=f3e33]: ✎
+        - heading "Ideias em um porto seguro" [level=3] [ref=f3e34]
+        - paragraph [ref=f3e35]: Guarde pensamentos, lembretes e descobertas antes que se percam no dia.
+      - article [ref=f3e36]:
+        - generic [ref=f3e37]: ☷
+        - heading "Objetivos com um caminho" [level=3] [ref=f3e38]
+        - paragraph [ref=f3e39]: Transforme planos distantes em etapas que você consegue enxergar e percorrer.
+      - article [ref=f3e40]:
+        - generic [ref=f3e41]: ▦
+        - heading "Um dia com mais clareza" [level=3] [ref=f3e42]
+        - paragraph [ref=f3e43]: Reúna tarefas, compromissos e prioridades sem perder a visão do todo.
+  - generic [ref=f3e44]:
+    - generic [ref=f3e45]:
+      - generic [ref=f3e46]: •Conheca seu farol
+      - heading "Tudo o que importa. Um lugar para se encontrar" [level=2] [ref=f3e47]: Tudo o que importa.Um lugar para se encontrar
+      - paragraph [ref=f3e48]: Notas, calendário, tarefas e objetivos se encontram em uma visão clara da sua vida. Do que precisa de atenção hoje ao que você quer conquistar amanhã.
+    - generic [ref=f3e49]:
+      - generic [ref=f3e50]:
+        - generic [ref=f3e55]: farol.app / painel
+        - generic [ref=f3e56]: VISÃO GERAL
+      - img "Prévia da tela inicial do Farol" [ref=f3e57]
+  - generic [ref=f3e60]:
+    - generic [ref=f3e61]: 02 / Rotas e objetivos
+    - heading "Seu objetivo é o destino. As ilhas são os passos." [level=2] [ref=f3e63]
+    - paragraph [ref=f3e64]: Um plano grande fica mais possível quando você consegue ver o caminho. Divida a jornada em etapas e reconheça o que já conquistou.
+    - list [ref=f3e65]:
+      - listitem [ref=f3e66]:
+        - generic [ref=f3e69]:
+          - strong [ref=f3e70]: Trace sua rota
+          - paragraph [ref=f3e71]: Dê forma ao objetivo, uma etapa de cada vez.
+      - listitem [ref=f3e72]:
+        - generic [ref=f3e75]:
+          - strong [ref=f3e76]: Acompanhe seu progresso
+          - paragraph [ref=f3e77]: Visualize cada conquista e perceba o quanto já avançou.
+    - paragraph [ref=f3e78]: Uma ilha de cada vez. No seu ritmo.
+  - region "Um pouco mais de clareza." [ref=f3e79]:
+    - generic [ref=f3e80]:
+      - generic [ref=f3e81]: Antes de zarpar
+      - heading "Um pouco mais de clareza." [level=2] [ref=f3e83]
+      - paragraph [ref=f3e84]: Respostas para encontrar seu ponto de partida no Farol.
+    - generic [ref=f3e85]:
+      - article [ref=f3e86]:
+        - heading "O Farol é só para grandes objetivos?" [level=3] [ref=f3e87]
+        - paragraph [ref=f3e88]: Não. Você pode começar por uma nota, um lembrete ou o planejamento da semana. Os pequenos passos também fazem parte da jornada.
+      - article [ref=f3e89]:
+        - heading "Como funcionam as ilhas e as rotas?" [level=3] [ref=f3e90]
+        - paragraph [ref=f3e91]: O objetivo é o destino. As ilhas representam etapas do caminho, e as rotas ajudam a visualizar como uma etapa se conecta à próxima.
+      - article [ref=f3e92]:
+        - heading "Posso organizar estudos, trabalho e vida pessoal?" [level=3] [ref=f3e93]
+        - paragraph [ref=f3e94]: "Essa é a proposta: reunir o que importa no dia a dia sem deixar seus planos de longo prazo fora de vista."
+      - article [ref=f3e95]:
+        - heading "Por onde eu começo?" [level=3] [ref=f3e96]
+        - paragraph [ref=f3e97]: Registre o que está na sua cabeça, escolha algo que merece atenção e defina um próximo passo possível. Não é preciso planejar tudo de uma vez.
+  - contentinfo [ref=f3e98]:
+    - generic [ref=f3e99]: DA IDEIA AO PRÓXIMO PASSO
+    - generic [ref=f3e100]: 01 Capture o que importa
+    - generic [ref=f3e101]: 02 Encontre sua direção
+    - generic [ref=f3e102]: 03 Avance no seu ritmo

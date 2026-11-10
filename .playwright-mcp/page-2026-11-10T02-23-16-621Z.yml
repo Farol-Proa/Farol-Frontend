@@ -1,0 +1,121 @@
+- generic [ref=f2e375]:
+  - complementary "Menu lateral" [ref=f2e376]:
+    - generic [ref=f2e377]:
+      - generic [ref=f2e378]: Farol
+      - navigation "Navegação principal" [ref=f2e384]:
+        - list [ref=f2e385]:
+          - listitem [ref=f2e386]:
+            - link "Início" [ref=f2e387] [cursor=pointer]:
+              - /url: "#inicio"
+          - listitem [ref=f2e393]:
+            - link "Objetivos" [ref=f2e394] [cursor=pointer]:
+              - /url: "#objetivos"
+          - listitem [ref=f2e400]:
+            - link "Ilhas" [ref=f2e401] [cursor=pointer]:
+              - /url: "#ilhas"
+          - listitem [ref=f2e405]:
+            - link "Anotações" [ref=f2e406] [cursor=pointer]:
+              - /url: "#anotacoes"
+          - listitem [ref=f2e412]:
+            - link "Calendário" [ref=f2e413] [cursor=pointer]:
+              - /url: "#calendario"
+          - listitem [ref=f2e418]:
+            - link "Mentoria" [ref=f2e419] [cursor=pointer]:
+              - /url: "#mentoria"
+      - generic [ref=f2e425]:
+        - paragraph [ref=f2e430]: 7 dias
+        - paragraph [ref=f2e431]: de sequência. Continue iluminando o caminho.
+      - button "Configurações" [ref=f2e432] [cursor=pointer]
+  - main [ref=f2e437]:
+    - generic [ref=f2e438]:
+      - generic [ref=f2e439]:
+        - paragraph [ref=f2e440]: Sua rota
+        - heading "Criar um jogo indie" [level=1] [ref=f2e442]
+      - generic [ref=f2e443]:
+        - generic [ref=f2e444]:
+          - generic [ref=f2e445]: Trocar mapa
+          - combobox "Trocar mapa" [ref=f2e446] [cursor=pointer]:
+            - option "Criar um jogo indie" [selected]
+            - option "Aprender design de interfaces"
+        - button "Notificações" [ref=f2e447] [cursor=pointer]
+        - generic [ref=f2e450]:
+          - generic [ref=f2e451]: AC
+          - strong [ref=f2e452]: Robriel
+    - 'region "Mapa de aprendizado: Criar um jogo indie" [ref=f2e453]':
+      - application [ref=f2e454]:
+        - generic [ref=f2e456]:
+          - generic:
+            - generic:
+              - img:
+                - group "Edge from farol to ideia" [ref=f2e457] [cursor=pointer]
+              - img:
+                - group "Edge from ideia to game-design" [ref=f2e460] [cursor=pointer]
+              - img:
+                - group "Edge from game-design to prototipo" [ref=f2e463] [cursor=pointer]
+              - img:
+                - group "Edge from prototipo to arte-audio" [ref=f2e466] [cursor=pointer]
+              - img:
+                - group "Edge from arte-audio to publicacao" [ref=f2e469] [cursor=pointer]
+            - generic:
+              - group [ref=f2e472]:
+                - generic [ref=f2e473]:
+                  - generic [ref=f2e475]:
+                    - paragraph [ref=f2e476]: Seu próximo projeto
+                    - strong [ref=f2e477]: Criar um jogo indie
+                  - button "Escolher imagem do objetivo" [ref=f2e478] [cursor=pointer]: Alterar imagem
+              - group [ref=f2e479]:
+                - generic [ref=f2e480]:
+                  - button "Ideia e escopo, Concluída, 5 de 5 etapas" [ref=f2e482]:
+                    - generic [ref=f2e483]:
+                      - generic [ref=f2e484]: Concluída
+                      - paragraph [ref=f2e492]: Planejamento
+                      - heading "Ideia e escopo" [level=3] [ref=f2e493]
+                      - generic [ref=f2e494]: 5/5
+                  - generic: Comece por aqui
+              - group [ref=f2e499]:
+                - button "Game design, Concluída, 6 de 6 etapas" [ref=f2e502]:
+                  - generic [ref=f2e503]:
+                    - generic [ref=f2e504]: Concluída
+                    - paragraph [ref=f2e513]: Documentação
+                    - heading "Game design" [level=3] [ref=f2e514]
+                    - generic [ref=f2e515]: 6/6
+              - group [ref=f2e520]:
+                - button "Protótipo jogável, Em andamento, 3 de 7 etapas" [ref=f2e523]:
+                  - generic [ref=f2e524]:
+                    - generic [ref=f2e525]: Em andamento
+                    - paragraph [ref=f2e534]: Desenvolvimento
+                    - heading "Protótipo jogável" [level=3] [ref=f2e535]
+                    - generic [ref=f2e536]: 3/7
+                    - button "Continuar" [ref=f2e540] [cursor=pointer]
+              - group [ref=f2e544]:
+                - button "Arte e áudio, Bloqueada, 0 de 5 etapas" [ref=f2e547]:
+                  - generic [ref=f2e548]:
+                    - generic [ref=f2e549]: Bloqueada
+                    - paragraph [ref=f2e558]: Produção
+                    - heading "Arte e áudio" [level=3] [ref=f2e559]
+                    - generic [ref=f2e560]: 0/5
+              - group [ref=f2e564]:
+                - button "Publicação, Bloqueada, 0 de 4 etapas" [ref=f2e567]:
+                  - generic [ref=f2e568]:
+                    - generic [ref=f2e569]: Bloqueada
+                    - paragraph [ref=f2e579]: Lançamento
+                    - heading "Publicação" [level=3] [ref=f2e580]
+                    - generic [ref=f2e581]: 0/4
+        - generic:
+          - generic:
+            - paragraph: Mapa de aprendizado
+            - strong: Criar um jogo indie
+          - generic:
+            - generic:
+              - generic: Seu percurso
+              - strong: 2 de 5 ilhas
+        - generic:
+          - paragraph: Arraste para navegar ou mover ilhas. Role para dar zoom.
+          - toolbar "Controles de zoom" [ref=f2e585]:
+            - button "Diminuir zoom" [ref=f2e586] [cursor=pointer]
+            - generic [ref=f2e588]: 33%
+            - button "Aumentar zoom" [ref=f2e589] [cursor=pointer]
+            - button "Enquadrar mapa" [ref=f2e593] [cursor=pointer]
+        - link "React Flow attribution" [ref=f2e597] [cursor=pointer]:
+          - /url: https://reactflow.dev/attribution
+          - text: React Flow

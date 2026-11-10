@@ -1,8 +1,8 @@
-import { useRef, useState } from 'react';
+﻿import { useRef, useState } from 'react';
 
 export function useDadosDashboard() {
-  // O hook fica em App para manter os dados enquanto Painel e MapaObjetivo alternam de tela.
-  // Os dados de exemplo usam IDs até 3; novos itens avançam a partir do 4.
+  // O hook fica em App para manter os dados do painel enquanto as telas alternam.
+  // Os dados de exemplo usam IDs atÃ© 3; novos itens avanÃ§am a partir do 4.
   const proximoId = useRef(4);
 
   const [objetivos, setObjetivos] = useState([
@@ -19,7 +19,7 @@ export function useDadosDashboard() {
   const [notas, setNotas] = useState([
     { id: 1, texto: 'Revisar resumo do TCC', concluida: true },
     { id: 2, texto: 'Enviar e-mail para o orientador', concluida: false },
-    { id: 3, texto: 'Consolidar anotações da semana', concluida: false },
+    { id: 3, texto: 'Consolidar anotaÃ§Ãµes da semana', concluida: false },
   ]);
   const [tarefas, setTarefas] = useState([]);
 
@@ -166,3 +166,4 @@ export function useDadosDashboard() {
     removerTarefa,
   };
 }
+

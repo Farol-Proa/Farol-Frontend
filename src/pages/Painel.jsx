@@ -59,7 +59,7 @@ function Painel({
       <main className="min-w-0 flex-1 p-[22px] max-[600px]:p-3.5" id="inicio">
         <header className="mb-6 flex items-center justify-between">
           <h1 className="m-0 text-[26px]">{activeItem || 'Início'}</h1>
-          <div className="grid size-9 place-items-center rounded-full bg-farol-primary">R</div>
+          <div className="grid size-9 place-items-center rounded-full bg-farol-primary">{usuario.nome?.charAt(0).toUpperCase() || 'U'}</div>
         </header>
 
         <section className="mb-4 flex items-center justify-between gap-5 rounded-[18px] bg-farol-dashboard-card px-6 py-5 max-[600px]:items-start max-[600px]:flex-col">

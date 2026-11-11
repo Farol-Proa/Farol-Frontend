@@ -126,6 +126,71 @@ function LandingPage({ onEntrar }) {
       {/* Rotas e objetivos =P */}
       {/* =================================================================================== */}
 
+
+
+<section className="landing-vida" id="vida">
+  <div className="landing-vida__container">
+    <div className="landing-vida__cabecalho">
+      <div>
+        <span className="landing-vida__etiqueta">
+            NA VIDA, NO SEU RITMO
+        </span>
+
+        <h2>
+          O Farol acompanha a vida.
+          <br />
+          Não só a lista de tarefas.
+        </h2>
+      </div>
+
+      <p>
+        Estudos, trabalho, cuidar de si.
+        Cada parte do seu dia merece direção.
+      </p>
+    </div>
+
+    <div className="landing-vida__cards">
+      <article className="landing-vida__card">
+        <h3>✧ Nos estudos</h3>
+        <p>
+          Uma rota para aprender, sem perder seus descobrimentos.
+        </p>
+        <ul>
+          <li>Resumo de TCC</li>
+          <li>Plano de revisão</li>
+          <li>Anotações de aula</li>
+        </ul>
+      </article>
+
+      <article className="landing-vida__card">
+        <h3>▣ No trabalho</h3>
+        <p>
+          Clareza para os projetos e os detalhes de cada dia.
+        </p>
+        <ul>
+          <li>Ideias para projetos</li>
+          <li>Próximas entregas</li>
+          <li>Notas de reunião</li>
+        </ul>
+      </article>
+
+      <article className="landing-vida__card">
+        <h3>♡ Na vida pessoal</h3>
+        <p>
+          Espaço para o que você quer viver, além das tarefas.
+        </p>
+        <ul>
+          <li>Planejar uma viagem</li>
+          <li>Começar um novo hábito</li>
+          <li>Lembrar de quem importa</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+
+
       <section className='landing-rotas-objetivos bg-color-farol-background flex flex-row items-center gap-16 py-24 px-22'>
         <img className='block h-auto w-176 object-contain' src={heroObjetivo}></img>
 
@@ -191,6 +256,74 @@ function LandingPage({ onEntrar }) {
         </div>
 
       </section>
+
+      
+<section className="landing-planos" id="planos">
+  <div className="landing-planos__container">
+    <h2>Nossos Planos</h2>
+
+    <div className="landing-planos__cards">
+      <article className="landing-planos__card">
+        <h3>Grátis</h3>
+        <div className="landing-planos__preco">
+          R$0,00
+        </div>
+
+        <p>
+          Uma rota para aprender, sem perder seus descobrimentos.
+        </p>
+
+        <ul>
+          <li>Resumo de TCC</li>
+          <li>Plano de revisão</li>
+          <li>Anotações de aula</li>
+        </ul>
+      </article>
+
+      <article className="landing-planos__card">
+        <h3>Mensal</h3>
+
+
+        <div className="landing-planos__preco">
+          R$14,90 <small>a.m</small>
+        </div>
+
+        <p>
+          Clareza para os projetos e os detalhes de cada dia.
+        </p>
+
+        <ul>
+          <li>Ideias para projetos</li>
+          <li>Próximas entregas</li>
+          <li>Notas de reunião</li>
+        </ul>
+      </article>
+
+      <article className="landing-planos__card">
+        <div className="landing-planos__titulo-anual">
+          <h3>Anual</h3>
+          <span>R$99,00 a.a</span>
+        </div>
+
+
+        <div className="landing-planos__preco">
+          R$8,25 <small>a.m</small>
+        </div>
+
+        <p>
+          Espaço para o que você quer viver, além das tarefas.
+        </p>
+
+        <ul>
+          <li>Planejar uma viagem</li>
+          <li>Começar um novo hábito</li>
+          <li>Lembrar de quem importa</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
 
       <section
         id="faq"

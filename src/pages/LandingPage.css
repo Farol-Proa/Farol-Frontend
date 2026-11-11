@@ -246,3 +246,202 @@
     padding-inline: 4%;
   }
 }
+
+
+/* =========================================
+   FAROL - VIDA E PLANOS
+========================================= */
+
+.landing-page .landing-vida,
+.landing-page .landing-planos {
+  background: #1d3bc4;
+  color: #ffffff;
+  padding: 72px 6.2% 85px;
+}
+
+.landing-page .landing-vida__container,
+.landing-page .landing-planos__container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* CABEÇALHO */
+
+.landing-page .landing-vida__cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 35px;
+  margin-bottom: 32px;
+}
+
+.landing-page .landing-vida__etiqueta {
+  display: block;
+  color: #f5d24d;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  margin-bottom: 18px;
+}
+
+.landing-page .landing-vida h2,
+.landing-page .landing-planos h2 {
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.6px;
+}
+
+.landing-page .landing-vida__cabecalho > p {
+  max-width: 320px;
+  color: #c3cffc;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* GRADES */
+
+.landing-page .landing-vida__cards,
+.landing-page .landing-planos__cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+/* CARDS */
+
+.landing-page .landing-vida__card,
+.landing-page .landing-planos__card {
+  min-width: 0;
+  background: #060a13;
+  border: 1px solid #26324b;
+  border-radius: 17px;
+  padding: 25px 22px;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.landing-page .landing-vida__card:hover,
+.landing-page .landing-planos__card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgb(0 0 0 / 20%);
+}
+
+.landing-page .landing-vida__card h3,
+.landing-page .landing-planos__card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.landing-page .landing-vida__card > p,
+.landing-page .landing-planos__card > p {
+  color: #a5b2cd;
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 55px;
+}
+
+.landing-page .landing-vida__card ul,
+.landing-page .landing-planos__card ul {
+  border-top: 2px solid #253b78;
+  margin-top: 18px;
+  padding-top: 15px;
+  list-style: none;
+}
+
+.landing-page .landing-vida__card li,
+.landing-page .landing-planos__card li {
+  color: #d5dbea;
+  font-size: 13px;
+  line-height: 1.7;
+  margin-bottom: 7px;
+}
+
+.landing-page .landing-vida__card li::before,
+.landing-page .landing-planos__card li::before {
+  content: "•";
+  color: #f5d24d;
+  margin-right: 10px;
+}
+
+/* PLANOS */
+
+.landing-page .landing-planos {
+  padding-top: 65px;
+  padding-bottom: 90px;
+}
+
+.landing-page .landing-planos h2 {
+  margin-bottom: 30px;
+}
+
+.landing-page .landing-planos__preco {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 22px;
+}
+
+.landing-page .landing-planos__preco small {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.landing-page .landing-planos__preco-antigo {
+  display: block;
+  color: #8e99b3;
+  font-size: 12px;
+  text-decoration: line-through;
+}
+
+.landing-page .landing-planos__titulo-anual {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.landing-page .landing-planos__titulo-anual span {
+  color: #cbd5ed;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 900px) {
+  .landing-page .landing-vida__cards,
+  .landing-page .landing-planos__cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 650px) {
+  .landing-page .landing-vida,
+  .landing-page .landing-planos {
+    padding: 55px 5%;
+  }
+
+  .landing-page .landing-vida__cabecalho {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .landing-page .landing-vida__cards,
+  .landing-page .landing-planos__cards {
+    grid-template-columns: 1fr;
+  }
+
+  .landing-page .landing-vida__card,
+  .landing-page .landing-planos__card {
+    padding: 24px 20px;
+  }
+
+  .landing-page .landing-vida h2,
+  .landing-page .landing-planos h2 {
+    font-size: 29px;
+  }
+}
+

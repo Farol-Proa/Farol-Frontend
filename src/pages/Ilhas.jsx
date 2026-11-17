@@ -101,6 +101,10 @@ function Ilhas({ onNavegar }) {
   const [prazoEtapa, setPrazoEtapa] = useState('');
   const [salvandoEtapa, setSalvandoEtapa] = useState(false);
   const [objetivoEtapaId, setObjetivoEtapaId] = useState(null);
+  const [tarefas, setTarefas] = useState([]);
+  const [carregandoTarefas, setCarregandoTarefas] = useState(false);
+  const [novaTarefa, setNovaTarefa] = useState('');
+  const [salvandoTarefa, setSalvandoTarefa] = useState(false);
 
   useEffect(() => {
     async function carregarObjetivos() {
@@ -168,12 +172,51 @@ function Ilhas({ onNavegar }) {
     carregarObjetivos();
   }, []);
 
+  useEffect(() => {
+    async function carregarTarefas() {
+      if (!selectedIslandId) {
+        setTarefas([]);
+        return;
+      }
+
+      setCarregandoTarefas(true);
+
+      try {
+        const resposta = await requisicaoAPI(
+          `/etapas/${selectedIslandId}/tarefas`
+        );
+
+        setTarefas(resposta);
+        atualizarProgressoIlha(resposta);
+      } catch (erro) {
+        console.error('Erro ao carregar tarefas:', erro);
+        setTarefas([]);
+      } finally {
+        setCarregandoTarefas(false);
+      }
+    }
+
+    carregarTarefas();
+  }, [selectedIslandId]);
+
   const todosRoadmaps = meusObjetivos;
 
   const roadmap =
     todosRoadmaps.find((item) => item.id === selectedRoadmapId) ??
     todosRoadmaps[0] ??
     null;
+
+  const ilhaSelecionada = roadmap?.islands.find(
+    (ilha) => ilha.id === selectedIslandId
+  );
+
+  const tarefasConcluidas = tarefas.filter(
+    (tarefa) => tarefa.concluida
+  ).length;
+
+  const progressoTarefas = tarefas.length
+    ? Math.round((tarefasConcluidas / tarefas.length) * 100)
+    : 0;
 
   function changeRoadmap(id) {
     setSelectedRoadmapId(id);
@@ -339,6 +382,107 @@ function Ilhas({ onNavegar }) {
       alert(erro.message || 'Não foi possível cadastrar a etapa.');
     } finally {
       setSalvandoEtapa(false);
+    }
+  }
+
+  function atualizarProgressoIlha(listaTarefas, ilhaId = selectedIslandId) {
+    const total = listaTarefas.length;
+
+    const completed = listaTarefas.filter(
+      (tarefa) => tarefa.concluida
+    ).length;
+
+    setMeusObjetivos((atuais) =>
+      atuais.map((objetivo) => ({
+        ...objetivo,
+        islands: objetivo.islands.map((ilha) =>
+          ilha.id === String(ilhaId)
+            ? { ...ilha, total, completed }
+            : ilha
+        ),
+      }))
+    );
+  }
+
+  async function cadastrarTarefa(event) {
+    event.preventDefault();
+
+    if (!novaTarefa.trim() || !selectedIslandId) {
+      return;
+    }
+
+    setSalvandoTarefa(true);
+
+    try {
+      const resposta = await requisicaoAPI(
+        `/etapas/${selectedIslandId}/tarefas`,
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            titulo: novaTarefa.trim(),
+          }),
+        }
+      );
+
+      const atualizadas = [...tarefas, resposta];
+
+      setTarefas(atualizadas);
+      atualizarProgressoIlha(atualizadas);
+
+      setNovaTarefa('');
+    } catch (erro) {
+      console.error('Erro ao cadastrar tarefa:', erro);
+      alert(erro.message || 'Não foi possível cadastrar a tarefa.');
+    } finally {
+      setSalvandoTarefa(false);
+    }
+  }
+
+  async function atualizarTarefa(tarefa) {
+    try {
+      const resposta = await requisicaoAPI(
+        `/tarefas/${tarefa.id}/conclusao`,
+        {
+          method: 'PATCH',
+          body: JSON.stringify({
+            concluida: !tarefa.concluida,
+          }),
+        }
+      );
+
+      const atualizadas = tarefas.map((item) =>
+        item.id === tarefa.id ? resposta : item
+      );
+
+      setTarefas(atualizadas);
+      atualizarProgressoIlha(atualizadas);
+    } catch (erro) {
+      console.error('Erro ao atualizar tarefa:', erro);
+      alert(erro.message || 'Não foi possível atualizar a tarefa.');
+    }
+  }
+
+  async function excluirTarefa(id) {
+    const confirmar = window.confirm(
+      'Tem certeza que deseja excluir esta tarefa?'
+    );
+
+    if (!confirmar) return;
+
+    try {
+      await requisicaoAPI(`/tarefas/${id}`, {
+        method: 'DELETE',
+      });
+
+      const atualizadas = tarefas.filter(
+        (tarefa) => tarefa.id !== id
+      );
+
+      setTarefas(atualizadas);
+      atualizarProgressoIlha(atualizadas);
+    } catch (erro) {
+      console.error('Erro ao excluir tarefa:', erro);
+      alert(erro.message || 'Não foi possível excluir a tarefa.');
     }
   }
 
@@ -518,6 +662,83 @@ function Ilhas({ onNavegar }) {
               roadmap={roadmap}
               onSelectIsland={setSelectedIslandId}
             />
+
+
+            {ilhaSelecionada && (
+              <section className="ilha-detalhes">
+
+                <div className="ilha-detalhes-header">
+                  <div>
+                    <span className="ilhas-eyebrow">DETALHES DA ETAPA</span>
+                    <h2>{ilhaSelecionada.title}</h2>
+                    <p>
+                      {ilhaSelecionada.description ||
+                        'Organize as tarefas necessárias para concluir esta etapa.'}
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    className="ilha-voltar"
+                    onClick={() => setSelectedIslandId(null)}
+                  >
+                    <Icon name="arrow-left" size={16} />
+                    Voltar para as ilhas
+                  </button>
+                </div>
+
+
+                <form
+                  className="ilha-form-tarefa"
+                  onSubmit={cadastrarTarefa}
+                >
+                  <input
+                    type="text"
+                    value={novaTarefa}
+                    onChange={(event) => setNovaTarefa(event.target.value)}
+                    placeholder="O que você precisa fazer nesta etapa?"
+                    maxLength={180}
+                  />
+
+                  <button type="submit" disabled={salvandoTarefa}>
+                    {salvandoTarefa ? 'Salvando...' : '+ Adicionar tarefa'}
+                  </button>
+                </form>
+
+                <div className="ilha-lista-tarefas">
+                  <h3>Minhas tarefas</h3>
+
+                  {carregandoTarefas ? (
+                    <p>Carregando tarefas...</p>
+                  ) : tarefas.length === 0 ? (
+                    <p>Nenhuma tarefa cadastrada nesta etapa.</p>
+                  ) : (
+                    tarefas.map((tarefa) => (
+                      <div className="ilha-tarefa-item" key={tarefa.id}>
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={tarefa.concluida}
+                            onChange={() => atualizarTarefa(tarefa)}
+                          />
+                          <span className={tarefa.concluida ? 'concluida' : ''}>
+                            {tarefa.titulo}
+                          </span>
+                        </label>
+
+                        <button
+                          type="button"
+                          onClick={() => excluirTarefa(tarefa.id)}
+                          title="Excluir tarefa"
+                        >
+                          <Icon name="trash" size={16} />
+                        </button>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </section>
+            )}
 
             <RoadmapsStrip
               selectedId={selectedRoadmapId}

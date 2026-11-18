@@ -4,6 +4,9 @@ import Sidebar from '../components/Sidebar';
 import RoadmapCanvas from './Ilhas/RoadmapCanvas';
 import { roadmaps } from './Ilhas/data';
 import './Ilhas.css';
+import IslandLearningPanel from './Ilhas/IslandLearningPanel';
+import { getIslandLearning } from './Ilhas/learningData';
+import { progressRepository } from './Ilhas/learningRepository';
 
 function MapHeader({ roadmap, onChangeRoadmap }) {
   return (
@@ -68,10 +71,22 @@ function RoadmapsStrip({ selectedId, onSelectRoadmap }) {
 function Ilhas({ onNavegar }) {
   const [selectedRoadmapId, setSelectedRoadmapId] = useState(roadmaps[0].id);
   const [selectedIslandId, setSelectedIslandId] = useState(null);
-  const roadmap = roadmaps.find((item) => item.id === selectedRoadmapId) ?? roadmaps[0];
+  const [progress, setProgress] = useState(() => progressRepository.load(selectedRoadmapId));
+  const baseRoadmap = roadmaps.find((item) => item.id === selectedRoadmapId) ?? roadmaps[0];
+  const roadmap = { ...baseRoadmap, islands: baseRoadmap.islands.map((island) => {
+    const learning = getIslandLearning(island);
+    const record = progress[island.id];
+    const completedTopics = learning.topics.filter((topic) => record?.topics?.[topic.id]?.status === 'completed' && (!topic.quiz || !topic.quiz.required || record?.topics?.[topic.id]?.quizPassed)).length;
+    const requiredTopics = learning.topics.filter((topic) => topic.required !== false);
+    const complete = requiredTopics.length > 0 && requiredTopics.every((topic) => record?.topics?.[topic.id]?.status === 'completed' && (!topic.quiz?.required || record?.topics?.[topic.id]?.quizPassed));
+    const status = complete ? 'done' : completedTopics || Object.keys(record?.topics ?? {}).length || Object.values(record?.tasks ?? {}).some(Boolean) ? 'progress' : island.status;
+    return { ...island, status, completed: record ? completedTopics : island.completed, total: record ? learning.topics.length : island.total };
+  }) };
 
   function changeRoadmap(id) {
     setSelectedRoadmapId(id);
+    const nextProgress = progressRepository.load(id);
+    setProgress(nextProgress);
     // A seleção pertence ao mapa atual; ao trocar de mapa, não carregamos um id de ilha que pode não existir nele.
     setSelectedIslandId(null);
   }
@@ -87,6 +102,7 @@ function Ilhas({ onNavegar }) {
           {selectedIslandId ? `Ilha selecionada: ${roadmap.islands.find((island) => island.id === selectedIslandId)?.title ?? ''}` : ''}
         </span>
       </main>
+      {selectedIslandId && <IslandLearningPanel island={roadmap.islands.find((island) => island.id === selectedIslandId)} roadmapId={roadmap.id} progress={progress[selectedIslandId] ?? {}} onProgress={(next) => { const updated = { ...progress, [selectedIslandId]: next }; setProgress(updated); progressRepository.save(roadmap.id, updated); }} onClose={() => setSelectedIslandId(null)} />}
     </div>
   );
 }

@@ -73,7 +73,7 @@ function App() {
   }, [mostrarPainel]);
 
   if (!mostrarPainel && !mostrarAutenticacao) {
-    return <LandingPage onEntrar={() => setMostrarAutenticacao(true)} />;
+    return <LandingPage onEntrar={() => setMostrarPainel(true)} />;
   }
 
   if (mostrarAutenticacao) {

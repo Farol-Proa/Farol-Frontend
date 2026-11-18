@@ -5,6 +5,7 @@ import LandingPage from './pages/LandingPage';
 import Painel from './pages/Painel';
 import Autenticacao from './pages/Autenticacao';
 
+
 function tokenEstaValido(token) {
   if (!token) return false;
 
@@ -29,6 +30,8 @@ function App() {
     tokenEstaValido(sessionStorage.getItem("token")));
   const [mostrarAutenticacao, setMostrarAutenticacao] = useState(false);
   const [paginaAtiva, setPaginaAtiva] = useState('Início');
+  const [objetivoSelecionado, setObjetivoSelecionado] = useState(null);
+  const [abrirModalObjetivo, setAbrirModalObjetivo] = useState(false);
   const dadosDashboard = useDadosDashboard();
 
   function fazerLogout() {
@@ -87,9 +90,15 @@ function App() {
     );
   }
 
-  function navegar(destino) {
+
+  function navegar(destino, opcoes = {}) {
     setPaginaAtiva(destino);
-    if (destino === 'Ilhas') return;
+
+    if (destino === 'Ilhas') {
+      setObjetivoSelecionado(opcoes.objetivoId ?? null);
+      setAbrirModalObjetivo(opcoes.abrirModal ?? false);
+      return;
+    }
 
     const secoes = {
       Início: 'inicio',
@@ -99,9 +108,9 @@ function App() {
       Mentoria: 'mentoria',
     };
 
-    // Espera o painel reaparecer antes de tentar rolar até uma seção dele.
     window.requestAnimationFrame(() => {
       const secao = document.getElementById(secoes[destino]);
+
       if (destino === 'Início') {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
@@ -109,6 +118,7 @@ function App() {
       }
     });
   }
+
 
   return (
     <>
@@ -136,7 +146,14 @@ function App() {
         />
       </div>
 
-      {paginaAtiva === 'Ilhas' && <Ilhas onNavegar={navegar} />}
+      {paginaAtiva === 'Ilhas' && (
+        <Ilhas
+          onNavegar={navegar}
+          objetivoSelecionado={objetivoSelecionado}
+          abrirModalObjetivo={abrirModalObjetivo}
+          recarregarObjetivos={dadosDashboard.recarregarObjetivos}
+        />
+      )}
     </>
   );
 }

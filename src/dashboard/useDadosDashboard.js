@@ -1,4 +1,5 @@
-﻿import { useRef, useState } from 'react';
+﻿import { useRef, useState, useEffect } from 'react';
+import { requisicaoAPI } from '../services/api';
 
 export function useDadosDashboard() {
   // O hook fica em App para manter os dados do painel enquanto as telas alternam.
@@ -22,6 +23,71 @@ export function useDadosDashboard() {
     { id: 3, texto: 'Consolidar anotaÃ§Ãµes da semana', concluida: false },
   ]);
   const [tarefas, setTarefas] = useState([]);
+  const [versaoDados, setVersaoDados] = useState(0);
+
+  useEffect(() => {
+
+    async function carregarObjetivos() {
+      const token = sessionStorage.getItem('token');
+
+      if (!token) return;
+
+      try {
+        const resposta = await requisicaoAPI('/objetivos');
+
+        const objetivosFormatados = await Promise.all(
+          resposta.map(async (objetivo) => {
+            const etapas = await requisicaoAPI(
+              `/objetivos/${objetivo.id}/etapas`
+            );
+
+            const etapasFormatadas = await Promise.all(
+              etapas.map(async (etapa) => {
+                let tarefas = [];
+
+                try {
+                  tarefas = await requisicaoAPI(
+                    `/etapas/${etapa.id}/tarefas`
+                  );
+                } catch (erro) {
+                  console.error(
+                    `Erro ao carregar tarefas da etapa ${etapa.id}:`,
+                    erro
+                  );
+                }
+
+                return {
+                  id: etapa.id,
+                  texto: etapa.titulo,
+                  concluida: etapa.status === 'CONCLUIDA',
+                  tarefas: tarefas.map((tarefa) => ({
+                    id: tarefa.id,
+                    texto: tarefa.titulo,
+                    concluida: tarefa.concluida,
+                    etapaId: etapa.id,
+                  })),
+                };
+              })
+            );
+
+            return {
+              id: objetivo.id,
+              nome: objetivo.titulo,
+              concluido: objetivo.status === 'CONCLUIDO',
+              etapas: etapasFormatadas,
+            };
+          })
+        );
+
+        setObjetivos(objetivosFormatados);
+      } catch (erro) {
+        console.error('Erro ao carregar objetivos:', erro);
+      }
+    }
+
+
+    carregarObjetivos();
+  }, [versaoDados]);
 
   function gerarId() {
     // Gera o ID fora do atualizador de estado, que o StrictMode pode chamar duas vezes em desenvolvimento.
@@ -65,9 +131,9 @@ export function useDadosDashboard() {
       atuais.map((objetivo) =>
         objetivo.id === idObjetivo
           ? {
-              ...objetivo,
-              etapas: [...objetivo.etapas, { id: idEtapa, texto: textoLimpo, concluida: false }],
-            }
+            ...objetivo,
+            etapas: [...objetivo.etapas, { id: idEtapa, texto: textoLimpo, concluida: false }],
+          }
           : objetivo,
       ),
     );
@@ -78,11 +144,11 @@ export function useDadosDashboard() {
       atuais.map((objetivo) =>
         objetivo.id === idObjetivo
           ? {
-              ...objetivo,
-              etapas: objetivo.etapas.map((etapa) =>
-                etapa.id === idEtapa ? { ...etapa, concluida: !etapa.concluida } : etapa,
-              ),
-            }
+            ...objetivo,
+            etapas: objetivo.etapas.map((etapa) =>
+              etapa.id === idEtapa ? { ...etapa, concluida: !etapa.concluida } : etapa,
+            ),
+          }
           : objetivo,
       ),
     );
@@ -93,9 +159,9 @@ export function useDadosDashboard() {
       atuais.map((objetivo) =>
         objetivo.id === idObjetivo
           ? {
-              ...objetivo,
-              etapas: objetivo.etapas.filter((etapa) => etapa.id !== idEtapa),
-            }
+            ...objetivo,
+            etapas: objetivo.etapas.filter((etapa) => etapa.id !== idEtapa),
+          }
           : objetivo,
       ),
     );
@@ -136,25 +202,90 @@ export function useDadosDashboard() {
     ]);
   }
 
-  function alternarTarefa(id) {
-    setTarefas((atuais) =>
-      atuais.map((tarefa) =>
-        tarefa.id === id ? { ...tarefa, concluida: !tarefa.concluida } : tarefa,
-      ),
+
+  async function alternarTarefa(id) {
+    const tarefa = tarefasDasIlhas.find(
+      (item) => item.id === id
     );
+
+    if (!tarefa) return;
+
+    try {
+      await requisicaoAPI(`/tarefas/${id}/conclusao`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          concluida: !tarefa.concluida,
+        }),
+      });
+
+      setObjetivos((atuais) =>
+        atuais.map((objetivo) => ({
+          ...objetivo,
+          etapas: objetivo.etapas.map((etapa) => ({
+            ...etapa,
+            tarefas: etapa.tarefas.map((item) =>
+              item.id === id
+                ? { ...item, concluida: !item.concluida }
+                : item
+            ),
+          })),
+        }))
+      );
+    } catch (erro) {
+      console.error('Erro ao atualizar tarefa:', erro);
+    }
   }
 
-  function removerTarefa(id) {
-    setTarefas((atuais) => atuais.filter((tarefa) => tarefa.id !== id));
+
+  async function removerTarefa(id) {
+    try {
+      await requisicaoAPI(`/tarefas/${id}`, {
+        method: 'DELETE',
+      });
+
+      setObjetivos((atuais) =>
+        atuais.map((objetivo) => ({
+          ...objetivo,
+          etapas: objetivo.etapas.map((etapa) => ({
+            ...etapa,
+            tarefas: etapa.tarefas.filter(
+              (tarefa) => String(tarefa.id) !== String(id)
+            ),
+          })),
+        }))
+      );
+    } catch (erro) {
+      console.error('Erro ao excluir tarefa:', erro);
+      alert(erro.message || 'Não foi possível excluir a tarefa.');
+    }
+  }
+
+
+
+  const tarefasDasIlhas = objetivos.flatMap((objetivo) =>
+    (objetivo.etapas || []).flatMap((etapa) =>
+      (etapa.tarefas || []).map((tarefa) => ({
+        ...tarefa,
+        objetivoId: objetivo.id,
+        objetivoNome: objetivo.nome,
+        etapaId: etapa.id,
+        etapaNome: etapa.texto,
+      }))
+    )
+  );
+
+  function recarregarObjetivos() {
+    setVersaoDados((atual) => atual + 1);
   }
 
   return {
     objetivos,
     notas,
-    tarefas,
+    tarefas: tarefasDasIlhas,
     adicionarObjetivo,
     alternarObjetivo,
     removerObjetivo,
+    recarregarObjetivos,
     adicionarEtapa,
     alternarEtapa,
     removerEtapa,

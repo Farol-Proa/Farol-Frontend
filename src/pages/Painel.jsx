@@ -61,7 +61,7 @@ function Painel({
     <div className="painel painel-farol bg-farol-dashboard text-farol-text flex max-[600px]:flex-col">
       <Sidebar activeItem={activeItem} onNavegar={onNavegar} onLogout={onLogout} />
 
-          <div className="grid size-9 place-items-center rounded-full bg-farol-primary">{usuario.nome?.charAt(0).toUpperCase() || 'U'}</div>
+      <div className="grid size-9 place-items-center rounded-full bg-farol-primary">{usuario.nome?.charAt(0).toUpperCase() || 'U'}</div>
       <main className="painel-main min-w-0 flex-1" id="inicio">
         <header className="painel-topbar">
           <div>
@@ -116,15 +116,12 @@ function Painel({
         </section>
 
         <section className="painel-grid-secondary">
+
           <Objetivos
             objetivos={objetivos}
-            onAdicionarObjetivo={onAdicionarObjetivo}
-            onAlternarObjetivo={onAlternarObjetivo}
-            onRemoverObjetivo={onRemoverObjetivo}
-            onAdicionarEtapa={onAdicionarEtapa}
-            onAlternarEtapa={onAlternarEtapa}
-            onRemoverEtapa={onRemoverEtapa}
+            onNavegar={onNavegar}
           />
+
 
           <Tarefas
             tarefas={tarefas}

@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import {
   addEdge,
   Background,
@@ -154,8 +154,35 @@ function RoadmapChrome({ roadmap }) {
 
 function FlowCanvas({ roadmap, onSelectIsland }) {
   // React Flow mantém o estado interativo; a carga inicial restaura as posições deste mapa.
-  const [nodes, , onNodesChange] = useNodesState(() => loadNodes(roadmap, onSelectIsland));
+  const [nodes, setNodes, onNodesChange] = useNodesState(() => loadNodes(roadmap, onSelectIsland));
   const [edges, setEdges, onEdgesChange] = useEdgesState(createEdges(roadmap));
+
+ 
+useEffect(() => {
+  const novosNos = createNodes(roadmap, onSelectIsland);
+
+  setNodes((nosAtuais) => {
+    return novosNos.map((novoNo) => {
+      const existente = nosAtuais.find(
+        (no) => no.id === novoNo.id
+      );
+
+      if (!existente) {
+        return novoNo;
+      }
+
+      return {
+        ...novoNo,
+        ...existente,
+        position: existente.position,
+        data: novoNo.data,
+      };
+    });
+  });
+
+  setEdges(createEdges(roadmap));
+}, [roadmap, onSelectIsland, setNodes, setEdges]);
+
 
   const onConnect = useCallback(
     (connection) => {

@@ -84,7 +84,12 @@ function RoadmapsStrip({ selectedId, onSelectRoadmap, todosRoadmaps, onExcluirRo
   );
 }
 
-function Ilhas({ onNavegar }) {
+function Ilhas({
+  onNavegar,
+  objetivoSelecionado,
+  abrirModalObjetivo,
+  recarregarObjetivos,
+}) {
   const [selectedRoadmapId, setSelectedRoadmapId] = useState(null);
   const [selectedIslandId, setSelectedIslandId] = useState(null);
   const [meusObjetivos, setMeusObjetivos] = useState([]);
@@ -117,29 +122,51 @@ function Ilhas({ onNavegar }) {
               `/objetivos/${objetivo.id}/etapas`
             );
 
-            const ilhas = etapas.map((etapa, index) => ({
-              id: String(etapa.id),
-              title: etapa.titulo,
-              description: etapa.descricao,
-              category: 'Etapa',
+            const ilhas = await Promise.all(
+              etapas.map(async (etapa, index) => {
+                let tarefas = [];
 
-              status:
-                etapa.status === 'CONCLUIDA'
-                  ? 'done'
-                  : etapa.status === 'EM_ANDAMENTO'
-                    ? 'progress'
-                    : 'locked',
+                try {
+                  tarefas = await requisicaoAPI(
+                    `/etapas/${etapa.id}/tarefas`
+                  );
+                } catch (erro) {
+                  console.error(
+                    `Erro ao carregar tarefas da etapa ${etapa.id}:`,
+                    erro
+                  );
+                }
 
-              completed: 0,
-              total: 0,
-              icon: 'target',
-              index,
+                const total = tarefas.length;
 
-              position: {
-                x: 360 + index * 330,
-                y: index % 2 === 0 ? 100 : 370,
-              },
-            }));
+                const completed = tarefas.filter(
+                  (tarefa) => tarefa.concluida
+                ).length;
+
+                return {
+                  id: String(etapa.id),
+                  title: etapa.titulo,
+                  description: etapa.descricao,
+                  category: 'Etapa',
+
+                  status:
+                    etapa.status === 'CONCLUIDA'
+                      ? 'done'
+                      : etapa.status === 'EM_ANDAMENTO'
+                        ? 'progress'
+                        : 'locked',
+
+                  completed,
+                  total,
+                  icon: 'target',
+                  index,
+
+                  position: {
+                    x: 360 + index * 330,
+                    y: index % 2 === 0 ? 100 : 370,
+                  },
+                };
+              }));
 
             const connections = ilhas.map((ilha, index) => ({
               source: index === 0 ? 'farol' : ilhas[index - 1].id,
@@ -171,6 +198,25 @@ function Ilhas({ onNavegar }) {
 
     carregarObjetivos();
   }, []);
+
+  useEffect(() => {
+    if (!objetivoSelecionado) return;
+
+    const objetivoExiste = meusObjetivos.some(
+      (objetivo) => objetivo.id === String(objetivoSelecionado)
+    );
+
+    if (objetivoExiste) {
+      setSelectedRoadmapId(String(objetivoSelecionado));
+      setSelectedIslandId(null);
+    }
+  }, [objetivoSelecionado, meusObjetivos]);
+
+  useEffect(() => {
+    if (abrirModalObjetivo) {
+      setMostrarFormulario(true);
+    }
+  }, [abrirModalObjetivo]);
 
   useEffect(() => {
     async function carregarTarefas() {
@@ -428,6 +474,7 @@ function Ilhas({ onNavegar }) {
 
       setTarefas(atualizadas);
       atualizarProgressoIlha(atualizadas);
+      recarregarObjetivos();
 
       setNovaTarefa('');
     } catch (erro) {
@@ -456,6 +503,7 @@ function Ilhas({ onNavegar }) {
 
       setTarefas(atualizadas);
       atualizarProgressoIlha(atualizadas);
+      recarregarObjetivos();
     } catch (erro) {
       console.error('Erro ao atualizar tarefa:', erro);
       alert(erro.message || 'Não foi possível atualizar a tarefa.');
@@ -480,6 +528,7 @@ function Ilhas({ onNavegar }) {
 
       setTarefas(atualizadas);
       atualizarProgressoIlha(atualizadas);
+      recarregarObjetivos();
     } catch (erro) {
       console.error('Erro ao excluir tarefa:', erro);
       alert(erro.message || 'Não foi possível excluir a tarefa.');

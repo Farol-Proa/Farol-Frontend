@@ -64,7 +64,7 @@ function Sidebar({ activeItem = 'Início', onNavegar = () => { }, onLogout = () 
         <button
           className="farol-settings-link"
           type="button"
-          onClick={onLogout}
+          onCliSck={onLogout}
         >
           <Icon name="log-out" size={17} />
           <span>Sair da conta</span>

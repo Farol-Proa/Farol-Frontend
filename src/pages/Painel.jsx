@@ -20,18 +20,13 @@ function Painel({
   activeItem,
   onNavegar,
   onLogout,
-  onAdicionarObjetivo,
-  onAlternarObjetivo,
-  onRemoverObjetivo,
-  onAdicionarEtapa,
-  onAlternarEtapa,
-  onRemoverEtapa,
   onAdicionarNota,
   onAlternarNota,
   onRemoverNota,
-  onAdicionarTarefa,
   onAlternarTarefa,
   onRemoverTarefa,
+  carregando,
+  erro,
 }) {
   const usuario = JSON.parse(sessionStorage.getItem('usuario') || '{}');
   const [dataSelecionada, setDataSelecionada] = useState(() => chaveDataLocal(new Date()));
@@ -46,29 +41,26 @@ function Painel({
     );
   }
 
-  const totalEtapas = objetivos.reduce((total, objetivo) => total + objetivo.etapas.length, 0);
-  const etapasConcluidas = objetivos.reduce(
-    (total, objetivo) => total + objetivo.etapas.filter((etapa) => etapa.concluida).length,
-    0,
-  );
-  const totalItens = tarefas.length + totalEtapas;
-  const itensConcluidos = tarefas.filter((tarefa) => tarefa.concluida).length + etapasConcluidas;
-  // O progresso geral inclui tarefas e etapas; o de cada objetivo considera apenas suas etapas.
+  const totalItens = tarefas.length;
+  const itensConcluidos = tarefas.filter((tarefa) => tarefa.concluida).length;
   const progressoGeral = totalItens === 0 ? 0 : Math.round((itensConcluidos / totalItens) * 100);
 
   return (
-
     <div className="painel painel-farol bg-farol-dashboard text-farol-text flex max-[600px]:flex-col">
       <Sidebar activeItem={activeItem} onNavegar={onNavegar} onLogout={onLogout} />
 
-      <div className="grid size-9 place-items-center rounded-full bg-farol-primary">{usuario.nome?.charAt(0).toUpperCase() || 'U'}</div>
+      <div className="grid size-9 place-items-center rounded-full bg-farol-primary">
+        {usuario.nome?.charAt(0).toUpperCase() || 'U'}
+      </div>
       <main className="painel-main min-w-0 flex-1" id="inicio">
         <header className="painel-topbar">
           <div>
             <span className="painel-eyebrow">SEU ESPAÇO, SEU RITMO</span>
             <h1>{activeItem || 'Início'}</h1>
           </div>
-          <div className="painel-avatar" aria-label="Perfil de Robriel">R</div>
+          <div className="painel-avatar" aria-label="Perfil de Robriel">
+            R
+          </div>
         </header>
 
         <section className="painel-welcome">
@@ -84,6 +76,17 @@ function Painel({
             <p>Bom dia!</p>
           </div>
         </section>
+
+        {erro && (
+          <p role="alert" className="painel-card">
+            {erro}
+          </p>
+        )}
+        {carregando && (
+          <p role="status" className="text-xs text-farol-muted">
+            Carregando seus dados...
+          </p>
+        )}
 
         <section className="painel-grid">
           <Notas
@@ -108,25 +111,17 @@ function Painel({
             </div>
             <p className="text-xs leading-relaxed text-farol-muted">
               {totalItens === 0
-                ? 'Comece adicionando seu primeiro objetivo.'
-                : `Você concluiu ${itensConcluidos} de ${totalItens} itens.`}
+                ? 'Adicione tarefas às etapas dos seus objetivos para acompanhar seu progresso.'
+                : `Você concluiu ${itensConcluidos} de ${totalItens} tarefas.`}
             </p>
           </article>
-
         </section>
 
         <section className="painel-grid-secondary">
-
-          <Objetivos
-            objetivos={objetivos}
-            onNavegar={onNavegar}
-          />
-
+          <Objetivos objetivos={objetivos} onNavegar={onNavegar} />
 
           <Tarefas
             tarefas={tarefas}
-            dataSelecionada={dataSelecionada}
-            onAdicionarTarefa={onAdicionarTarefa}
             onAlternarTarefa={onAlternarTarefa}
             onRemoverTarefa={onRemoverTarefa}
           />

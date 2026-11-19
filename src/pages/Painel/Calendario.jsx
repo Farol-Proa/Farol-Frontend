@@ -26,7 +26,8 @@ function Calendario({ mesExibido, dataSelecionada, tarefas, onMudarMes, onSeleci
     <article className="painel-card min-w-0 p-4" id="calendario">
       <h3>Meu calendário</h3>
       <p className="text-xs leading-relaxed text-farol-muted">
-        Organize seu tempo e suas prioridades.
+        As tarefas atuais não possuem data; elas aparecem na lista da semana sem marcação no
+        calendário.
       </p>
 
       <div className="navegacao-mes">

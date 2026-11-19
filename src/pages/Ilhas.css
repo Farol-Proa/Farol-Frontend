@@ -8,7 +8,13 @@
   padding: 16px;
   background: #070b1c;
   color: #eef1ff;
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
 }
 
 .ilhas-main {
@@ -273,7 +279,9 @@
   overflow: hidden;
   border: 1px solid rgb(245 213 71 / 0.25);
   border-radius: 32px;
-  box-shadow: 0 30px 60px -24px rgb(0 0 0 / 0.9), 0 0 60px -10px rgb(245 213 71 / 0.25);
+  box-shadow:
+    0 30px 60px -24px rgb(0 0 0 / 0.9),
+    0 0 60px -10px rgb(245 213 71 / 0.25);
   cursor: grab;
   user-select: none;
 }
@@ -291,7 +299,9 @@
   font-size: 11px;
   cursor: pointer;
   opacity: 0.9;
-  transition: opacity 160ms ease, background 160ms ease;
+  transition:
+    opacity 160ms ease,
+    background 160ms ease;
 }
 
 .lighthouse-node:hover .lighthouse-image-button,
@@ -380,7 +390,9 @@
   cursor: grab;
   outline: none;
   user-select: none;
-  transition: transform 180ms ease, filter 180ms ease;
+  transition:
+    transform 180ms ease,
+    filter 180ms ease;
 }
 
 .island-node:hover {
@@ -855,7 +867,9 @@
   color: #8e97c2;
   font-size: 14px;
   cursor: pointer;
-  transition: border-color 160ms ease, color 160ms ease;
+  transition:
+    border-color 160ms ease,
+    color 160ms ease;
 }
 
 .new-map-button:hover {
@@ -1011,32 +1025,273 @@
   background: rgb(5 9 17 / 0.95);
 }
 
-.learning-backdrop { position: fixed; inset: 0; z-index: 100; border: 0; background: rgb(3 7 20 / 55%); }
-.learning-panel { position: fixed; inset: 0 0 0 auto; z-index: 101; display: flex; width: min(520px, 100%); flex-direction: column; background: #0d1333; color: #eef1ff; box-shadow: -18px 0 55px rgb(0 0 0 / 35%); }
-.learning-header { display: flex; justify-content: space-between; gap: 20px; padding: 26px; border-bottom: 1px solid rgb(255 255 255 / 10%); }
-.learning-header h2 { margin: 5px 0; font-size: 25px; }
-.learning-header p, .learning-section p, .learning-body > p { color: #aeb7d8; line-height: 1.6; }
-.learning-header button { align-self: flex-start; border: 0; background: transparent; color: inherit; font-size: 28px; cursor: pointer; }
-.learning-kicker { color: #f5d547; font-size: 11px; text-transform: uppercase; letter-spacing: .12em; }
-.learning-body { overflow-y: auto; padding: 24px 26px 40px; }
-.learning-progress { display: grid; gap: 8px; margin-bottom: 26px; font-size: 13px; }
-.learning-progress progress { width: 100%; accent-color: #f5d547; }
-.learning-body h3 { margin: 24px 0 12px; }
-.learning-topic-list { display: grid; gap: 8px; }
-.learning-topic-list button, .learning-task { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 14px; padding: 14px; border: 1px solid rgb(255 255 255 / 10%); border-radius: 12px; background: rgb(255 255 255 / 3%); color: inherit; text-align: left; }
-.learning-topic-list button { cursor: pointer; }
-.learning-topic-list button span:first-child, .learning-task span { display: grid; gap: 5px; }
-.learning-topic-list small, .learning-task small, .learning-reference small { color: #aeb7d8; }
-.learning-task { justify-content: flex-start; margin: 8px 0; }
-.learning-task input { accent-color: #f5d547; }
-.learning-back, .learning-complete, .learning-quiz button, .learning-notes form button { margin: 12px 8px 12px 0; padding: 10px 14px; border: 0; border-radius: 8px; background: #3449ae; color: white; cursor: pointer; }
-.learning-section { margin: 18px 0; padding-bottom: 12px; border-bottom: 1px solid rgb(255 255 255 / 8%); }
-.learning-section h4 { margin-bottom: 5px; color: #f5d547; }
-.learning-reference { display: grid; gap: 4px; margin: 8px 0; color: #eef1ff; }
-.learning-quiz fieldset { margin: 14px 0; border: 1px solid rgb(255 255 255 / 12%); border-radius: 10px; }
-.learning-quiz label { display: block; padding: 6px; }
-.learning-quiz input { margin-right: 8px; accent-color: #f5d547; }
-.learning-notes article { padding: 10px 0; border-bottom: 1px solid rgb(255 255 255 / 8%); }
-.learning-notes article button { margin-right: 8px; }
-.learning-notes textarea { box-sizing: border-box; width: 100%; padding: 10px; border: 1px solid rgb(255 255 255 / 18%); border-radius: 8px; background: #090f29; color: white; }
-@media (max-width: 640px) { .learning-header { padding: 20px; } .learning-body { padding: 18px 20px 32px; } }
+.learning-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  border: 0;
+  background: rgb(3 7 20 / 55%);
+}
+.learning-panel {
+  position: fixed;
+  inset: 0 0 0 auto;
+  z-index: 101;
+  display: flex;
+  width: min(520px, 100%);
+  flex-direction: column;
+  background: #0d1333;
+  color: #eef1ff;
+  box-shadow: -18px 0 55px rgb(0 0 0 / 35%);
+}
+.learning-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 26px;
+  border-bottom: 1px solid rgb(255 255 255 / 10%);
+}
+.learning-header h2 {
+  margin: 5px 0;
+  font-size: 25px;
+}
+.learning-header p,
+.learning-section p,
+.learning-body > p {
+  color: #aeb7d8;
+  line-height: 1.6;
+}
+.learning-header button {
+  align-self: flex-start;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 28px;
+  cursor: pointer;
+}
+.learning-kicker {
+  color: #f5d547;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+.learning-body {
+  overflow-y: auto;
+  padding: 24px 26px 40px;
+}
+.learning-progress {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 26px;
+  font-size: 13px;
+}
+.learning-progress progress {
+  width: 100%;
+  accent-color: #f5d547;
+}
+.learning-body h3 {
+  margin: 24px 0 12px;
+}
+.learning-topic-list {
+  display: grid;
+  gap: 8px;
+}
+.learning-topic-list button,
+.learning-task {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px;
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 12px;
+  background: rgb(255 255 255 / 3%);
+  color: inherit;
+  text-align: left;
+}
+.learning-topic-list button {
+  cursor: pointer;
+}
+.learning-topic-list button span:first-child,
+.learning-task span {
+  display: grid;
+  gap: 5px;
+}
+.learning-topic-list small,
+.learning-task small,
+.learning-reference small {
+  color: #aeb7d8;
+}
+.learning-task {
+  justify-content: flex-start;
+  margin: 8px 0;
+}
+.learning-task input {
+  accent-color: #f5d547;
+}
+.learning-back,
+.learning-complete,
+.learning-quiz button,
+.learning-notes form button {
+  margin: 12px 8px 12px 0;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 8px;
+  background: #3449ae;
+  color: white;
+  cursor: pointer;
+}
+.learning-section {
+  margin: 18px 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgb(255 255 255 / 8%);
+}
+.learning-section h4 {
+  margin-bottom: 5px;
+  color: #f5d547;
+}
+.learning-reference {
+  display: grid;
+  gap: 4px;
+  margin: 8px 0;
+  color: #eef1ff;
+}
+.learning-quiz fieldset {
+  margin: 14px 0;
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: 10px;
+}
+.learning-quiz label {
+  display: block;
+  padding: 6px;
+}
+.learning-quiz input {
+  margin-right: 8px;
+  accent-color: #f5d547;
+}
+.learning-notes article {
+  padding: 10px 0;
+  border-bottom: 1px solid rgb(255 255 255 / 8%);
+}
+.learning-notes article button {
+  margin-right: 8px;
+}
+.learning-notes textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 8px;
+  background: #090f29;
+  color: white;
+}
+.ilhas-action-button,
+.ilhas-add-stage button,
+.ilhas-empty-state button,
+.ilhas-modal-actions button,
+.learning-add-task button {
+  padding: 10px 14px;
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 9px;
+  background: #3449ae;
+  color: #fff;
+  cursor: pointer;
+}
+.ilhas-action-button.danger {
+  background: #562e48;
+}
+.ilhas-add-stage {
+  display: flex;
+  align-items: end;
+  gap: 12px;
+  padding: 12px 0;
+}
+.ilhas-add-stage label,
+.ilhas-modal label,
+.learning-add-task label {
+  display: grid;
+  flex: 1;
+  gap: 6px;
+  color: #eef1ff;
+  font-size: 12px;
+}
+.ilhas-add-stage input,
+.ilhas-modal input,
+.ilhas-modal textarea,
+.ilhas-modal select,
+.learning-add-task input {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 8px;
+  background: #090f29;
+  color: white;
+}
+.ilhas-empty-state {
+  display: grid;
+  min-height: 60vh;
+  align-content: center;
+  justify-items: start;
+  gap: 14px;
+  color: #eef1ff;
+}
+.ilhas-error {
+  margin: 10px 0;
+  color: #ffb4b4;
+}
+.ilhas-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgb(3 7 20 / 65%);
+}
+.ilhas-modal {
+  width: min(480px, 100%);
+  padding: 24px;
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: 16px;
+  background: #0d1333;
+  color: #eef1ff;
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%);
+}
+.ilhas-modal h2 {
+  margin: 0 0 18px;
+}
+.ilhas-modal form {
+  display: grid;
+  gap: 14px;
+}
+.ilhas-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.learning-add-task {
+  display: grid;
+  gap: 10px;
+  margin-top: 22px;
+}
+.learning-task > button {
+  margin-left: auto;
+  border: 0;
+  background: transparent;
+  color: #ffb4b4;
+  cursor: pointer;
+}
+@media (max-width: 700px) {
+  .ilhas-add-stage {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
+@media (max-width: 640px) {
+  .learning-header {
+    padding: 20px;
+  }
+  .learning-body {
+    padding: 18px 20px 32px;
+  }
+}

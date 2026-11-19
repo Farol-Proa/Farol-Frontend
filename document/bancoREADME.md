@@ -35,10 +35,19 @@ Outros grupos se conectam ao usuário para armazenar suas preferências, assinat
 
 | Tabela | Responsabilidade | Relacionamento principal |
 |---|---|---|
-| `usuarios` | Armazena os dados da conta, como nome, e-mail, hash da senha, nascimento e status. | Tabela central; relaciona-se com objetivos e os demais dados do usuário. |
+| `usuarios` | Armazena os dados da conta, como nome, e-mail, hash da senha, nascimento, status, estado de verificação do e-mail e versão de segurança da sessão. | Tabela central; relaciona-se com objetivos, tokens de segurança e os demais dados do usuário. |
+| `tokens_seguranca` | Armazena hashes de tokens temporários de confirmação de e-mail e recuperação de senha, incluindo tipo, validade e data de uso. O token em texto não é persistido. | Cada token pertence a um usuário e é invalidado após uso ou reenvio. |
 | `preferencias_usuario` | Guarda configurações pessoais, como modo de planejamento, tema, fuso horário e sincronização. | Cada registro pertence a um usuário. O campo `usuario_id` é único, portanto há no máximo um conjunto de preferências por usuário. |
 
-**Relacionamento:** `usuarios (1) — (0..1) preferencias_usuario`.
+**Relacionamentos:** `usuarios (1) — (0..1) preferencias_usuario`; `usuarios (1) — (N) tokens_seguranca`.
+
+#### Verificação de e-mail e recuperação de senha
+
+- Novos usuários começam com `email_verificado = FALSE`; o login só é permitido depois da confirmação do endereço.
+- A migration aplicada ao banco existente adicionou `email_verificado` com `DEFAULT TRUE`, preservando o acesso das contas que já existiam. Ela adicionou também `versao_seguranca`, iniciada em zero.
+- Tokens de confirmação expiram em 24 horas; tokens de recuperação expiram em 1 hora. Ambos são aleatórios, de uso único e armazenados como hash SHA-256 em `tokens_seguranca`.
+- Uma nova solicitação invalida tokens ativos do mesmo tipo. Reenvios e solicitações de recuperação têm limite de cinco por usuário por hora.
+- A redefinição de senha incrementa `versao_seguranca`, invalidando JWTs emitidos anteriormente para a conta.
 
 ### 3.2 Planejamento: objetivos, Ilhas e tarefas
 
@@ -151,6 +160,7 @@ Essas tabelas apoiam o registro de aceites, consentimentos, solicitações e eve
 |---|---:|---|---|
 | `usuarios` | 1:N | `objetivos` | Um usuário pode criar vários objetivos. |
 | `usuarios` | 1:0..1 | `preferencias_usuario` | Um usuário pode ter um registro de preferências. |
+| `usuarios` | 1:N | `tokens_seguranca` | Um usuário pode ter tokens temporários de segurança. |
 | `objetivos` | 1:N | `etapas` | Um objetivo pode ser dividido em várias Ilhas. |
 | `etapas` | 1:N | `tarefas` | Uma Ilha pode conter várias tarefas. |
 | `planos` | 1:0..1 | `limites_plano` | Um plano possui um conjunto de limites. |

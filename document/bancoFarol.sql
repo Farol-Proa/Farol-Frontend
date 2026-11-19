@@ -19,9 +19,27 @@ CREATE TABLE usuarios (
   telefone VARCHAR(30) NULL,
   data_nascimento DATE NOT NULL,
   status ENUM('ATIVO','PENDENTE_EXCLUSAO','EXCLUIDO','SUSPENSO') NOT NULL DEFAULT 'ATIVO',
+  email_verificado BOOLEAN NOT NULL DEFAULT FALSE,
+  versao_seguranca INT NOT NULL DEFAULT 0,
   criado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   atualizado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   excluido_em DATETIME NULL
+) ENGINE=InnoDB;
+
+-- Tokens de confirmação de e-mail e recuperação de senha.
+-- O token original é enviado somente por e-mail; o banco armazena seu hash.
+CREATE TABLE tokens_seguranca (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  usuario_id BIGINT UNSIGNED NOT NULL,
+  token_hash CHAR(64) NOT NULL UNIQUE,
+  tipo VARCHAR(32) NOT NULL,
+  criado_em DATETIME NOT NULL,
+  expira_em DATETIME NOT NULL,
+  usado_em DATETIME NULL,
+  CONSTRAINT fk_tokens_seguranca_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+    ON DELETE CASCADE,
+  INDEX idx_tokens_usuario_tipo_criado (usuario_id, tipo, criado_em),
+  INDEX idx_tokens_validade (token_hash, tipo, expira_em, usado_em)
 ) ENGINE=InnoDB;
 
 CREATE TABLE preferencias_usuario (

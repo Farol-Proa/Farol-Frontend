@@ -41,6 +41,7 @@ function App() {
   function fazerLogout() {
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('usuario');
+    dadosDashboard.limparNotas();
 
     setMostrarPainel(false);
     setMostrarAutenticacao(false);
@@ -87,6 +88,7 @@ function App() {
           setAuthLink(null);
           setMostrarPainel(true);
           dadosDashboard.recarregarObjetivos();
+          dadosDashboard.recarregarNotas();
         }}
       />
     );
@@ -131,8 +133,13 @@ function App() {
           activeItem={paginaAtiva}
           onNavegar={navegar}
           onAdicionarNota={dadosDashboard.adicionarNota}
+          onAtualizarNota={dadosDashboard.atualizarNota}
           onAlternarNota={dadosDashboard.alternarNota}
           onRemoverNota={dadosDashboard.removerNota}
+          onRecarregarNotas={dadosDashboard.recarregarNotas}
+          carregandoNotas={dadosDashboard.carregandoNotas}
+          operacaoNotaPendente={dadosDashboard.operacaoNotaPendente}
+          erroNotas={dadosDashboard.erroNotas}
           onAlternarTarefa={dadosDashboard.alternarTarefa}
           onRemoverTarefa={dadosDashboard.removerTarefa}
           carregando={dadosDashboard.carregando}
@@ -151,6 +158,7 @@ function App() {
           onRemoverObjetivo={dadosDashboard.removerObjetivo}
           onAdicionarEtapa={dadosDashboard.adicionarEtapa}
           onAdicionarTarefa={dadosDashboard.adicionarTarefa}
+          onAtualizarPrazoTarefa={dadosDashboard.atualizarPrazoTarefa}
           onAlternarTarefa={dadosDashboard.alternarTarefa}
           onRemoverTarefa={dadosDashboard.removerTarefa}
           carregando={dadosDashboard.carregando}

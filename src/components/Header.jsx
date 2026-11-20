@@ -42,9 +42,9 @@ function Header({ onEntrar }) {
         >
           Entrar
         </button>
-        <a className="header-cta button-primary" href="#jornada">
+        <button className="header-cta button-primary" type="button" onClick={onEntrar}>
           Começar agora <span aria-hidden="true">→</span>
-        </a>
+        </button>
       </div>
     </header>
   );

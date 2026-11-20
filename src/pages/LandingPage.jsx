@@ -36,9 +36,9 @@ function LandingPage({ onEntrar }) {
           </p>
 
           <div className="hero-actions flex flex-wrap gap-3.5">
-            <a className="button-primary" href="#jornada">
+            <button className="button-primary" type="button" onClick={onEntrar}>
               Começar minha jornada <span>→</span>
-            </a>
+            </button>
             <a className="button-secondary" href="#como-funciona">
               Conhecer o Farol <span>→</span>
             </a>
@@ -91,23 +91,24 @@ function LandingPage({ onEntrar }) {
           </article>
         </div>
 
-
         {/* landing-home porque é a parte que mostra a print da home :P*/}
         {/* ================================================== */}
-
       </section>
       <section className="landing-home min-h-screen pt-10 flex-none order-2 self-stretch grow-0">
         <div className="landing-home-grid" aria-hidden="true" />
-        <div className='landing-home_apresentacao flex flex-col items-center p-0 gap[18px]'>
+        <div className="landing-home_apresentacao flex flex-col items-center p-0 gap[18px]">
           <span className="text-[20px] font-bold tracking-[1.4px] text-farol-accent">
             <span className="mr-2 text-[24px]">•</span>
             Conheca seu farol
           </span>
-          <h2 className="my-6 text-center text-[clamp(30px,3.5vw,46px)] leading-[1.15] tracking-[-1px]">Tudo o que importa.<br />
+          <h2 className="my-6 text-center text-[clamp(30px,3.5vw,46px)] leading-[1.15] tracking-[-1px]">
+            Tudo o que importa.
+            <br />
             Um lugar para se encontrar
           </h2>
           <p className="hero-description mb-6.5 w-full max-w-[680px] text-center text-[18px] leading-[1.5] text-[#A5B2CD]">
-            Notas, calendário, tarefas e objetivos se encontram em uma visão clara da sua vida. Do que precisa de atenção hoje ao que você quer conquistar amanhã.
+            Notas, calendário, tarefas e objetivos se encontram em uma visão clara da sua vida. Do
+            que precisa de atenção hoje ao que você quer conquistar amanhã.
           </p>
         </div>
         <div className="landing-home-showcase relative z-10 mx-auto w-full max-w-[1100px] overflow-hidden rounded-2xl border border-white/15 bg-farol-background">
@@ -118,84 +119,74 @@ function LandingPage({ onEntrar }) {
               <span className="size-2 rounded-full bg-[#5474c8]/45" />
             </div>
             <span className="absolute left-1/2 -translate-x-1/2">farol.app / painel</span>
-            <span className="text-[9px] font-semibold tracking-[0.12em] text-farol-text-subtle max-[480px]:hidden">VISÃO GERAL</span>
+            <span className="text-[9px] font-semibold tracking-[0.12em] text-farol-text-subtle max-[480px]:hidden">
+              VISÃO GERAL
+            </span>
           </div>
-          <img className="block h-auto w-full object-contain" src={heroHome} alt="Prévia da tela inicial do Farol" />
+          <img
+            className="block h-auto w-full object-contain"
+            src={heroHome}
+            alt="Prévia da tela inicial do Farol"
+          />
         </div>
       </section>
       {/* Rotas e objetivos =P */}
       {/* =================================================================================== */}
 
+      <section className="landing-vida" id="vida">
+        <div className="landing-vida__container">
+          <div className="landing-vida__cabecalho">
+            <div>
+              <span className="landing-vida__etiqueta">NA VIDA, NO SEU RITMO</span>
 
+              <h2>
+                O Farol acompanha a vida.
+                <br />
+                Não só a lista de tarefas.
+              </h2>
+            </div>
 
-<section className="landing-vida" id="vida">
-  <div className="landing-vida__container">
-    <div className="landing-vida__cabecalho">
-      <div>
-        <span className="landing-vida__etiqueta">
-            NA VIDA, NO SEU RITMO
-        </span>
+            <p>Estudos, trabalho, cuidar de si. Cada parte do seu dia merece direção.</p>
+          </div>
 
-        <h2>
-          O Farol acompanha a vida.
-          <br />
-          Não só a lista de tarefas.
-        </h2>
-      </div>
+          <div className="landing-vida__cards">
+            <article className="landing-vida__card">
+              <h3>✧ Nos estudos</h3>
+              <p>Uma rota para aprender, sem perder seus descobrimentos.</p>
+              <ul>
+                <li>Resumo de TCC</li>
+                <li>Plano de revisão</li>
+                <li>Anotações de aula</li>
+              </ul>
+            </article>
 
-      <p>
-        Estudos, trabalho, cuidar de si.
-        Cada parte do seu dia merece direção.
-      </p>
-    </div>
+            <article className="landing-vida__card">
+              <h3>▣ No trabalho</h3>
+              <p>Clareza para os projetos e os detalhes de cada dia.</p>
+              <ul>
+                <li>Ideias para projetos</li>
+                <li>Próximas entregas</li>
+                <li>Notas de reunião</li>
+              </ul>
+            </article>
 
-    <div className="landing-vida__cards">
-      <article className="landing-vida__card">
-        <h3>✧ Nos estudos</h3>
-        <p>
-          Uma rota para aprender, sem perder seus descobrimentos.
-        </p>
-        <ul>
-          <li>Resumo de TCC</li>
-          <li>Plano de revisão</li>
-          <li>Anotações de aula</li>
-        </ul>
-      </article>
+            <article className="landing-vida__card">
+              <h3>♡ Na vida pessoal</h3>
+              <p>Espaço para o que você quer viver, além das tarefas.</p>
+              <ul>
+                <li>Planejar uma viagem</li>
+                <li>Começar um novo hábito</li>
+                <li>Lembrar de quem importa</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
 
-      <article className="landing-vida__card">
-        <h3>▣ No trabalho</h3>
-        <p>
-          Clareza para os projetos e os detalhes de cada dia.
-        </p>
-        <ul>
-          <li>Ideias para projetos</li>
-          <li>Próximas entregas</li>
-          <li>Notas de reunião</li>
-        </ul>
-      </article>
-
-      <article className="landing-vida__card">
-        <h3>♡ Na vida pessoal</h3>
-        <p>
-          Espaço para o que você quer viver, além das tarefas.
-        </p>
-        <ul>
-          <li>Planejar uma viagem</li>
-          <li>Começar um novo hábito</li>
-          <li>Lembrar de quem importa</li>
-        </ul>
-      </article>
-    </div>
-  </div>
-</section>
-
-
-
-      <section className='landing-rotas-objetivos bg-color-farol-background flex flex-row items-center gap-16 py-24 px-22'>
-        <img className='block h-auto w-176 object-contain' src={heroObjetivo}></img>
+      <section className="landing-rotas-objetivos bg-color-farol-background flex flex-row items-center gap-16 py-24 px-22">
+        <img className="block h-auto w-176 object-contain" src={heroObjetivo}></img>
 
         <div className="landing-home_rotas-objetivos flex w-124 flex-col items-start gap-6 p-0">
-
           {/* Section label */}
           <span className="flex items-center gap-2.5 text-xs font-semibold uppercase leading-[15px] text-farol-accent">
             <span className="size-1.5 rounded-[2px] bg-farol-accent" />
@@ -209,8 +200,8 @@ function LandingPage({ onEntrar }) {
 
           {/* Description */}
           <p className="w-full max-w-[680px] text-lg font-normal leading-[1.5] text-farol-muted">
-            Um plano grande fica mais possível quando você consegue ver o caminho.
-            Divida a jornada em etapas e reconheça o que já conquistou.
+            Um plano grande fica mais possível quando você consegue ver o caminho. Divida a jornada
+            em etapas e reconheça o que já conquistou.
           </p>
 
           {/* Benefits */}
@@ -252,78 +243,64 @@ function LandingPage({ onEntrar }) {
           <p className="text-base font-normal leading-5 text-farol-accent">
             Uma ilha de cada vez. No seu ritmo.
           </p>
-
         </div>
-
       </section>
 
-      
-<section className="landing-planos" id="planos">
-  <div className="landing-planos__container">
-    <h2>Nossos Planos</h2>
+      <section className="landing-planos" id="planos">
+        <div className="landing-planos__container">
+          <h2>Nossos Planos</h2>
 
-    <div className="landing-planos__cards">
-      <article className="landing-planos__card">
-        <h3>Grátis</h3>
-        <div className="landing-planos__preco">
-          R$0,00
+          <div className="landing-planos__cards">
+            <article className="landing-planos__card">
+              <h3>Grátis</h3>
+              <div className="landing-planos__preco">R$0,00</div>
+
+              <p>Uma rota para aprender, sem perder seus descobrimentos.</p>
+
+              <ul>
+                <li>Resumo de TCC</li>
+                <li>Plano de revisão</li>
+                <li>Anotações de aula</li>
+              </ul>
+            </article>
+
+            <article className="landing-planos__card">
+              <h3>Mensal</h3>
+
+              <div className="landing-planos__preco">
+                R$14,90 <small>a.m</small>
+              </div>
+
+              <p>Clareza para os projetos e os detalhes de cada dia.</p>
+
+              <ul>
+                <li>Ideias para projetos</li>
+                <li>Próximas entregas</li>
+                <li>Notas de reunião</li>
+              </ul>
+            </article>
+
+            <article className="landing-planos__card">
+              <div className="landing-planos__titulo-anual">
+                <h3>Anual</h3>
+                <span>R$99,00 a.a</span>
+              </div>
+
+              <div className="landing-planos__preco">
+                R$8,25 <small>a.m</small>
+              </div>
+
+              <p>Espaço para o que você quer viver, além das tarefas.</p>
+
+              <ul>
+                <li>Planejar uma viagem</li>
+                <li>Começar um novo hábito</li>
+                <li>Lembrar de quem importa</li>
+              </ul>
+            </article>
+          </div>
         </div>
-
-        <p>
-          Uma rota para aprender, sem perder seus descobrimentos.
-        </p>
-
-        <ul>
-          <li>Resumo de TCC</li>
-          <li>Plano de revisão</li>
-          <li>Anotações de aula</li>
-        </ul>
-      </article>
-
-      <article className="landing-planos__card">
-        <h3>Mensal</h3>
-
-
-        <div className="landing-planos__preco">
-          R$14,90 <small>a.m</small>
-        </div>
-
-        <p>
-          Clareza para os projetos e os detalhes de cada dia.
-        </p>
-
-        <ul>
-          <li>Ideias para projetos</li>
-          <li>Próximas entregas</li>
-          <li>Notas de reunião</li>
-        </ul>
-      </article>
-
-      <article className="landing-planos__card">
-        <div className="landing-planos__titulo-anual">
-          <h3>Anual</h3>
-          <span>R$99,00 a.a</span>
-        </div>
-
-
-        <div className="landing-planos__preco">
-          R$8,25 <small>a.m</small>
-        </div>
-
-        <p>
-          Espaço para o que você quer viver, além das tarefas.
-        </p>
-
-        <ul>
-          <li>Planejar uma viagem</li>
-          <li>Começar um novo hábito</li>
-          <li>Lembrar de quem importa</li>
-        </ul>
-      </article>
-    </div>
-  </div>
-</section>
-
+      </section>
 
       <section
         id="faq"
@@ -357,8 +334,8 @@ function LandingPage({ onEntrar }) {
             </h3>
 
             <p className="text-base font-normal leading-[1.5] text-farol-muted">
-              Não. Você pode começar por uma nota, um lembrete ou o planejamento da semana.
-              Os pequenos passos também fazem parte da jornada.
+              Não. Você pode começar por uma nota, um lembrete ou o planejamento da semana. Os
+              pequenos passos também fazem parte da jornada.
             </p>
           </article>
 
@@ -368,8 +345,8 @@ function LandingPage({ onEntrar }) {
             </h3>
 
             <p className="text-base font-normal leading-[1.5] text-farol-muted">
-              O objetivo é o destino. As ilhas representam etapas do caminho, e as rotas
-              ajudam a visualizar como uma etapa se conecta à próxima.
+              O objetivo é o destino. As ilhas representam etapas do caminho, e as rotas ajudam a
+              visualizar como uma etapa se conecta à próxima.
             </p>
           </article>
 
@@ -379,8 +356,8 @@ function LandingPage({ onEntrar }) {
             </h3>
 
             <p className="text-base font-normal leading-[1.5] text-farol-muted">
-              Essa é a proposta: reunir o que importa no dia a dia sem deixar seus planos
-              de longo prazo fora de vista.
+              Essa é a proposta: reunir o que importa no dia a dia sem deixar seus planos de longo
+              prazo fora de vista.
             </p>
           </article>
 
@@ -390,13 +367,12 @@ function LandingPage({ onEntrar }) {
             </h3>
 
             <p className="text-base font-normal leading-[1.5] text-farol-muted">
-              Registre o que está na sua cabeça, escolha algo que merece atenção e defina
-              um próximo passo possível. Não é preciso planejar tudo de uma vez.
+              Registre o que está na sua cabeça, escolha algo que merece atenção e defina um próximo
+              passo possível. Não é preciso planejar tudo de uma vez.
             </p>
           </article>
         </div>
       </section>
-
 
       <footer
         id="como-funciona"

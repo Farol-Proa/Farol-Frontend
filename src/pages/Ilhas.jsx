@@ -202,8 +202,78 @@ function ModalObjetivo({ onClose, onCreate }) {
   );
 }
 
-function DetalhesEtapa({ etapa, onAddTask, onToggleTask, onDeleteTask, onClose }) {
+function TarefaEtapa({ tarefa, onUpdateDeadline, onToggle, onDelete, onError }) {
+  const [prazo, setPrazo] = useState(tarefa.prazo ?? '');
+  const [salvandoPrazo, setSalvandoPrazo] = useState(false);
+
+  async function salvarPrazo(novoPrazo) {
+    setPrazo(novoPrazo);
+    setSalvandoPrazo(true);
+    onError('');
+
+    try {
+      await onUpdateDeadline(tarefa.id, novoPrazo);
+    } catch (requestError) {
+      setPrazo(tarefa.prazo ?? '');
+      onError(requestError.message || 'Não foi possível atualizar o prazo.');
+    } finally {
+      setSalvandoPrazo(false);
+    }
+  }
+
+  return (
+    <div className="learning-task">
+      <input
+        type="checkbox"
+        checked={tarefa.concluida}
+        disabled={salvandoPrazo}
+        onChange={() => onToggle(tarefa.id, tarefa.concluida)}
+        aria-label={`Marcar ${tarefa.texto} como ${tarefa.concluida ? 'não concluída' : 'concluída'}`}
+      />
+      <span>
+        <b>{tarefa.texto}</b>
+      </span>
+      <label className="learning-task-deadline">
+        Prazo
+        <input
+          type="date"
+          value={prazo}
+          disabled={salvandoPrazo}
+          aria-label={`Prazo de ${tarefa.texto}`}
+          onChange={(event) => salvarPrazo(event.target.value)}
+        />
+      </label>
+      <button
+        type="button"
+        className="learning-task-clear"
+        disabled={!prazo || salvandoPrazo}
+        onClick={() => salvarPrazo('')}
+        aria-label={`Limpar prazo de ${tarefa.texto}`}
+      >
+        Limpar
+      </button>
+      <button
+        type="button"
+        disabled={salvandoPrazo}
+        onClick={() => onDelete(tarefa.id)}
+        aria-label={`Excluir tarefa ${tarefa.texto}`}
+      >
+        Excluir
+      </button>
+    </div>
+  );
+}
+
+function DetalhesEtapa({
+  etapa,
+  onAddTask,
+  onUpdateTaskDeadline,
+  onToggleTask,
+  onDeleteTask,
+  onClose,
+}) {
   const [titulo, setTitulo] = useState('');
+  const [prazo, setPrazo] = useState('');
   const [erro, setErro] = useState('');
 
   async function executarAcao(acao) {
@@ -220,8 +290,9 @@ function DetalhesEtapa({ etapa, onAddTask, onToggleTask, onDeleteTask, onClose }
     if (!titulo.trim()) return;
     setErro('');
     try {
-      await onAddTask(etapa.id, titulo.trim());
+      await onAddTask(etapa.id, { titulo: titulo.trim(), prazo });
       setTitulo('');
+      setPrazo('');
     } catch (requestError) {
       setErro(requestError.message || 'Não foi possível criar a tarefa.');
     }
@@ -250,24 +321,14 @@ function DetalhesEtapa({ etapa, onAddTask, onToggleTask, onDeleteTask, onClose }
           <h3>Tarefas</h3>
           {(etapa.tarefas ?? []).length === 0 && <p>Nenhuma tarefa nesta etapa.</p>}
           {(etapa.tarefas ?? []).map((tarefa) => (
-            <div className="learning-task" key={tarefa.id}>
-              <input
-                type="checkbox"
-                checked={tarefa.concluida}
-                onChange={() => executarAcao(() => onToggleTask(tarefa.id, tarefa.concluida))}
-                aria-label={`Marcar ${tarefa.texto} como ${tarefa.concluida ? 'não concluída' : 'concluída'}`}
-              />
-              <span>
-                <b>{tarefa.texto}</b>
-              </span>
-              <button
-                type="button"
-                onClick={() => executarAcao(() => onDeleteTask(tarefa.id))}
-                aria-label={`Excluir tarefa ${tarefa.texto}`}
-              >
-                Excluir
-              </button>
-            </div>
+            <TarefaEtapa
+              key={tarefa.id}
+              tarefa={tarefa}
+              onUpdateDeadline={onUpdateTaskDeadline}
+              onToggle={(id, concluida) => executarAcao(() => onToggleTask(id, concluida))}
+              onDelete={(id) => executarAcao(() => onDeleteTask(id))}
+              onError={setErro}
+            />
           ))}
           <form className="learning-add-task" onSubmit={adicionar}>
             <label>
@@ -277,6 +338,10 @@ function DetalhesEtapa({ etapa, onAddTask, onToggleTask, onDeleteTask, onClose }
                 onChange={(event) => setTitulo(event.target.value)}
                 maxLength={180}
               />
+            </label>
+            <label>
+              Prazo (opcional)
+              <input type="date" value={prazo} onChange={(event) => setPrazo(event.target.value)} />
             </label>
             <button type="submit">Adicionar tarefa</button>
           </form>
@@ -296,6 +361,7 @@ function Ilhas({
   onRemoverObjetivo,
   onAdicionarEtapa,
   onAdicionarTarefa,
+  onAtualizarPrazoTarefa,
   onAlternarTarefa,
   onRemoverTarefa,
   carregando,
@@ -413,6 +479,7 @@ function Ilhas({
         <DetalhesEtapa
           etapa={etapaSelecionada}
           onAddTask={onAdicionarTarefa}
+          onUpdateTaskDeadline={onAtualizarPrazoTarefa}
           onToggleTask={onAlternarTarefa}
           onDeleteTask={onRemoverTarefa}
           onClose={() => setSelectedStageId(null)}

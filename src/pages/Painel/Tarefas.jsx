@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { formatarPrazo } from '../../dashboard/taskDates';
 
 function Tarefas({ tarefas, onAlternarTarefa, onRemoverTarefa }) {
   const [erro, setErro] = useState('');
@@ -14,9 +15,9 @@ function Tarefas({ tarefas, onAlternarTarefa, onRemoverTarefa }) {
 
   return (
     <article className="painel-card min-w-0 p-4">
-      <h3>Tarefas da Semana</h3>
+      <h3>Minhas tarefas</h3>
       <p className="mb-3 text-xs leading-relaxed text-farol-muted">
-        Tarefas sem data aparecem aqui até que o backend ofereça agendamento.
+        Acompanhe o andamento e os prazos das tarefas dos seus objetivos.
       </p>
       {erro && (
         <p role="alert" className="text-xs text-red-300">
@@ -40,6 +41,7 @@ function Tarefas({ tarefas, onAlternarTarefa, onRemoverTarefa }) {
                   {tarefa.texto}
                   <small className="mt-1 block text-xs text-farol-muted">
                     {tarefa.objetivoNome} · {tarefa.etapaNome}
+                    {tarefa.prazo && ` · Prazo ${formatarPrazo(tarefa.prazo)}`}
                   </small>
                 </span>
               </label>

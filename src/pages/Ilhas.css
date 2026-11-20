@@ -1126,6 +1126,21 @@
   justify-content: flex-start;
   margin: 8px 0;
 }
+.learning-task-deadline {
+  display: grid;
+  gap: 4px;
+  margin-left: auto;
+  color: #aeb7d8;
+  font-size: 11px;
+}
+.learning-task-deadline input {
+  min-width: 0;
+  padding: 6px;
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 7px;
+  background: #090f29;
+  color: white;
+}
 .learning-task input {
   accent-color: #f5d547;
 }
@@ -1280,6 +1295,10 @@
   background: transparent;
   color: #ffb4b4;
   cursor: pointer;
+}
+.learning-task > .learning-task-clear {
+  margin-left: 0;
+  color: #aeb7d8;
 }
 @media (max-width: 700px) {
   .ilhas-add-stage {

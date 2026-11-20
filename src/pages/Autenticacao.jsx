@@ -115,27 +115,13 @@ export default function Autenticacao({
     event.preventDefault();
 
     try {
-      const resposta = await fetch('http://localhost:8080/api/usuarios/login', {
+      const resultado = await requisicaoAPI('/usuarios/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({
           email: login.email,
           senha: login.password,
         }),
       });
-
-      const resultado = await resposta.json().catch(() => ({}));
-
-      if (!resposta.ok) {
-        throw new Error(
-          resultado.detail ||
-            resultado.message ||
-            resultado.mensagem ||
-            'E-mail ou senha inválidos.',
-        );
-      }
 
       sessionStorage.setItem('token', resultado.token);
       sessionStorage.setItem('usuario', JSON.stringify(resultado.usuario));
@@ -275,11 +261,8 @@ export default function Autenticacao({
     }
 
     try {
-      const resposta = await fetch('http://localhost:8080/api/usuarios/cadastro', {
+      const resultado = await requisicaoAPI('/usuarios/cadastro', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({
           nome: userData.name,
           email: userData.email,
@@ -288,17 +271,6 @@ export default function Autenticacao({
           dataNascimento: userData.birthDate,
         }),
       });
-
-      const resultado = await resposta.json().catch(() => ({}));
-
-      if (!resposta.ok) {
-        throw new Error(
-          resultado.detail ||
-            resultado.message ||
-            resultado.mensagem ||
-            'Não foi possível realizar o cadastro.',
-        );
-      }
 
       setMessages((previous) => ({
         ...previous,

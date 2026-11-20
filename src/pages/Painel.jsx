@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { avancarMesCalendario } from '../dashboard/taskDates';
 import Sidebar from '../components/Sidebar';
 import './Painel.css';
 import Calendario from './Painel/Calendario';
@@ -21,8 +22,13 @@ function Painel({
   onNavegar,
   onLogout,
   onAdicionarNota,
+  onAtualizarNota,
   onAlternarNota,
   onRemoverNota,
+  onRecarregarNotas,
+  carregandoNotas,
+  operacaoNotaPendente,
+  erroNotas,
   onAlternarTarefa,
   onRemoverTarefa,
   carregando,
@@ -36,9 +42,9 @@ function Painel({
   });
 
   function mudarMes(diferenca) {
-    setMesExibido(
-      (mesAtual) => new Date(mesAtual.getFullYear(), mesAtual.getMonth() + diferenca, 1),
-    );
+    const proximoEstado = avancarMesCalendario(mesExibido, diferenca);
+    setMesExibido(proximoEstado.mesExibido);
+    setDataSelecionada(proximoEstado.dataSelecionada);
   }
 
   const totalItens = tarefas.length;
@@ -49,17 +55,14 @@ function Painel({
     <div className="painel painel-farol bg-farol-dashboard text-farol-text flex max-[600px]:flex-col">
       <Sidebar activeItem={activeItem} onNavegar={onNavegar} onLogout={onLogout} />
 
-      <div className="grid size-9 place-items-center rounded-full bg-farol-primary">
-        {usuario.nome?.charAt(0).toUpperCase() || 'U'}
-      </div>
       <main className="painel-main min-w-0 flex-1" id="inicio">
         <header className="painel-topbar">
           <div>
             <span className="painel-eyebrow">SEU ESPAÇO, SEU RITMO</span>
             <h1>{activeItem || 'Início'}</h1>
           </div>
-          <div className="painel-avatar" aria-label="Perfil de Robriel">
-            R
+          <div className="painel-avatar" aria-label={`Perfil de ${usuario.nome || 'usuário'}`}>
+            {usuario.nome?.charAt(0).toUpperCase() || 'U'}
           </div>
         </header>
 
@@ -92,8 +95,13 @@ function Painel({
           <Notas
             notas={notas}
             onAdicionarNota={onAdicionarNota}
+            onAtualizarNota={onAtualizarNota}
             onAlternarNota={onAlternarNota}
             onRemoverNota={onRemoverNota}
+            onRecarregar={onRecarregarNotas}
+            carregando={carregandoNotas}
+            operacaoPendente={operacaoNotaPendente}
+            erro={erroNotas}
           />
 
           <Calendario

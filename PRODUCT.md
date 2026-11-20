@@ -47,10 +47,20 @@ Diferente de gerenciadores de tarefas genéricos (como listas to-do áridas ou q
 - **Arquitetura Desacoplada:** Frontend React 19 (Vite) consumindo API REST Spring Boot (Java 25) sobre banco de dados relacional MySQL. O frontend nunca acessa dados diretamente.
 - **Fonte da Verdade:** O backend é a fonte absoluta de integridade, autenticação e permissões.
 
-### Decisões em Aberto / Explicitamente Indecididas:
-- **Planos e Assinaturas (Gratuito vs Pago):** Modelo de monetização previsto conceitualmente, mas preços, limites de ilhas/tarefas, recursos exclusivos e provedor de pagamento ainda não foram definidos ou implementados. Não inventar restrições artificiais sem validação da equipe.
-- **Módulo de Mentorias:** Previsto no cardápio de valor para orientação personalizada, com link no menu, mas sem contratos, agenda, mentores ou regras de cobrança implementados até o momento.
-- **Datas em Tarefas:** Tarefas atualmente não possuem campo de data ou prazo no backend; sua exibição no calendário permanece desacoplada até evolução do schema.
+### Modelo de Planos e Assinaturas (Confirmado):
+- **Modelo Freemium:**
+  - *Plano Gratuito:* Anotações, atividades com prazos, calendário, acompanhamento de progresso e desdobramento de objetivos em Ilhas.
+  - *Plano Premium:* R$ 14,90/mês ou R$ 99,00/ano. Inclui todos os recursos do gratuito + temas personalizados, backup automático e mentoria com profissionais voluntários.
+  - *Status da integração técnica:* Preços e periodicidade confirmados; gateway de pagamentos e webhooks a definir pela equipe antes da implementação.
+
+### Módulo de Mentorias (Confirmado):
+- Benefício exclusivo do plano Premium com profissionais voluntários.
+- Painel exclusivo do mentor (autenticação separada) para gerenciar rotina, visualizar mentorados vinculados, acompanhar frequência e evolução, manter contato direto e organizar grade de horários.
+- Controle de pacotes de sessões, prazos e reagendamentos com validação estrita no backend.
+
+### Tarefas e Calendário (Diretriz Técnica Confirmada):
+- Tarefas podem ter um prazo opcional; tarefas sem prazo continuam válidas. Quando definido, o prazo deve ser refletido no calendário do usuário.
+- A Fase 2 implementou `prazo` como `LocalDate` no backend e integrou criação, edição e limpeza do prazo nas Ilhas com a visualização no calendário. O script SQL é manual; cada ambiente deve confirmar a coluna antes de aplicá-lo.
 
 ## Brand Commitments
 

@@ -1,3 +1,5 @@
+import { filtrarTarefasPorPrazo, formatarPrazo } from '../../dashboard/taskDates';
+
 function obterDiasDoMes(mesExibido) {
   const ano = mesExibido.getFullYear();
   const mes = mesExibido.getMonth();
@@ -21,13 +23,13 @@ function obterDiasDoMes(mesExibido) {
 
 function Calendario({ mesExibido, dataSelecionada, tarefas, onMudarMes, onSelecionarData }) {
   const dias = obterDiasDoMes(mesExibido);
+  const tarefasDoDia = filtrarTarefasPorPrazo(tarefas, dataSelecionada);
 
   return (
     <article className="painel-card min-w-0 p-4" id="calendario">
       <h3>Meu calendário</h3>
       <p className="text-xs leading-relaxed text-farol-muted">
-        As tarefas atuais não possuem data; elas aparecem na lista da semana sem marcação no
-        calendário.
+        Selecione um dia para ver os prazos das suas tarefas.
       </p>
 
       <div className="navegacao-mes">
@@ -59,7 +61,7 @@ function Calendario({ mesExibido, dataSelecionada, tarefas, onMudarMes, onSeleci
             return <div className="dia-vazio" key={`vazio-${indice}`} />;
           }
 
-          const temTarefa = tarefas.some((tarefa) => tarefa.data === item.dataFormatada);
+          const temTarefa = tarefas.some((tarefa) => tarefa.prazo === item.dataFormatada);
 
           return (
             <button
@@ -76,8 +78,28 @@ function Calendario({ mesExibido, dataSelecionada, tarefas, onMudarMes, onSeleci
       </div>
 
       <p className="text-xs leading-relaxed text-farol-muted">
-        Data selecionada: {dataSelecionada}
+        {dataSelecionada ? `Tarefas para ${formatarPrazo(dataSelecionada)}` : 'Selecione uma data'}
       </p>
+      {!dataSelecionada ? (
+        <p className="calendario-dia-vazio text-xs text-farol-muted">
+          Selecione um dia para ver as tarefas com prazo.
+        </p>
+      ) : tarefasDoDia.length === 0 ? (
+        <p className="calendario-dia-vazio text-xs text-farol-muted">
+          Nenhuma tarefa com prazo neste dia.
+        </p>
+      ) : (
+        <ul className="calendario-tarefas-dia">
+          {tarefasDoDia.map((tarefa) => (
+            <li key={tarefa.id}>
+              <span className={tarefa.concluida ? 'tarefa-concluida' : ''}>{tarefa.texto}</span>
+              <small>
+                {tarefa.objetivoNome} · {tarefa.etapaNome}
+              </small>
+            </li>
+          ))}
+        </ul>
+      )}
     </article>
   );
 }

@@ -1,32 +1,63 @@
-name: farol-project-context
-
-description: Contexto arquitetural, regras de negócio, funcionalidades, monetização, mentorias e integrações do projeto Farol. Use sempre que trabalhar nos repositórios farol-frontend ou farol-backend.
-
 ---
+name: farol-project-context
+description: "Contexto arquitetural, regras de negócio, funcionalidades, monetização, mentorias e integrações do projeto Farol. Use sempre que trabalhar nos repositórios farol-frontend ou farol-backend."
+---
+
+
 
 # Farol Project Context
 
+
+
 ## 1. Objetivo desta skill
+
+
 
 Esta skill contém o contexto técnico e funcional do projeto Farol.
 
+
+
 Seu objetivo é garantir que agentes de IA, como Codex CLI e Antigravity, compreendam o funcionamento do sistema antes de realizar alterações.
+
+
 
 O agente deve utilizar estas instruções como referência, mas sempre conferir o código atual dos repositórios antes de implementar qualquer funcionalidade.
 
-**Regra fundamental:** preservar o projeto existente, respeitar as decisões da equipe e nunca inventar funcionalidades, endpoints, propriedades, preços ou regras de negócio.
+
+
+****Regra fundamental:**** preservar o projeto existente, respeitar as decisões da equipe e nunca inventar funcionalidades, endpoints, propriedades, preços ou regras de negócio.
+
+## Hierarquia de contexto e Skills
+
+Esta Skill é a referência principal para decisões compartilhadas do Farol. Siga primeiro as instruções do ambiente e do `AGENTS.md` do repositório; use este contexto para produto, regras e estado aprovado; depois consulte a Skill técnica do repositório (`farol-frontend` ou `farol-backend`) e as Skills metodológicas pertinentes. Skills complementares podem orientar o método, mas não alteram regras de negócio. Se houver conflito, informe os arquivos e os trechos envolvidos, preserve a decisão aprovada registrada aqui e peça decisão da equipe quando o ponto estiver pendente.
+
+Uma Skill só foi utilizada depois que suas instruções relevantes foram abertas e consideradas. Confira os arquivos existentes e o catálogo do ambiente; não presuma disponibilidade em outro repositório ou instalação.
+
+
 
 ---
 
+
+
 ## 2. Sobre o projeto Farol
+
+
 
 O Farol é uma plataforma digital que ajuda pessoas a organizarem seus objetivos pessoais, acadêmicos e profissionais.
 
+
+
 Sua proposta é transformar objetivos grandes e difíceis de alcançar em pequenas etapas organizadas e tarefas executáveis.
 
-**Slogan:** Farol que ilumina o seu caminho.
+
+
+****Slogan:**** Farol que ilumina o seu caminho.
+
+
 
 ### Público-alvo
+
+
 
 Pessoas de aproximadamente 15 a 40 anos que:
 
@@ -40,23 +71,43 @@ Pessoas de aproximadamente 15 a 40 anos que:
 
 - Precisam de orientação para acompanhar seu progresso.
 
+
+
 ### Proposta de valor
+
+
 
 O Farol deve oferecer uma experiência simples, intuitiva e organizada, ajudando o usuário a encontrar um caminho para alcançar seus objetivos.
 
+
+
 A plataforma não deve aumentar a complexidade da organização.
+
+
 
 ---
 
+
+
 ## 3. Conceito principal: Objetivos, Ilhas e Tarefas
+
+
 
 A estrutura central do Farol segue esta hierarquia:
 
-**Objetivo → Etapas (Ilhas) → Tarefas**
+
+
+****Objetivo → Etapas (Ilhas) → Tarefas****
+
+
 
 ### Objetivo
 
+
+
 Representa aquilo que o usuário deseja alcançar.
+
+
 
 Exemplos:
 
@@ -68,13 +119,23 @@ Exemplos:
 
 - Aprender programação.
 
+
+
 ### Etapas / Ilhas
+
+
 
 Representam os passos necessários para alcançar um objetivo.
 
+
+
 Exemplo:
 
+
+
 Objetivo: Conseguir um emprego na área de TI.
+
+
 
 Ilhas:
 
@@ -90,15 +151,27 @@ Ilhas:
 
 6. Participar de processos seletivos.
 
+
+
 As Ilhas devem ser apresentadas visualmente em um mapa ou roadmap, utilizando a implementação existente com React Flow.
+
+
 
 ### Tarefas
 
+
+
 São atividades menores que pertencem a uma Ilha.
+
+
 
 Exemplo:
 
+
+
 Ilha: Estudar Java.
+
+
 
 Tarefas:
 
@@ -110,7 +183,11 @@ Tarefas:
 
 - Revisar os conteúdos estudados.
 
+
+
 ### Regras de relacionamento
+
+
 
 - Um usuário possui seus próprios objetivos.
 
@@ -124,17 +201,31 @@ Tarefas:
 
 - Uma tarefa pertence a uma etapa.
 
+
+
 Os dados devem respeitar os relacionamentos existentes no banco de dados.
+
+
 
 ---
 
+
+
 ## 4. Estrutura dos repositórios
+
+
 
 O projeto é dividido em dois repositórios independentes.
 
+
+
 ### Repositório 1: farol-frontend
 
+
+
 Responsável pela interface e interação com o usuário.
+
+
 
 Tecnologias:
 
@@ -149,6 +240,8 @@ Tecnologias:
 - CSS personalizado.
 
 - React Flow (`@xyflow/react`).
+
+
 
 Responsabilidades:
 
@@ -168,9 +261,15 @@ Responsabilidades:
 
 - Manter a experiência responsiva e intuitiva.
 
+
+
 ### Repositório 2: farol-backend
 
+
+
 Responsável pelas regras de negócio, segurança e persistência dos dados.
+
+
 
 Tecnologias:
 
@@ -188,6 +287,8 @@ Tecnologias:
 
 - API REST.
 
+
+
 Responsabilidades:
 
 - Disponibilizar endpoints REST.
@@ -204,21 +305,39 @@ Responsabilidades:
 
 - Retornar respostas adequadas ao frontend.
 
+
+
 ### Regra de comunicação
+
+
 
 O frontend não deve acessar o banco de dados diretamente.
 
+
+
 Fluxo correto:
+
+
 
 Frontend React → API REST → Spring Boot → JPA/Hibernate → MySQL.
 
+
+
 ---
+
+
 
 ## 5. Modelo de negócio: planos e assinaturas
 
+
+
 O Farol utiliza o modelo Freemium, com um plano gratuito e um plano Premium.
 
+
+
 ### 5.1. Plano Gratuito (Freemium)
+
+
 
 O plano gratuito reúne os instrumentos essenciais de navegação e organização, incluindo:
 
@@ -232,13 +351,19 @@ O plano gratuito reúne os instrumentos essenciais de navegação e organizaçã
 
 - Desmembramento de grandes objetivos em pequenas etapas chamadas Ilhas.
 
+
+
 ### 5.2. Plano Premium
+
+
 
 O plano Premium custa:
 
 - R$ 14,90 por mês.
 
 - R$ 99,00 por ano.
+
+
 
 Inclui os recursos do plano gratuito e os seguintes benefícios adicionais:
 
@@ -248,7 +373,11 @@ Inclui os recursos do plano gratuito e os seguintes benefícios adicionais:
 
 - Mentoria com profissionais voluntários.
 
+
+
 ### 5.3. Regras obrigatórias para implementação
+
+
 
 1. O usuário deve possuir uma modalidade de acesso identificável pelo sistema.
 
@@ -266,9 +395,15 @@ Inclui os recursos do plano gratuito e os seguintes benefícios adicionais:
 
 8. Não criar limitações artificiais sem autorização da equipe.
 
+
+
 ### 5.4. Assinaturas e pagamentos
 
+
+
 Os preços e a periodicidade dos planos estão definidos conforme descrito acima. O gateway/provedor de pagamento e sua integração técnica permanecem a definir pela equipe.
+
+
 
 Antes de implementar a integração:
 
@@ -290,7 +425,11 @@ Antes de implementar a integração:
 
 - Utilizar variáveis de ambiente para credenciais.
 
+
+
 ### 5.5. Segurança das assinaturas
+
+
 
 O backend deve ser a fonte de verdade para:
 
@@ -304,19 +443,33 @@ O backend deve ser a fonte de verdade para:
 
 - Alterações de plano.
 
+
+
 Não permitir que o usuário consiga liberar funcionalidades pagas alterando o estado do React, parâmetros de requisição ou informações armazenadas no navegador.
 
+
+
 Não inventar regras de renovação, cancelamento, reembolso, período de teste ou limites de uso que ainda não tenham sido definidos pela equipe.
+
+
 
 ---
 
 ## 6. Mentorias
 
+
+
 As mentorias fazem parte da proposta de valor do Farol. No plano Premium, o usuário terá acesso à mentoria com profissionais voluntários.
+
+
 
 ### 6.1. Área exclusiva do mentor
 
+
+
 O mentor deverá possuir cadastro e login exclusivos e, após autenticação, acessar um painel de controle próprio para gerenciar sua atuação na plataforma.
+
+
 
 O painel do mentor deverá permitir:
 
@@ -332,7 +485,11 @@ O painel do mentor deverá permitir:
 
 - Organizar e visualizar sua grade de horários disponíveis.
 
+
+
 ### 6.2. Organização e regras das mentorias
+
+
 
 A plataforma deverá apoiar a organização do acompanhamento, incluindo:
 
@@ -344,13 +501,23 @@ A plataforma deverá apoiar a organização do acompanhamento, incluindo:
 
 - Organização dos horários disponíveis e dos agendamentos.
 
+
+
 As regras comerciais e operacionais detalhadas, como composição dos pacotes, prazos exatos, condições de reagendamento e funcionamento da agenda, deverão ser especificadas pela equipe antes da implementação. Não inventar valores, quantidades, prazos ou condições.
+
+
 
 ### 6.3. Integração com os planos
 
+
+
 A mentoria com profissionais voluntários é um benefício previsto no plano Premium. Não presumir disponibilidade, quantidade de sessões, duração, frequência ou condições não descritas nas regras aprovadas pela equipe.
 
+
+
 ### 6.4. Regras técnicas e de segurança
+
+
 
 - Implementar controle de acesso específico para o perfil de mentor.
 
@@ -368,11 +535,23 @@ A mentoria com profissionais voluntários é um benefício previsto no plano Pre
 
 - Não inventar entidades, endpoints ou regras antes de analisar o projeto e as definições da equipe.
 
+
+
+
+
+
+
 ## 7. Funcionalidades principais do sistema
+
+
 
 ### 7.1. Landing Page
 
+
+
 Página inicial pública do Farol.
+
+
 
 Responsabilidades:
 
@@ -386,9 +565,15 @@ Responsabilidades:
 
 - Direcionar o visitante para cadastro ou login.
 
+
+
 ### 7.2. Autenticação
 
+
+
 Responsável pelo cadastro, login e gerenciamento de acesso.
+
+
 
 Funcionalidades:
 
@@ -404,9 +589,15 @@ Funcionalidades:
 
 - Encerramento de sessão.
 
+
+
 ### 7.3. Painel / Início
 
+
+
 É a central de acompanhamento do usuário.
+
+
 
 Deve apresentar informações provenientes dos dados reais do backend:
 
@@ -418,9 +609,15 @@ Deve apresentar informações provenientes dos dados reais do backend:
 
 - Calendário: visualização e organização de compromissos e tarefas.
 
+
+
 ### 7.4. Objetivos
 
+
+
 Responsável pelo gerenciamento dos objetivos do usuário.
+
+
 
 Funcionalidades esperadas:
 
@@ -436,9 +633,15 @@ Funcionalidades esperadas:
 
 - Exibir progresso.
 
+
+
 ### 7.5. Ilhas / Roadmap
 
+
+
 Responsável por apresentar visualmente as etapas de cada objetivo.
+
+
 
 Funcionalidades esperadas:
 
@@ -458,9 +661,15 @@ Funcionalidades esperadas:
 
 - Navegar pelo mapa utilizando React Flow.
 
+
+
 ### 7.6. Tarefas
 
+
+
 Responsável pelo gerenciamento das atividades de cada etapa.
+
+
 
 Funcionalidades:
 
@@ -476,23 +685,43 @@ Funcionalidades:
 
 - Atualizar o progresso da etapa e do objetivo.
 
+
+
 ### 7.7. Anotações, Calendário e Mentoria
+
+
 
 São áreas complementares da plataforma.
 
+
+
 Antes de implementar ou modificar qualquer uma delas, verificar quais funcionalidades já existem e quais estão efetivamente integradas ao backend.
+
+
 
 ### 7.8. Planos e assinaturas
 
+
+
 Responsável pela apresentação das modalidades de acesso e gerenciamento da contratação de recursos pagos.
+
+
 
 Deve respeitar as regras comerciais e de autorização definidas pela equipe.
 
+
+
 ---
+
+
 
 ## 8. Regras de progresso
 
+
+
 O progresso deve ser calculado com base nas tarefas reais cadastradas.
+
+
 
 - Cada tarefa concluída contribui para o progresso da etapa.
 
@@ -502,7 +731,11 @@ O progresso deve ser calculado com base nas tarefas reais cadastradas.
 
 - O progresso geral deve considerar os objetivos do usuário, respeitando a fórmula adotada pela aplicação.
 
+
+
 Exemplo:
+
+
 
 Uma Ilha possui 4 tarefas:
 
@@ -512,7 +745,11 @@ Uma Ilha possui 4 tarefas:
 
 - 1 não iniciada.
 
+
+
 Progresso: 2 de 4 tarefas concluídas = 50%.
+
+
 
 Cuidados:
 
@@ -524,19 +761,35 @@ Cuidados:
 
 - Evitar cálculos diferentes entre Painel e Ilhas.
 
+
+
 ---
+
+
 
 ## 9. Integração entre frontend e backend
 
+
+
 A integração é uma das partes mais importantes do projeto.
+
+
 
 O agente deve garantir que os dados exibidos no frontend representem os dados persistidos no banco.
 
+
+
 ### Endpoints conhecidos
+
+
 
 Os seguintes caminhos foram utilizados ou identificados durante o desenvolvimento anterior.
 
+
+
 São referências históricas e precisam ser conferidos nos Controllers atuais.
+
+
 
 | Método | Endpoint conhecido | Finalidade |
 
@@ -558,11 +811,19 @@ São referências históricas e precisam ser conferidos nos Controllers atuais.
 
 | PATCH | `/api/tarefas/{id}/conclusao` | Atualizar conclusão |
 
+| PATCH | `/api/tarefas/{id}/prazo` | Atualizar ou limpar o prazo da tarefa |
+
 | DELETE | `/api/tarefas/{id}` | Excluir tarefa |
+
+
 
 Não inventar endpoints para assinaturas, pagamentos ou mentorias. Primeiro verificar o que já existe.
 
+
+
 ### Regras obrigatórias
+
+
 
 - Utilizar o serviço centralizado de requisições existente no frontend.
 
@@ -576,11 +837,19 @@ Não inventar endpoints para assinaturas, pagamentos ou mentorias. Primeiro veri
 
 - Evitar dados mockados como substitutos da API em produção.
 
+
+
 ---
+
+
 
 ## 10. Sincronização entre Painel e Ilhas
 
+
+
 As informações apresentadas no Painel e na página Ilhas representam os mesmos dados e devem permanecer consistentes.
+
+
 
 Exemplo:
 
@@ -598,6 +867,8 @@ Exemplo:
 
 7. Ao retornar para Ilhas, a tarefa aparece concluída.
 
+
+
 Regras:
 
 - Evitar versões independentes e divergentes dos mesmos dados.
@@ -610,11 +881,19 @@ Regras:
 
 - Não atribuir datas inexistentes às tarefas.
 
+
+
 ---
+
+
 
 ## 11. Banco de dados e persistência
 
+
+
 O banco utilizado é MySQL, com persistência por Spring Data JPA e Hibernate.
+
+
 
 Entidades funcionais conhecidas:
 
@@ -626,11 +905,21 @@ Entidades funcionais conhecidas:
 
 - Tarefa.
 
+
+
 Outras entidades podem ser necessárias para planos, assinaturas, pagamentos e mentorias, mas devem ser definidas com base nas regras reais da equipe.
+
+
 
 ### Datas das tarefas
 
-O schema atual ainda não possui campo de data/agendamento para tarefas. A implementação do vínculo entre tarefas e calendário exige avaliar e atualizar a entidade Tarefa, os DTOs, os repositórios/serviços/controladores envolvidos e o schema do MySQL. Definir o tipo de data adequado e eventuais regras de fuso horário durante o planejamento técnico; não assumir detalhes sem analisar o sistema.
+
+
+O prazo da tarefa é opcional: tarefas sem prazo continuam válidas. A implementação atual usa `LocalDate` no backend e `YYYY-MM-DD` no frontend, sem converter a data civil para timestamp UTC/local. O endpoint `PATCH /api/tarefas/{id}/prazo` atualiza ou limpa o prazo; confirme sempre o contrato no controller e nos DTOs antes de alterar a integração.
+
+O backend mantém `spring.jpa.hibernate.ddl-auto=none`; o script `src/main/resources/db/manual/V3__adicionar_prazo_tarefas.sql` é manual, não uma migração automática. A coluna `tarefas.prazo` foi observada no banco local durante a validação da Fase 2, mas cada ambiente deve confirmar sua existência antes de aplicar o script. Não assumir que todos os bancos foram migrados.
+
+
 
 Antes de modificar tabelas:
 
@@ -644,9 +933,15 @@ Antes de modificar tabelas:
 
 - Não executar comandos destrutivos sem autorização.
 
+
+
 ---
 
+
+
 ## 12. Segurança e autenticação
+
+
 
 O projeto utiliza ou utilizou anteriormente:
 
@@ -658,7 +953,11 @@ O projeto utiliza ou utilizou anteriormente:
 
 - Token armazenado no `sessionStorage`, com a chave `token`.
 
+
+
 Conferir esses detalhes no código atual.
+
+
 
 Regras:
 
@@ -676,17 +975,31 @@ Regras:
 
 - Utilizar variáveis de ambiente.
 
+
+
 ### Proteção de planos e mentorias
+
+
 
 As permissões de acesso aos recursos pagos devem ser verificadas no backend.
 
+
+
 Não confiar apenas em informações de plano recebidas do frontend.
+
+
 
 ---
 
+
+
 ## 13. Padrões de desenvolvimento
 
+
+
 ### Frontend
+
+
 
 - Utilizar componentes React reutilizáveis.
 
@@ -704,7 +1017,11 @@ Não confiar apenas em informações de plano recebidas do frontend.
 
 - Garantir responsividade.
 
+
+
 ### Backend
+
+
 
 - Respeitar a separação Controller, Service e Repository.
 
@@ -718,11 +1035,19 @@ Não confiar apenas em informações de plano recebidas do frontend.
 
 - Respeitar as convenções Spring Boot existentes.
 
+
+
 ---
+
+
 
 ## 14. Regras para trabalhar com agentes de IA
 
+
+
 ### Regra 1 — Analisar antes de alterar
+
+
 
 Antes de modificar arquivos:
 
@@ -738,7 +1063,11 @@ Antes de modificar arquivos:
 
 6. Apresentar diagnóstico antes de mudanças importantes.
 
+
+
 ### Regra 2 — Preservar o trabalho da equipe
+
+
 
 - Não apagar implementações existentes sem justificativa.
 
@@ -756,7 +1085,11 @@ Antes de modificar arquivos:
 
 - Preservar contribuições válidas durante resolução de conflitos.
 
+
+
 ### Regra 3 — Implementar por etapas
+
+
 
 1. Entender o comportamento esperado.
 
@@ -772,7 +1105,11 @@ Antes de modificar arquivos:
 
 7. Documentar o resultado.
 
+
+
 ### Regra 4 — Não inventar funcionalidades
+
+
 
 Se um endpoint, campo, entidade, preço, benefício ou comportamento não estiver definido:
 
@@ -784,7 +1121,11 @@ Se um endpoint, campo, entidade, preço, benefício ou comportamento não estive
 
 - Solicitar confirmação quando envolver decisões de arquitetura ou negócio.
 
+
+
 ### Regra 5 — Validar a integração completa
+
+
 
 Validar, quando aplicável:
 
@@ -804,11 +1145,19 @@ Validar, quando aplicável:
 
 - Atualização da interface.
 
+
+
 ---
+
+
 
 ## 15. Testes e critérios de conclusão
 
+
+
 ### Frontend
+
+
 
 Verificar:
 
@@ -826,7 +1175,11 @@ Verificar:
 
 - Responsividade.
 
+
+
 ### Backend
+
+
 
 Verificar:
 
@@ -846,7 +1199,11 @@ Verificar:
 
 - Tratamento de exceções.
 
+
+
 ### Integração
+
+
 
 Verificar:
 
@@ -874,11 +1231,19 @@ Verificar:
 
 - Fluxos de pagamento, quando implementados.
 
+
+
 Não declarar testes aprovados sem executá-los.
+
+
 
 ---
 
+
+
 ## 16. Documentação e comunicação
+
+
 
 Ao finalizar uma tarefa, apresentar:
 
@@ -894,21 +1259,39 @@ Ao finalizar uma tarefa, apresentar:
 
 6. Quais pendências continuam existindo.
 
+
+
 Utilizar linguagem simples e objetiva.
+
+
 
 ---
 
+
+
 ## 17. Instrução final para o agente
+
+
 
 Você está trabalhando no projeto Farol, uma plataforma que ajuda pessoas a organizarem seus objetivos e transformarem grandes metas em etapas e tarefas menores.
 
+
+
 O Farol também possui uma proposta de negócio com modalidades gratuitas e pagas, além de uma funcionalidade de mentorias.
+
+
 
 Seu trabalho não é apenas gerar código.
 
+
+
 Você deve preservar a arquitetura, manter a integração entre os dois repositórios, proteger os dados dos usuários e respeitar as regras funcionais e comerciais da plataforma.
 
-**Prioridades:**
+
+
+****Prioridades:****
+
+
 
 1. Preservar o código e o trabalho da equipe.
 
@@ -926,4 +1309,34 @@ Você deve preservar a arquitetura, manter a integração entre os dois reposit�
 
 8. Testar antes de considerar qualquer tarefa concluída.
 
-Sempre trate o código atual como fonte de verdade e esta skill como o guia de contexto do projeto.
+
+
+Trate o código como fonte de verdade para o estado técnico observado. Para regras de produto, siga as decisões aprovadas registradas neste contexto; se o código divergir, descreva a divergência e não altere silenciosamente a regra.
+
+---
+
+## Estado das fases de desenvolvimento
+
+Este resumo registra implementação observada no workspace e resultados de validação já reportados. Não substitui a conferência do código, dos testes e do banco no ambiente da tarefa.
+
+### Fase 1 — estabilização
+
+- No Front, os CTAs da landing/header usam `onEntrar`, o logout usa `onClick`, o Painel identifica o usuário autenticado e a autenticação usa o serviço central `requisicaoAPI` com `VITE_API_URL` e fallback local.
+- No Backend, `SecurityConfig` desabilita CSRF globalmente na configuração observada. Isso descreve o código atual, não uma decisão de segurança que deva ser ampliada ou reinterpretada sem revisão.
+- Build de produção do Front foi reportado como aprovado; ESLint teve saída 1 e não deve ser citado como aprovado sem nova execução e análise dos erros.
+
+### Fase 2 — prazos e calendário
+
+- Código presente: prazo opcional `LocalDate`, DTOs e serviço atualizados, endpoint PATCH para atualizar/limpar, controles de criação/edição/limpeza nas Ilhas e tarefas reais com prazo no calendário.
+- Validação automatizada previamente reportada como aprovada: testes do Front e build; relatórios do Backend registram 7 testes sem falhas ou erros.
+- A coluna `tarefas.prazo` existia no banco local na última consulta registrada; não foi confirmado que o script V3 criou essa coluna. O script continua manual e outros ambientes precisam ser verificados individualmente.
+- A conferência visual manual do calendário permaneceu pendente no plano da Fase 2.
+
+### Próximas fases e decisões pendentes
+
+- Fase 3 — Notas e árvore de objetivos: escopo autorizado em 2026-11-20. O código implementa CRUD autenticado em `/api/notas`, integração das notas diárias do Painel e `GET /api/objetivos/arvore`, preservando status e prazos das tarefas. Os testes automatizados do Front e Backend passaram nesta implementação.
+- A tabela `notas` não existia no MySQL local consultado. O script manual V4 foi criado, mas não executado; persistência real das notas e validação manual da interface dependem de aplicação autorizada da migração.
+- O gateway de pagamento e webhooks estão pendentes de decisão da equipe.
+- Limites numéricos de mapas por plano não foram encontrados em fonte aprovada.
+- O backend contém suporte estrutural a origem manual/IA e a documentação do banco descreve rascunhos de IA com aprovação; não foi verificado um fluxo de IA completo no produto. Confirmar o comportamento e limites com a equipe antes de tratá-los como política aprovada.
+- Regras operacionais de mentorias — quantidade, duração, frequência, disponibilidade e reagendamento — continuam pendentes; o benefício Premium com profissionais voluntários está descrito no produto.

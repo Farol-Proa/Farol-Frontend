@@ -1,7 +1,0 @@
-{
-  "stdout": "",
-  "stderr": "Error: no saved wiring for page.html; run detect --before page.html first\n",
-  "exit": 2,
-  "signal": null,
-  "files": {}
-}

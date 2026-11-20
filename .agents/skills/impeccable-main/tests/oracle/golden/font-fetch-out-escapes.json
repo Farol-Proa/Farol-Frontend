@@ -1,7 +1,0 @@
-{
-  "stdout": "",
-  "stderr": "--out must be a directory inside this project, like assets/fonts.\n",
-  "exit": 1,
-  "signal": null,
-  "files": {}
-}

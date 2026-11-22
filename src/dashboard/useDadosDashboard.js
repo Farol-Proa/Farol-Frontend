@@ -1,40 +1,23 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { requisicaoAPI } from '../services/api';
-import { criarServicoNotas } from './notasApi';
+import { mapasAPI } from '../services/mapasApi';
 import { mapearArvoreObjetivos } from './objectiveTree';
-import { criarControleSessao } from './sessionVersion';
-
-const notasAPI = criarServicoNotas(requisicaoAPI);
 
 export function useDadosDashboard() {
   const [objetivos, setObjetivos] = useState([]);
-  const [notas, setNotas] = useState([]);
-  const [carregandoNotas, setCarregandoNotas] = useState(false);
-  const [operacaoNotaPendente, setOperacaoNotaPendente] = useState(false);
-  const [erroNotas, setErroNotas] = useState('');
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState('');
   const [versaoDados, setVersaoDados] = useState(0);
-  const [versaoNotas, setVersaoNotas] = useState(0);
-  const controleSessaoNotas = useRef(null);
-  if (controleSessaoNotas.current == null) controleSessaoNotas.current = criarControleSessao();
+  const filasPosicao = useRef(new Map());
+  const posicoesConfirmadas = useRef(new Map());
 
   const recarregarObjetivos = useCallback(() => {
     setVersaoDados((versao) => versao + 1);
   }, []);
 
-  const recarregarNotas = useCallback(() => {
-    setNotas([]);
-    setVersaoNotas((versao) => versao + 1);
-  }, []);
-
-  const limparNotas = useCallback(() => {
-    controleSessaoNotas.current.invalidar();
-    setNotas([]);
-    setErroNotas('');
-    setCarregandoNotas(false);
-    setOperacaoNotaPendente(false);
-    setVersaoNotas((versao) => versao + 1);
+  const limparObjetivos = useCallback(() => {
+    setObjetivos([]);
+    setErro('');
+    setCarregando(false);
   }, []);
 
   useEffect(() => {
@@ -50,7 +33,7 @@ export function useDadosDashboard() {
       setErro('');
 
       try {
-        const resposta = await requisicaoAPI('/objetivos/arvore');
+        const resposta = await mapasAPI.arvore();
         const objetivosFormatados = mapearArvoreObjetivos(resposta ?? []);
 
         if (!cancelado) setObjetivos(objetivosFormatados);
@@ -68,152 +51,164 @@ export function useDadosDashboard() {
     };
   }, [versaoDados]);
 
-  useEffect(() => {
-    let cancelado = false;
-
-    async function carregarNotas() {
-      if (!sessionStorage.getItem('token')) {
-        setNotas([]);
-        setErroNotas('');
-        return;
-      }
-
-      setCarregandoNotas(true);
-      setErroNotas('');
-
-      try {
-        const resposta = await notasAPI.listar();
-        if (!cancelado) setNotas(resposta ?? []);
-      } catch (erroCarregamento) {
-        if (!cancelado)
-          setErroNotas(erroCarregamento.message || 'Não foi possível carregar suas notas.');
-      } finally {
-        if (!cancelado) setCarregandoNotas(false);
-      }
-    }
-
-    carregarNotas();
-    return () => {
-      cancelado = true;
-    };
-  }, [versaoNotas]);
-
   async function adicionarObjetivo({ titulo, descricao, prioridade }) {
-    const criado = await requisicaoAPI('/objetivos', {
-      method: 'POST',
-      body: JSON.stringify({ titulo, descricao, prioridade }),
-    });
+    const criado = await mapasAPI.criarMapa({ titulo, descricao, prioridade });
     recarregarObjetivos();
     return criado;
   }
 
   async function removerObjetivo(id) {
-    await requisicaoAPI(`/objetivos/${id}`, { method: 'DELETE' });
+    await mapasAPI.removerMapa(id);
     recarregarObjetivos();
   }
 
   async function adicionarEtapa(objetivoId, { titulo, descricao }) {
-    const criada = await requisicaoAPI(`/objetivos/${objetivoId}/etapas`, {
-      method: 'POST',
-      body: JSON.stringify({ titulo, descricao }),
-    });
+    const criada = await mapasAPI.criarIlha(objetivoId, { titulo, descricao });
     recarregarObjetivos();
     return criada;
   }
 
-  async function adicionarTarefa(etapaId, { titulo, prazo }) {
-    await requisicaoAPI(`/etapas/${etapaId}/tarefas`, {
-      method: 'POST',
-      body: JSON.stringify({ titulo, prazo: prazo || null }),
-    });
+  async function adicionarTarefa(etapaId, { titulo, prazo, obrigatoria = true }) {
+    await mapasAPI.criarTarefa(etapaId, { titulo, prazo: prazo || null, obrigatoria });
     recarregarObjetivos();
   }
 
   async function atualizarPrazoTarefa(id, prazo) {
-    await requisicaoAPI(`/tarefas/${id}/prazo`, {
-      method: 'PATCH',
-      body: JSON.stringify({ prazo: prazo || null }),
-    });
+    await mapasAPI.atualizarPrazo(id, prazo);
     recarregarObjetivos();
   }
 
   async function alternarTarefa(id, concluida) {
-    await requisicaoAPI(`/tarefas/${id}/conclusao`, {
-      method: 'PATCH',
-      body: JSON.stringify({ concluida: !concluida }),
-    });
+    await mapasAPI.concluirTarefa(id, !concluida);
     recarregarObjetivos();
   }
 
   async function removerTarefa(id) {
-    await requisicaoAPI(`/tarefas/${id}`, { method: 'DELETE' });
+    await mapasAPI.removerTarefa(id);
     recarregarObjetivos();
   }
 
-  async function adicionarNota(texto) {
-    if (!texto.trim()) return;
-    const sessao = controleSessaoNotas.current.capturar();
-    setOperacaoNotaPendente(true);
-    setErroNotas('');
-    try {
-      const criada = await notasAPI.criar(texto.trim());
-      if (controleSessaoNotas.current.aindaAtual(sessao)) {
-        setNotas((atuais) =>
-          atuais.some((nota) => nota.id === criada.id) ? atuais : [...atuais, criada],
-        );
+  async function atualizarIlha(id, dados) {
+    const resposta = await mapasAPI.atualizarIlha(id, dados);
+    recarregarObjetivos();
+    return resposta;
+  }
+
+  const carregarIlha = useCallback(async (id) => {
+    const resposta = await mapasAPI.ilha(id);
+    setObjetivos((atuais) => atuais.map((objetivo) => ({
+      ...objetivo,
+      etapas: objetivo.etapas.map((etapa) => {
+        if (String(etapa.id) !== String(id)) return etapa;
+        const atualizada = { ...etapa };
+        if (resposta.titulo !== undefined) atualizada.texto = resposta.titulo;
+        for (const campo of ['descricao', 'status', 'ordem', 'prazo']) {
+          if (resposta[campo] !== undefined) atualizada[campo] = resposta[campo];
+        }
+        if (Number.isFinite(resposta.posicaoX) && Number.isFinite(resposta.posicaoY)) {
+          atualizada.posicao = { x: resposta.posicaoX, y: resposta.posicaoY };
+        }
+        if (resposta.conteudo !== undefined) atualizada.conteudo = resposta.conteudo;
+        return atualizada;
+      }),
+    })));
+    return resposta;
+  }, []);
+
+  const carregarMapa = useCallback(async (id) => {
+    const resposta = await mapasAPI.mapa(id);
+    const [detalhe] = mapearArvoreObjetivos([resposta]);
+    if (detalhe) setObjetivos((atuais) => atuais.map((item) => String(item.id) === String(id) ? detalhe : item));
+    return resposta;
+  }, []);
+
+  async function removerIlha(id) {
+    await mapasAPI.removerIlha(id);
+    recarregarObjetivos();
+  }
+
+  const atualizarPosicaoIlha = useCallback((id, posicao) => new Promise((resolve, reject) => {
+    const chave = String(id);
+    let fila = filasPosicao.current.get(chave);
+    if (!fila) {
+      fila = { emAndamento: false, pendente: null, promessas: [] };
+      filasPosicao.current.set(chave, fila);
+    }
+    fila.pendente = posicao;
+    fila.promessas.push({ resolve, reject });
+
+    async function persistirUltimaPosicao() {
+      if (fila.emAndamento) return;
+      fila.emAndamento = true;
+      while (fila.pendente) {
+        const proxima = fila.pendente;
+        fila.pendente = null;
+        try {
+          await mapasAPI.atualizarPosicao(id, proxima);
+          posicoesConfirmadas.current.set(chave, proxima);
+          if (!fila.pendente) {
+            setObjetivos((atuais) => atuais.map((objetivo) => ({
+              ...objetivo,
+              etapas: objetivo.etapas.map((etapa) => String(etapa.id) === chave ? { ...etapa, posicao: proxima } : etapa),
+            })));
+            fila.promessas.splice(0).forEach(({ resolve: concluir }) => concluir());
+          }
+        } catch (error) {
+          if (fila.pendente) continue;
+          const confirmada = posicoesConfirmadas.current.get(chave);
+          if (confirmada) {
+            setObjetivos((atuais) => atuais.map((objetivo) => ({
+              ...objetivo,
+              etapas: objetivo.etapas.map((etapa) => String(etapa.id) === chave ? { ...etapa, posicao: confirmada } : etapa),
+            })));
+          }
+          fila.promessas.splice(0).forEach(({ reject: falhar }) => falhar(error));
+        }
       }
-    } catch (erroOperacao) {
-      if (controleSessaoNotas.current.aindaAtual(sessao))
-        setErroNotas(erroOperacao.message || 'Não foi possível salvar a nota. Tente novamente.');
-      throw erroOperacao;
-    } finally {
-      if (controleSessaoNotas.current.aindaAtual(sessao)) setOperacaoNotaPendente(false);
+      fila.emAndamento = false;
+      if (!fila.promessas.length) filasPosicao.current.delete(chave);
     }
+    persistirUltimaPosicao();
+  }), []);
+
+  async function criarConexao(mapaId, origemId, destinoId) {
+    await mapasAPI.criarConexao(mapaId, origemId, destinoId);
+    recarregarObjetivos();
   }
 
-  async function persistirAtualizacaoNota(nota, texto, concluida = nota.concluida) {
-    const sessao = controleSessaoNotas.current.capturar();
-    setOperacaoNotaPendente(true);
-    setErroNotas('');
-    try {
-      const atualizada = await notasAPI.atualizar(nota, texto, concluida);
-      if (controleSessaoNotas.current.aindaAtual(sessao))
-        setNotas((atuais) => atuais.map((item) => (item.id === nota.id ? atualizada : item)));
-    } catch (erroOperacao) {
-      if (controleSessaoNotas.current.aindaAtual(sessao))
-        setErroNotas(erroOperacao.message || 'Não foi possível atualizar a nota. Tente novamente.');
-      throw erroOperacao;
-    } finally {
-      if (controleSessaoNotas.current.aindaAtual(sessao)) setOperacaoNotaPendente(false);
-    }
+  async function removerConexao(id) {
+    await mapasAPI.removerConexao(id);
+    recarregarObjetivos();
   }
 
-  async function atualizarNota(id, texto) {
-    const nota = notas.find((item) => item.id === id);
-    if (!nota) return;
-    return persistirAtualizacaoNota(nota, texto.trim());
+  async function salvarConteudo(ilhaId, conteudo) {
+    await mapasAPI.salvarConteudo(ilhaId, conteudo);
+    recarregarObjetivos();
   }
 
-  async function alternarNota(id) {
-    const nota = notas.find((item) => item.id === id);
-    if (!nota) return;
-    return persistirAtualizacaoNota(nota, nota.texto, !nota.concluida);
+  async function concluirTopico(ilhaId, topicoId, concluido) {
+    await mapasAPI.concluirTopico(ilhaId, topicoId, concluido);
+    recarregarObjetivos();
   }
-  async function removerNota(id) {
-    const sessao = controleSessaoNotas.current.capturar();
-    setOperacaoNotaPendente(true);
-    setErroNotas('');
-    try {
-      await notasAPI.remover(id);
-      if (controleSessaoNotas.current.aindaAtual(sessao))
-        setNotas((atuais) => atuais.filter((nota) => nota.id !== id));
-    } catch (erroOperacao) {
-      if (controleSessaoNotas.current.aindaAtual(sessao))
-        setErroNotas(erroOperacao.message || 'Não foi possível excluir a nota. Tente novamente.');
-      throw erroOperacao;
-    } finally {
-      if (controleSessaoNotas.current.aindaAtual(sessao)) setOperacaoNotaPendente(false);
-    }
+
+  async function criarTopico(ilhaId, dados) {
+    await mapasAPI.criarTopico(ilhaId, dados);
+    recarregarObjetivos();
+  }
+
+  async function atualizarTopico(ilhaId, topicoId, dados) {
+    await mapasAPI.atualizarTopico(ilhaId, topicoId, dados);
+    recarregarObjetivos();
+  }
+
+  async function removerTopico(ilhaId, topicoId) {
+    await mapasAPI.removerTopico(ilhaId, topicoId);
+    recarregarObjetivos();
+  }
+
+  async function atualizarTarefa(id, dados) {
+    await mapasAPI.atualizarTarefa(id, dados);
+    recarregarObjetivos();
   }
 
   const tarefas = objetivos.flatMap((objetivo) =>
@@ -230,10 +225,6 @@ export function useDadosDashboard() {
 
   return {
     objetivos,
-    notas,
-    carregandoNotas,
-    operacaoNotaPendente,
-    erroNotas,
     tarefas,
     carregando,
     erro,
@@ -244,12 +235,20 @@ export function useDadosDashboard() {
     atualizarPrazoTarefa,
     alternarTarefa,
     removerTarefa,
+    atualizarIlha,
+    carregarIlha,
+    carregarMapa,
+    removerIlha,
+    atualizarPosicaoIlha,
+    criarConexao,
+    removerConexao,
+    salvarConteudo,
+    concluirTopico,
+    criarTopico,
+    atualizarTopico,
+    removerTopico,
+    atualizarTarefa,
     recarregarObjetivos,
-    adicionarNota,
-    atualizarNota,
-    alternarNota,
-    removerNota,
-    recarregarNotas,
-    limparNotas,
+    limparObjetivos,
   };
 }

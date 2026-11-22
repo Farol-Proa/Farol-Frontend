@@ -7,6 +7,7 @@ export function mapearTarefa(tarefa) {
     prazo: tarefa.prazo ?? '',
   };
 
+  if (tarefa.obrigatoria !== undefined) mapeada.obrigatoria = Boolean(tarefa.obrigatoria);
   if (tarefa.status !== undefined) mapeada.status = tarefa.status;
 
   return mapeada;

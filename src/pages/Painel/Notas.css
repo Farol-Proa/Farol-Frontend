@@ -1,0 +1,339 @@
+.notas-card {
+  grid-column: 1 / -1;
+  min-width: 0;
+  padding: 20px;
+}
+
+.notas-cabecalho,
+.notas-acoes-cabecalho,
+.notas-lista-topo,
+.notas-formulario,
+.notas-botoes-editor {
+  display: flex;
+  align-items: center;
+}
+
+.notas-cabecalho {
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+
+.notas-cabecalho h2,
+.notas-cabecalho p,
+.notas-lista-topo h3,
+.notas-editor-vazio h3,
+.notas-editor-vazio p {
+  margin: 0;
+}
+
+.notas-eyebrow {
+  color: var(--color-farol-accent);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.notas-cabecalho h2 {
+  margin-top: 4px;
+  font-size: 21px;
+}
+
+.notas-cabecalho p,
+.notas-vazio,
+.notas-editor-vazio p {
+  color: var(--color-farol-muted);
+  font-size: 12px;
+}
+
+.notas-cabecalho p {
+  margin-top: 4px;
+}
+
+.notas-acoes-cabecalho {
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.notas-acoes-cabecalho label,
+.notas-titulo-campo,
+.notas-vinculo-campo {
+  display: grid;
+  gap: 6px;
+  color: var(--color-farol-muted);
+  font-size: 11px;
+}
+
+.notas-acoes-cabecalho select,
+.notas-titulo-campo input,
+.notas-vinculo-campo select {
+  min-width: 0;
+  padding: 9px 10px;
+  border: 1px solid var(--color-farol-input-border);
+  border-radius: 8px;
+  background: var(--color-farol-input);
+  color: var(--color-farol-text);
+  font: inherit;
+  font-size: 12px;
+}
+
+.notas-acoes-cabecalho select:focus-visible,
+.notas-titulo-campo input:focus-visible,
+.notas-vinculo-campo select:focus-visible,
+.notas-botao-principal:focus-visible,
+.notas-botao-secundario:focus-visible,
+.notas-item:focus-visible {
+  outline: 2px solid var(--color-farol-accent);
+  outline-offset: 2px;
+}
+
+.notas-botao-principal,
+.notas-botao-secundario {
+  min-height: 36px;
+  padding: 8px 13px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.notas-botao-principal {
+  background: var(--color-farol-primary);
+  color: #fff;
+}
+
+.notas-botao-principal:hover:not(:disabled) {
+  background: var(--color-farol-primary-hover);
+}
+
+.notas-botao-secundario {
+  border-color: var(--color-farol-input-border);
+  background: transparent;
+  color: var(--color-farol-text);
+}
+
+.notas-botao-secundario.perigo {
+  border-color: color-mix(in srgb, var(--color-farol-danger-soft) 40%, transparent);
+  color: var(--color-farol-danger-soft);
+}
+
+.notas-botao-principal:disabled,
+.notas-botao-secundario:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.notas-feedback {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  color: var(--color-farol-muted);
+  font-size: 12px;
+}
+
+.notas-feedback p {
+  margin: 0;
+}
+
+.notas-feedback [role='alert'],
+.notas-conflito {
+  color: var(--color-farol-danger-soft);
+}
+
+.notas-layout {
+  display: grid;
+  grid-template-columns: minmax(190px, 0.28fr) minmax(0, 1fr);
+  min-height: 490px;
+  overflow: hidden;
+  border: 1px solid var(--color-farol-dashboard-border);
+  border-radius: 12px;
+  background: var(--color-farol-background);
+}
+
+.notas-lista {
+  min-width: 0;
+  padding: 14px;
+  border-right: 1px solid var(--color-farol-dashboard-border);
+  background: var(--color-farol-surface);
+}
+
+.notas-lista-topo {
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.notas-lista-topo h3 {
+  font-size: 12px;
+}
+
+.notas-lista-topo > span {
+  color: var(--color-farol-muted);
+  font-size: 11px;
+}
+
+.notas-lista ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.notas-item {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  gap: 5px;
+  padding: 10px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--color-farol-text);
+  cursor: pointer;
+  text-align: left;
+}
+
+.notas-item:hover,
+.notas-item.selecionada {
+  border-color: var(--color-farol-dashboard-border);
+  background: var(--color-farol-surface-raised);
+}
+
+.notas-item strong,
+.notas-item span,
+.notas-item small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.notas-item strong {
+  font-size: 12px;
+}
+
+.notas-item span,
+.notas-item small {
+  color: var(--color-farol-muted);
+  font-size: 10px;
+}
+
+.notas-vazio {
+  line-height: 1.55;
+}
+
+.notas-editor-painel {
+  min-width: 0;
+  padding: 16px;
+}
+
+.notas-formulario {
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.notas-titulo-campo {
+  flex: 1 1 220px;
+}
+
+.notas-vinculo-campo {
+  flex: 0 1 230px;
+}
+
+.notas-vinculo-valor {
+  display: flex;
+  min-height: 36px;
+  align-items: center;
+  padding: 0 10px;
+  border: 1px solid var(--color-farol-dashboard-border);
+  border-radius: 8px;
+  background: var(--color-farol-surface);
+  color: var(--color-farol-text);
+  font-size: 12px;
+}
+
+.notas-botoes-editor {
+  justify-content: flex-end;
+  gap: 8px;
+  margin-left: auto;
+  align-self: end;
+}
+
+.notas-conflito {
+  margin: 0 0 10px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.notas-editor-painel .farol-blocknote {
+  min-height: 390px;
+  padding: 12px;
+  border: 1px solid var(--color-farol-dashboard-border);
+  border-radius: 10px;
+  background: var(--color-farol-surface);
+  color: var(--color-farol-text);
+}
+
+.notas-editor-painel .bn-container {
+  min-height: 360px;
+}
+
+.notas-editor-vazio {
+  display: grid;
+  min-height: 440px;
+  justify-items: center;
+  align-content: center;
+  gap: 10px;
+  padding: 24px;
+  text-align: center;
+}
+
+.notas-editor-vazio > span {
+  color: var(--color-farol-accent);
+  font-size: 26px;
+}
+
+.notas-editor-vazio h3 {
+  font-size: 15px;
+}
+
+.notas-editor-vazio p {
+  max-width: 320px;
+  line-height: 1.6;
+}
+
+@media (max-width: 760px) {
+  .notas-card {
+    padding: 14px;
+  }
+
+  .notas-cabecalho {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .notas-acoes-cabecalho {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .notas-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .notas-lista {
+    max-height: 220px;
+    overflow-y: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--color-farol-dashboard-border);
+  }
+
+  .notas-botoes-editor {
+    flex-basis: 100%;
+  }
+}

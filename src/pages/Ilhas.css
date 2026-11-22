@@ -1165,6 +1165,36 @@
   margin-bottom: 5px;
   color: #f5d547;
 }
+.learning-body textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 140px;
+  padding: 10px;
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 8px;
+  background: #090f29;
+  color: white;
+  font: 12px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+.learning-island-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 18px 0;
+}
+.learning-island-actions button,
+.learning-task > button {
+  min-height: 36px;
+  padding: 7px 10px;
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 8px;
+  background: #3449ae;
+  color: white;
+  cursor: pointer;
+}
+.learning-island-actions button:last-child {
+  background: #562e48;
+}
 .learning-reference {
   display: grid;
   gap: 4px;

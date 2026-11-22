@@ -16,19 +16,13 @@ function chaveDataLocal(data) {
 
 function Painel({
   objetivos,
-  notas,
   tarefas,
   activeItem,
   onNavegar,
   onLogout,
-  onAdicionarNota,
-  onAtualizarNota,
-  onAlternarNota,
-  onRemoverNota,
-  onRecarregarNotas,
-  carregandoNotas,
-  operacaoNotaPendente,
-  erroNotas,
+  contextoNotas,
+  onNotasRascunhoSujo,
+  onRegistrarDescarteNota,
   onAlternarTarefa,
   onRemoverTarefa,
   carregando,
@@ -93,15 +87,16 @@ function Painel({
 
         <section className="painel-grid">
           <Notas
-            notas={notas}
-            onAdicionarNota={onAdicionarNota}
-            onAtualizarNota={onAtualizarNota}
-            onAlternarNota={onAlternarNota}
-            onRemoverNota={onRemoverNota}
-            onRecarregar={onRecarregarNotas}
-            carregando={carregandoNotas}
-            operacaoPendente={operacaoNotaPendente}
-            erro={erroNotas}
+            key={contextoNotas?.etapaId != null
+              ? `ilha-${contextoNotas.etapaId}`
+              : contextoNotas?.objetivoId != null
+                ? `mapa-${contextoNotas.objetivoId}`
+                : 'todas'}
+            objetivos={objetivos}
+            contexto={contextoNotas}
+            onNavegar={onNavegar}
+            onRascunhoSujo={onNotasRascunhoSujo}
+            onRegistrarDescarte={onRegistrarDescarteNota}
           />
 
           <Calendario

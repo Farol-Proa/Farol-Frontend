@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
 @import 'tailwindcss';
+@source '../node_modules/@blocknote/shadcn';
 
 @theme {
   --color-farol-bg: #050c1a;
@@ -48,6 +49,73 @@
   --color-sidebar-foreground: #c9cfee;
   --color-sidebar-accent: #161e45;
   --color-sidebar-border: rgb(255 255 255 / 0.06);
+}
+
+/* Tokens semânticos restritos ao editor, com cores derivadas do tema Farol. */
+.farol-blocknote {
+  color-scheme: dark;
+  --radius: 0.625rem;
+  --background: var(--color-farol-surface);
+  --foreground: var(--color-farol-text);
+  --card: var(--color-farol-dashboard-card);
+  --card-foreground: var(--color-farol-text);
+  --popover: var(--color-farol-dashboard-card);
+  --popover-foreground: var(--color-farol-text);
+  --primary: var(--color-farol-primary);
+  --primary-foreground: #fff;
+  --secondary: var(--color-farol-surface-raised);
+  --secondary-foreground: var(--color-farol-text);
+  --muted: var(--color-farol-surface-raised);
+  --muted-foreground: var(--color-farol-muted);
+  --accent: var(--color-farol-border);
+  --accent-foreground: var(--color-farol-text);
+  --destructive: var(--color-farol-danger);
+  --destructive-foreground: #fff;
+  --border: var(--color-farol-border);
+  --input: var(--color-farol-input-border);
+  --ring: var(--color-farol-accent);
+  --chart-1: var(--color-farol-primary);
+  --chart-2: var(--color-farol-accent);
+  --chart-3: var(--color-island);
+  --chart-4: var(--color-beacon);
+  --chart-5: var(--color-farol-muted);
+}
+
+@theme inline {
+  --color-background: var(--color-farol-surface);
+  --color-foreground: var(--color-farol-text);
+  --color-card: var(--color-farol-dashboard-card);
+  --color-card-foreground: var(--color-farol-text);
+  --color-popover: var(--color-farol-dashboard-card);
+  --color-popover-foreground: var(--color-farol-text);
+  --color-primary: var(--color-farol-primary);
+  --color-primary-foreground: #fff;
+  --color-secondary: var(--color-farol-surface-raised);
+  --color-secondary-foreground: var(--color-farol-text);
+  --color-muted: var(--color-farol-surface-raised);
+  --color-muted-foreground: var(--color-farol-muted);
+  --color-accent: var(--color-farol-border);
+  --color-accent-foreground: var(--color-farol-text);
+  --color-destructive: var(--color-farol-danger);
+  --color-destructive-foreground: #fff;
+  --color-border: var(--color-farol-border);
+  --color-input: var(--color-farol-input-border);
+  --color-ring: var(--color-farol-accent);
+  --color-chart-1: var(--color-farol-primary);
+  --color-chart-2: var(--color-farol-accent);
+  --color-chart-3: var(--color-island);
+  --color-chart-4: var(--color-beacon);
+  --color-chart-5: var(--color-farol-muted);
+  --radius-sm: calc(0.625rem - 4px);
+  --radius-md: calc(0.625rem - 2px);
+  --radius-lg: 0.625rem;
+  --radius-xl: calc(0.625rem + 4px);
+}
+
+@layer base {
+  .farol-blocknote .bn-shadcn * {
+    @apply border-border outline-ring/50;
+  }
 }
 
 * {

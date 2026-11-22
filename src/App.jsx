@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useDadosDashboard } from './dashboard/useDadosDashboard';
 import Ilhas from './pages/Ilhas';
 import LandingPage from './pages/LandingPage';
@@ -24,6 +24,9 @@ function App() {
   const [mostrarAutenticacao, setMostrarAutenticacao] = useState(false);
   const [paginaAtiva, setPaginaAtiva] = useState('Início');
   const [objetivoSelecionado, setObjetivoSelecionado] = useState(null);
+  const [contextoNotas, setContextoNotas] = useState(null);
+  const [notasSujo, setNotasSujo] = useState(false);
+  const descarteNotaRef = useRef(() => {});
   const [abrirModalObjetivo, setAbrirModalObjetivo] = useState(false);
   const [authLink, setAuthLink] = useState(() => {
     const parametros = new URLSearchParams(window.location.search);
@@ -32,21 +35,32 @@ function App() {
     return verificationToken || resetToken ? { verificationToken, resetToken } : null;
   });
   const dadosDashboard = useDadosDashboard();
+  const { limparObjetivos, recarregarObjetivos } = dadosDashboard;
 
   const finalizarLinkAutenticacao = useCallback(() => {
     setAuthLink(null);
     setMostrarAutenticacao(true);
   }, []);
 
-  function fazerLogout() {
+  const atualizarEstadoRascunhoNota = useCallback((sujo) => {
+    setNotasSujo(sujo);
+  }, []);
+
+  const registrarDescarteNota = useCallback((descarte) => {
+    descarteNotaRef.current = descarte ?? (() => {});
+  }, []);
+
+  const fazerLogout = useCallback(() => {
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('usuario');
-    dadosDashboard.limparNotas();
+    descarteNotaRef.current();
+    setNotasSujo(false);
+    limparObjetivos();
 
     setMostrarPainel(false);
     setMostrarAutenticacao(false);
     setPaginaAtiva('Início');
-  }
+  }, [limparObjetivos]);
 
   useEffect(() => {
     const token = sessionStorage.getItem('token');
@@ -59,8 +73,8 @@ function App() {
       const tempoRestante = payload.exp * 1000 - Date.now();
 
       if (tempoRestante <= 0) {
-        fazerLogout();
-        return;
+        const temporizador = setTimeout(fazerLogout, 0);
+        return () => clearTimeout(temporizador);
       }
 
       const temporizador = setTimeout(() => {
@@ -69,9 +83,19 @@ function App() {
 
       return () => clearTimeout(temporizador);
     } catch {
-      fazerLogout();
+      const temporizador = setTimeout(fazerLogout, 0);
+      return () => clearTimeout(temporizador);
     }
-  }, [mostrarPainel]);
+  }, [mostrarPainel, fazerLogout]);
+
+  useEffect(() => {
+    const tratarSessaoExpirada = () => {
+      fazerLogout();
+      setMostrarAutenticacao(true);
+    };
+    window.addEventListener('farol:auth-expired', tratarSessaoExpirada);
+    return () => window.removeEventListener('farol:auth-expired', tratarSessaoExpirada);
+  }, [fazerLogout]);
 
   if (!mostrarPainel && !mostrarAutenticacao && !authLink) {
     return <LandingPage onEntrar={() => setMostrarAutenticacao(true)} />;
@@ -87,20 +111,32 @@ function App() {
           setMostrarAutenticacao(false);
           setAuthLink(null);
           setMostrarPainel(true);
-          dadosDashboard.recarregarObjetivos();
-          dadosDashboard.recarregarNotas();
+          recarregarObjetivos();
         }}
       />
     );
   }
 
   function navegar(destino, opcoes = {}) {
+    if (notasSujo) {
+      const confirmar = window.confirm('Há alterações não salvas na nota. Deseja descartá-las?');
+      if (!confirmar) return;
+      descarteNotaRef.current();
+      setNotasSujo(false);
+    }
+
     setPaginaAtiva(destino);
 
     if (destino === 'Ilhas') {
       setObjetivoSelecionado(opcoes.objetivoId ?? null);
       setAbrirModalObjetivo(opcoes.abrirModal ?? false);
       return;
+    }
+
+    if (destino === 'Anotações') {
+      const etapaId = opcoes.etapaId ?? null;
+      const objetivoId = etapaId == null ? opcoes.objetivoId ?? null : null;
+      setContextoNotas(etapaId == null && objetivoId == null ? null : { objetivoId, etapaId });
     }
 
     const secoes = {
@@ -122,29 +158,32 @@ function App() {
     });
   }
 
+  function sairPainel() {
+    if (notasSujo) {
+      if (!window.confirm('Há alterações não salvas na nota. Deseja descartá-las e sair?')) return;
+      descarteNotaRef.current();
+      setNotasSujo(false);
+    }
+    fazerLogout();
+  }
+
   return (
     <>
       {/* hidden mantém o estado local do painel ao alternar entre as telas. */}
       <div hidden={paginaAtiva === 'Ilhas'}>
         <Painel
           objetivos={dadosDashboard.objetivos}
-          notas={dadosDashboard.notas}
           tarefas={dadosDashboard.tarefas}
           activeItem={paginaAtiva}
           onNavegar={navegar}
-          onAdicionarNota={dadosDashboard.adicionarNota}
-          onAtualizarNota={dadosDashboard.atualizarNota}
-          onAlternarNota={dadosDashboard.alternarNota}
-          onRemoverNota={dadosDashboard.removerNota}
-          onRecarregarNotas={dadosDashboard.recarregarNotas}
-          carregandoNotas={dadosDashboard.carregandoNotas}
-          operacaoNotaPendente={dadosDashboard.operacaoNotaPendente}
-          erroNotas={dadosDashboard.erroNotas}
+          contextoNotas={contextoNotas}
+          onNotasRascunhoSujo={atualizarEstadoRascunhoNota}
+          onRegistrarDescarteNota={registrarDescarteNota}
           onAlternarTarefa={dadosDashboard.alternarTarefa}
           onRemoverTarefa={dadosDashboard.removerTarefa}
           carregando={dadosDashboard.carregando}
           erro={dadosDashboard.erro}
-          onLogout={fazerLogout}
+          onLogout={sairPainel}
         />
       </div>
 
@@ -161,6 +200,19 @@ function App() {
           onAtualizarPrazoTarefa={dadosDashboard.atualizarPrazoTarefa}
           onAlternarTarefa={dadosDashboard.alternarTarefa}
           onRemoverTarefa={dadosDashboard.removerTarefa}
+          onAtualizarTarefa={dadosDashboard.atualizarTarefa}
+          onAtualizarIlha={dadosDashboard.atualizarIlha}
+          onRemoverIlha={dadosDashboard.removerIlha}
+          onAtualizarPosicaoIlha={dadosDashboard.atualizarPosicaoIlha}
+          onCriarConexao={dadosDashboard.criarConexao}
+          onRemoverConexao={dadosDashboard.removerConexao}
+          onConcluirTopico={dadosDashboard.concluirTopico}
+          onCriarTopico={dadosDashboard.criarTopico}
+          onAtualizarTopico={dadosDashboard.atualizarTopico}
+          onRemoverTopico={dadosDashboard.removerTopico}
+          onSalvarConteudo={dadosDashboard.salvarConteudo}
+          onCarregarMapa={dadosDashboard.carregarMapa}
+          onCarregarIlha={dadosDashboard.carregarIlha}
           carregando={dadosDashboard.carregando}
           erro={dadosDashboard.erro}
         />

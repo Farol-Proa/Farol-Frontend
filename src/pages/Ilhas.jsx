@@ -1,58 +1,93 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import Icon from '../components/Icon';
 import Sidebar from '../components/Sidebar';
 import RoadmapCanvas from './Ilhas/RoadmapCanvas';
+import { percentualProgressoObjetivo } from '../dashboard/objectiveTree';
 import './Ilhas.css';
 
-function progressoObjetivo(objetivo) {
-  const tarefas = (objetivo.etapas ?? []).flatMap((etapa) => etapa.tarefas ?? []);
-  const concluidas = tarefas.filter((tarefa) => tarefa.concluida).length;
-  return {
-    total: tarefas.length,
-    concluidas,
-    percentual: tarefas.length ? Math.round((concluidas / tarefas.length) * 100) : 0,
-  };
+function urlReferenciaSegura(valor) {
+  try {
+    const url = new URL(valor);
+    return ['http:', 'https:'].includes(url.protocol) ? url.href : null;
+  } catch {
+    return null;
+  }
+}
+
+function validarBlocos(blocos) {
+  const tiposAceitos = new Set(['paragraph', 'heading', 'list', 'callout', 'code', 'reference']);
+  const ids = new Set();
+  if (!Array.isArray(blocos)) throw new Error('O conteúdo precisa ser uma lista de blocos.');
+  for (const bloco of blocos) {
+    if (!bloco?.id || ids.has(bloco.id) || !tiposAceitos.has(bloco.type) || !bloco.content || typeof bloco.content !== 'object' || Array.isArray(bloco.content)) {
+      throw new Error('Cada bloco precisa ter id único, tipo aceito e conteúdo em objeto.');
+    }
+    ids.add(bloco.id);
+    if (bloco.type === 'reference' && !urlReferenciaSegura(bloco.content.url)) {
+      throw new Error('As referências precisam usar uma URL HTTP ou HTTPS.');
+    }
+  }
+}
+
+function prazoParaInput(prazo) {
+  return prazo ? prazo.slice(0, 16) : '';
+}
+
+function prazoParaAPI(prazo) {
+  return prazo ? (prazo.length === 16 ? `${prazo}:00` : prazo) : null;
 }
 
 function criarRoadmap(objetivo) {
   const etapas = [...(objetivo.etapas ?? [])].sort((a, b) => (a.ordem ?? 0) - (b.ordem ?? 0));
   const islands = etapas.map((etapa, index) => {
-    const tarefas = etapa.tarefas ?? [];
-    const concluidas = tarefas.filter((tarefa) => tarefa.concluida).length;
-    const status =
-      tarefas.length && concluidas === tarefas.length
-        ? 'done'
-        : concluidas > 0
-          ? 'progress'
-          : 'locked';
-
+    const percentual = Number.isFinite(etapa.progresso?.percentual) ? etapa.progresso.percentual : null;
+    const concluida = Boolean(etapa.progresso?.concluida ?? etapa.concluida);
     return {
       id: String(etapa.id),
       title: etapa.texto,
       category: 'Etapa',
-      status,
-      completed: concluidas,
-      total: tarefas.length,
+      status: concluida ? 'done' : (percentual ?? 0) > 0 ? 'progress' : 'locked',
+      percentual,
       icon: 'sparkles',
       description: etapa.descricao,
-      position: { x: 360 + index * 330, y: index % 2 === 0 ? 100 : 370 },
+      persistedPosition: etapa.posicao,
+      // Coordenadas estáveis apenas para apresentação; só PATCH após ação explícita do usuário.
+      position: etapa.posicao ?? { x: 360 + (index % 3) * 330, y: 100 + Math.floor(index / 3) * 270 },
     };
   });
+  const seenPairs = new Set();
+  const seenConnectionIds = new Set();
+  const islandIds = new Set(islands.map((island) => island.id));
+  const connections = (objetivo.conexoes ?? []).filter((connection) => {
+    if (connection.id == null || connection.origemEtapaId == null || connection.destinoEtapaId == null) return false;
+    const source = String(connection.origemEtapaId);
+    const target = String(connection.destinoEtapaId);
+    if (source === target || !islandIds.has(source) || !islandIds.has(target) || seenConnectionIds.has(String(connection.id))) return false;
+    const ends = [String(connection.origemEtapaId), String(connection.destinoEtapaId)].sort();
+    const pair = ends.join(':');
+    if (seenPairs.has(pair)) return false;
+    seenPairs.add(pair);
+    seenConnectionIds.add(String(connection.id));
+    return true;
+  }).map((connection) => ({
+    id: String(connection.id),
+    source: String(connection.origemEtapaId),
+    target: String(connection.destinoEtapaId),
+  }));
 
   return {
     id: String(objetivo.id),
     title: objetivo.nome,
     objective: objetivo.descricao || 'Seu objetivo e as etapas para alcançá-lo.',
     lighthouseCaption: 'Seu objetivo',
+    percentual: objetivo.progresso?.percentual,
     islands,
-    connections: islands.map((island, index) => ({
-      source: index === 0 ? 'farol' : islands[index - 1].id,
-      target: island.id,
-    })),
+    connections,
+    invalidConnectionCount: (objetivo.conexoes ?? []).length - connections.length,
   };
 }
 
-function MapHeader({ roadmap, objetivos, onChangeRoadmap, onOpenCreate, onDelete }) {
+function MapHeader({ roadmap, objetivos, onChangeRoadmap, onOpenCreate, onDelete, onOpenNotes }) {
   return (
     <header className="ilhas-header">
       <div className="ilhas-heading">
@@ -76,6 +111,9 @@ function MapHeader({ roadmap, objetivos, onChangeRoadmap, onOpenCreate, onDelete
         <button className="ilhas-action-button" type="button" onClick={onOpenCreate}>
           Novo objetivo
         </button>
+        <button className="ilhas-action-button" type="button" onClick={onOpenNotes}>
+          Notas do mapa
+        </button>
         <button className="ilhas-action-button danger" type="button" onClick={onDelete}>
           Excluir objetivo
         </button>
@@ -88,7 +126,7 @@ function RoadmapsStrip({ objetivos, selectedId, onSelectRoadmap }) {
   return (
     <section className="ilhas-goals" aria-label="Seus mapas">
       {objetivos.map((objetivo) => {
-        const progresso = progressoObjetivo(objetivo);
+        const percentual = percentualProgressoObjetivo(objetivo);
         const selecionado = String(objetivo.id) === String(selectedId);
         return (
           <button
@@ -104,7 +142,7 @@ function RoadmapsStrip({ objetivos, selectedId, onSelectRoadmap }) {
                 {selecionado ? 'Mapa atual' : 'Mapa'}
               </span>
               <span>
-                {progresso.concluidas}/{progresso.total} tarefas
+                {percentual !== null ? `${percentual}% concluído` : `${objetivo.etapas?.length ?? 0} ilhas`}
               </span>
             </span>
             <strong className="goal-card-title">{objetivo.nome}</strong>
@@ -112,10 +150,12 @@ function RoadmapsStrip({ objetivos, selectedId, onSelectRoadmap }) {
               {objetivo.descricao || 'Objetivo pessoal'}
             </span>
             <span className="goal-card-progress">
-              <span
-                className={selecionado ? 'is-active' : ''}
-                style={{ width: `${progresso.percentual}%` }}
-              />
+              {percentual !== null && (
+                <span
+                  className={selecionado ? 'is-active' : ''}
+                  style={{ width: `${percentual}%` }}
+                />
+              )}
             </span>
           </button>
         );
@@ -202,9 +242,11 @@ function ModalObjetivo({ onClose, onCreate }) {
   );
 }
 
-function TarefaEtapa({ tarefa, onUpdateDeadline, onToggle, onDelete, onError }) {
-  const [prazo, setPrazo] = useState(tarefa.prazo ?? '');
+function TarefaEtapa({ tarefa, onUpdateDeadline, onToggle, onDelete, onEdit, onError }) {
+  const [prazo, setPrazo] = useState(() => prazoParaInput(tarefa.prazo));
   const [salvandoPrazo, setSalvandoPrazo] = useState(false);
+
+  useEffect(() => setPrazo(prazoParaInput(tarefa.prazo)), [tarefa.prazo]);
 
   async function salvarPrazo(novoPrazo) {
     setPrazo(novoPrazo);
@@ -212,9 +254,9 @@ function TarefaEtapa({ tarefa, onUpdateDeadline, onToggle, onDelete, onError }) 
     onError('');
 
     try {
-      await onUpdateDeadline(tarefa.id, novoPrazo);
+      await onUpdateDeadline(tarefa.id, prazoParaAPI(novoPrazo));
     } catch (requestError) {
-      setPrazo(tarefa.prazo ?? '');
+      setPrazo(prazoParaInput(tarefa.prazo));
       onError(requestError.message || 'Não foi possível atualizar o prazo.');
     } finally {
       setSalvandoPrazo(false);
@@ -232,11 +274,12 @@ function TarefaEtapa({ tarefa, onUpdateDeadline, onToggle, onDelete, onError }) 
       />
       <span>
         <b>{tarefa.texto}</b>
+        {tarefa.obrigatoria !== undefined && <small>{tarefa.obrigatoria ? 'Obrigatória' : 'Opcional'}</small>}
       </span>
       <label className="learning-task-deadline">
         Prazo
         <input
-          type="date"
+          type="datetime-local"
           value={prazo}
           disabled={salvandoPrazo}
           aria-label={`Prazo de ${tarefa.texto}`}
@@ -255,6 +298,19 @@ function TarefaEtapa({ tarefa, onUpdateDeadline, onToggle, onDelete, onError }) 
       <button
         type="button"
         disabled={salvandoPrazo}
+        onClick={() => {
+          const titulo = window.prompt('Título da tarefa', tarefa.texto);
+          if (titulo?.trim()) {
+            const dados = { titulo: titulo.trim(), descricao: tarefa.descricao ?? '', prazo: tarefa.prazo || null };
+            if (tarefa.obrigatoria !== undefined) dados.obrigatoria = tarefa.obrigatoria;
+            onEdit(tarefa.id, dados);
+          }
+        }}
+        aria-label={`Editar tarefa ${tarefa.texto}`}
+      >Editar</button>
+      <button
+        type="button"
+        disabled={salvandoPrazo}
         onClick={() => onDelete(tarefa.id)}
         aria-label={`Excluir tarefa ${tarefa.texto}`}
       >
@@ -270,18 +326,37 @@ function DetalhesEtapa({
   onUpdateTaskDeadline,
   onToggleTask,
   onDeleteTask,
+  onUpdateTask,
+  onUpdateIsland,
+  onDeleteIsland,
+  onToggleTopic,
+  onAddTopic,
+  onUpdateTopic,
+  onDeleteTopic,
+  onSaveContent,
+  onOpenNotes,
   onClose,
 }) {
   const [titulo, setTitulo] = useState('');
   const [prazo, setPrazo] = useState('');
+  const [obrigatoria, setObrigatoria] = useState(true);
+  const [topico, setTopico] = useState('');
+  const [topicoObrigatorio, setTopicoObrigatorio] = useState(true);
+  const [blocksDraft, setBlocksDraft] = useState(() => JSON.stringify(etapa.conteudo?.blocks ?? [], null, 2));
   const [erro, setErro] = useState('');
+
+  useEffect(() => {
+    setBlocksDraft(JSON.stringify(etapa.conteudo?.blocks ?? [], null, 2));
+  }, [etapa.id, etapa.conteudo]);
 
   async function executarAcao(acao) {
     setErro('');
     try {
       await acao();
+      return true;
     } catch (requestError) {
       setErro(requestError.message || 'Não foi possível atualizar a tarefa.');
+      return false;
     }
   }
 
@@ -290,9 +365,10 @@ function DetalhesEtapa({
     if (!titulo.trim()) return;
     setErro('');
     try {
-      await onAddTask(etapa.id, { titulo: titulo.trim(), prazo });
+      await onAddTask(etapa.id, { titulo: titulo.trim(), prazo: prazoParaAPI(prazo), obrigatoria });
       setTitulo('');
       setPrazo('');
+      setObrigatoria(true);
     } catch (requestError) {
       setErro(requestError.message || 'Não foi possível criar a tarefa.');
     }
@@ -318,6 +394,42 @@ function DetalhesEtapa({
           </button>
         </header>
         <div className="learning-body">
+          <section aria-label="Progresso da ilha">
+            <h3>Progresso</h3>
+            {Number.isFinite(etapa.progresso?.percentual) ? <><strong>{etapa.progresso.percentual}% concluído</strong><progress value={etapa.progresso.percentual} max="100" /></> : <p>Progresso indisponível na resposta do servidor.</p>}
+          </section>
+          <section>
+            <h3>Tópicos</h3>
+            {(etapa.topicos ?? []).map((item) => (
+              <div className="learning-task" key={item.id}>
+                <input type="checkbox" checked={Boolean(item.concluido)} onChange={() => executarAcao(() => onToggleTopic(etapa.id, item.id, !item.concluido))} aria-label={`Concluir tópico ${item.titulo}`} />
+                <span><b>{item.titulo}</b>{item.obrigatorio !== undefined && <small>{item.obrigatorio ? 'Obrigatório' : 'Opcional'}</small>}{item.descricao && <small>{item.descricao}</small>}</span>
+                <button type="button" onClick={() => { const nome = window.prompt('Título do tópico', item.titulo); if (nome?.trim()) { const dados = { titulo: nome.trim(), descricao: item.descricao ?? '' }; if (item.obrigatorio !== undefined) dados.obrigatorio = item.obrigatorio; executarAcao(() => onUpdateTopic(etapa.id, item.id, dados)); } }}>Editar</button>
+                <button type="button" onClick={() => window.confirm(`Excluir o tópico “${item.titulo}”?`) && executarAcao(() => onDeleteTopic(etapa.id, item.id))}>Excluir</button>
+              </div>
+            ))}
+            {(etapa.topicos ?? []).length === 0 && <p>Nenhum tópico cadastrado.</p>}
+            <form className="learning-add-task" onSubmit={async (event) => { event.preventDefault(); if (!topico.trim()) return; if (await executarAcao(() => onAddTopic(etapa.id, { titulo: topico.trim(), descricao: '', obrigatorio: topicoObrigatorio }))) setTopico(''); }}>
+              <label>Novo tópico<input value={topico} onChange={(event) => setTopico(event.target.value)} /></label>
+              <label className="learning-task-classification"><input type="checkbox" checked={topicoObrigatorio} onChange={(event) => setTopicoObrigatorio(event.target.checked)} /> Tópico obrigatório</label>
+              <button type="submit">Adicionar tópico</button>
+            </form>
+          </section>
+          <section>
+            <h3>Conteúdo estruturado</h3>
+            {(etapa.conteudo?.blocks ?? []).map((block) => <article className="learning-section" key={block.id}>
+              {block.type === 'heading' ? <h4>{block.content?.text}</h4> : block.type === 'list' ? <ul>{(block.content?.items ?? []).map((item, index) => <li key={`${block.id}-${index}`}>{typeof item === 'string' ? item : item.text}</li>)}</ul> : block.type === 'callout' ? <aside>{block.content?.text}</aside> : block.type === 'code' ? <pre><code>{block.content?.code ?? block.content?.text}</code></pre> : block.type === 'reference' ? (urlReferenciaSegura(block.content?.url) ? <a href={urlReferenciaSegura(block.content?.url)} target="_blank" rel="noopener noreferrer">{block.content?.title ?? block.content?.url}</a> : <p>{block.content?.title ?? block.content?.url}</p>) : <p>{block.content?.text}</p>}
+            </article>)}
+            <label>Blocos (JSON estruturado)
+              <textarea rows="7" value={blocksDraft} onChange={(event) => setBlocksDraft(event.target.value)} />
+            </label>
+            <button type="button" onClick={async () => { try { const blocks = JSON.parse(blocksDraft); validarBlocos(blocks); await onSaveContent(etapa.id, { schemaVersion: 1, blocks }); setErro(''); } catch (error) { setErro(error.message || 'Não foi possível salvar o conteúdo.'); } }}>Salvar conteúdo</button>
+          </section>
+          <div className="learning-island-actions">
+            <button type="button" onClick={onOpenNotes}>Notas da ilha</button>
+            <button type="button" onClick={() => { const nome = window.prompt('Nome da ilha', etapa.texto); if (!nome?.trim()) return; const descricao = window.prompt('Descrição da ilha', etapa.descricao ?? ''); if (descricao !== null) executarAcao(() => onUpdateIsland(etapa.id, { titulo: nome.trim(), descricao })); }}>Editar ilha</button>
+            <button type="button" onClick={() => window.confirm(`Excluir a ilha “${etapa.texto}”?`) && executarAcao(async () => { await onDeleteIsland(etapa.id); onClose(); })}>Excluir ilha</button>
+          </div>
           <h3>Tarefas</h3>
           {(etapa.tarefas ?? []).length === 0 && <p>Nenhuma tarefa nesta etapa.</p>}
           {(etapa.tarefas ?? []).map((tarefa) => (
@@ -327,6 +439,7 @@ function DetalhesEtapa({
               onUpdateDeadline={onUpdateTaskDeadline}
               onToggle={(id, concluida) => executarAcao(() => onToggleTask(id, concluida))}
               onDelete={(id) => executarAcao(() => onDeleteTask(id))}
+              onEdit={(id, dados) => executarAcao(() => onUpdateTask(id, dados))}
               onError={setErro}
             />
           ))}
@@ -341,7 +454,11 @@ function DetalhesEtapa({
             </label>
             <label>
               Prazo (opcional)
-              <input type="date" value={prazo} onChange={(event) => setPrazo(event.target.value)} />
+              <input type="datetime-local" value={prazo} onChange={(event) => setPrazo(event.target.value)} />
+            </label>
+            <label className="learning-task-classification">
+              <input type="checkbox" checked={obrigatoria} onChange={(event) => setObrigatoria(event.target.checked)} />
+              Obrigatória
             </label>
             <button type="submit">Adicionar tarefa</button>
           </form>
@@ -364,6 +481,19 @@ function Ilhas({
   onAtualizarPrazoTarefa,
   onAlternarTarefa,
   onRemoverTarefa,
+  onAtualizarTarefa,
+  onAtualizarIlha,
+  onRemoverIlha,
+  onAtualizarPosicaoIlha,
+  onCriarConexao,
+  onRemoverConexao,
+  onConcluirTopico,
+  onCriarTopico,
+  onAtualizarTopico,
+  onRemoverTopico,
+  onSalvarConteudo,
+  onCarregarMapa,
+  onCarregarIlha,
   carregando,
   erro,
 }) {
@@ -375,11 +505,32 @@ function Ilhas({
   const [erroAcao, setErroAcao] = useState('');
 
   const goalIdAtivo = selectedGoalId ?? objetivos[0]?.id ?? null;
-  const objetivo = objetivos.find((item) => String(item.id) === String(goalIdAtivo));
+  const objetivoBase = objetivos.find((item) => String(item.id) === String(goalIdAtivo));
+  const objetivo = objetivoBase;
   const roadmap = useMemo(() => (objetivo ? criarRoadmap(objetivo) : null), [objetivo]);
-  const etapaSelecionada = objetivo?.etapas.find(
+  const etapaDaArvore = objetivo?.etapas.find(
     (etapa) => String(etapa.id) === String(selectedStageId),
   );
+  const etapaSelecionada = etapaDaArvore;
+
+  useEffect(() => {
+    let cancelado = false;
+    if (!goalIdAtivo) return undefined;
+    onCarregarMapa(goalIdAtivo).catch((error) => {
+      if (!cancelado) setErroAcao(error.message || 'Não foi possível carregar os detalhes do mapa.');
+    });
+    return () => { cancelado = true; };
+  }, [goalIdAtivo, onCarregarMapa]);
+
+  const selecionarIlha = useCallback(async (id) => {
+    setSelectedStageId(id);
+    setErroAcao('');
+    try {
+      await onCarregarIlha(id);
+    } catch (error) {
+      setErroAcao(error.message || 'Não foi possível carregar os detalhes da ilha.');
+    }
+  }, [onCarregarIlha]);
 
   async function criarEtapa(event) {
     event.preventDefault();
@@ -424,6 +575,7 @@ function Ilhas({
               }}
               onOpenCreate={() => setModalAberto(true)}
               onDelete={excluirObjetivo}
+              onOpenNotes={() => onNavegar('Anotações', { objetivoId: objetivo.id })}
             />
             <form className="ilhas-add-stage" onSubmit={criarEtapa}>
               <label>
@@ -445,7 +597,21 @@ function Ilhas({
               </label>
               <button type="submit">Adicionar etapa</button>
             </form>
-            <RoadmapCanvas roadmap={roadmap} onSelectIsland={(id) => setSelectedStageId(id)} />
+            {roadmap.islands.length === 0 && <p role="status">Este mapa ainda não tem ilhas. Crie uma etapa para começar.</p>}
+            <RoadmapCanvas
+              roadmap={roadmap}
+              onSelectIsland={selecionarIlha}
+              onConnectPersist={(source, target) => onCriarConexao(objetivo.id, Number(source), Number(target))}
+              onDeleteConnection={onRemoverConexao}
+              onPositionPersist={onAtualizarPosicaoIlha}
+              onError={setErroAcao}
+            />
+            {roadmap.islands.some((island) => !island.persistedPosition) && (
+              <p role="status" className="ilhas-error">Ilhas sem posição salva estão em posições temporárias. Arraste-as para salvar no mapa.</p>
+            )}
+            {roadmap.invalidConnectionCount > 0 && (
+              <p role="status" className="ilhas-error">{roadmap.invalidConnectionCount} conexão(ões) não foram exibidas porque a API não retornou identificador ou ilhas de origem e destino.</p>
+            )}
             <RoadmapsStrip
               objetivos={objetivos}
               selectedId={objetivo.id}
@@ -482,6 +648,15 @@ function Ilhas({
           onUpdateTaskDeadline={onAtualizarPrazoTarefa}
           onToggleTask={onAlternarTarefa}
           onDeleteTask={onRemoverTarefa}
+          onUpdateTask={onAtualizarTarefa}
+          onUpdateIsland={onAtualizarIlha}
+          onDeleteIsland={onRemoverIlha}
+          onToggleTopic={onConcluirTopico}
+          onAddTopic={onCriarTopico}
+          onUpdateTopic={onAtualizarTopico}
+          onDeleteTopic={onRemoverTopico}
+          onSaveContent={onSalvarConteudo}
+          onOpenNotes={() => onNavegar('Anotações', { etapaId: etapaSelecionada.id })}
           onClose={() => setSelectedStageId(null)}
         />
       )}

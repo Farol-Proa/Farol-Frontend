@@ -1,6 +1,5 @@
-import { useCallback, useEffect } from 'react';
+﻿import { useCallback, useEffect } from 'react';
 import {
-  addEdge,
   Background,
   BackgroundVariant,
   ReactFlow,
@@ -19,7 +18,6 @@ import { GoalNode } from './GoalIsland';
 const flowNodeTypes = { ...nodeTypes, lighthouse: GoalNode };
 
 function createNodes(roadmap, onSelectIsland) {
-  // O farol acompanha verticalmente a primeira ilha em andamento para aproximar visualmente o ponto de partida da rota atual.
   const progressIsland = roadmap.islands.find((island) => island.status === 'progress');
   const lighthouseY = (progressIsland?.position.y ?? 100) + (progressIsland ? 35 : 100);
 
@@ -44,45 +42,15 @@ function createNodes(roadmap, onSelectIsland) {
 }
 
 function createEdges(roadmap) {
-  // O estado da conexão vem do destino: ele representa o avanço necessário para alcançar aquela ilha.
-  const statusById = Object.fromEntries(
-    roadmap.islands.map((island) => [island.id, island.status]),
-  );
+  const statusById = Object.fromEntries(roadmap.islands.map((island) => [island.id, island.status]));
 
-  return roadmap.connections.map(({ source, target }) => ({
-    id: `${roadmap.id}:${source}->${target}`,
-    source,
-    target,
+  return roadmap.connections.map((connection) => ({
+    id: String(connection.id),
+    source: String(connection.source),
+    target: String(connection.target),
     type: 'roadmap',
-    data: { status: statusById[target] ?? 'locked' },
+    data: { status: statusById[connection.target] ?? 'locked' },
   }));
-}
-
-// Cada mapa tem sua própria chave para não reaproveitar posições de outro roadmap.
-function getPositionsStorageKey(roadmapId) {
-  return `farol:roadmap:${roadmapId}:positions`;
-}
-
-// Lê posições guardadas e ignora dados inválidos ou incompletos.
-function loadNodes(roadmap, onSelectIsland) {
-  const initialNodes = createNodes(roadmap, onSelectIsland);
-
-  try {
-    const savedPositions = JSON.parse(
-      localStorage.getItem(getPositionsStorageKey(roadmap.id)) || '{}',
-    );
-
-    return initialNodes.map((node) => {
-      const savedPosition = savedPositions[node.id];
-      const hasValidPosition =
-        Number.isFinite(savedPosition?.x) && Number.isFinite(savedPosition?.y);
-
-      return hasValidPosition ? { ...node, position: savedPosition } : node;
-    });
-  } catch {
-    // Se o navegador bloquear o localStorage ou o JSON estiver inválido, usamos as posições padrão.
-    return initialNodes;
-  }
 }
 
 function RoadmapChrome({ roadmap }) {
@@ -118,23 +86,13 @@ function RoadmapChrome({ roadmap }) {
           Arraste para navegar ou mover ilhas. Role para dar zoom.
         </p>
         <div className="roadmap-controls" role="toolbar" aria-label="Controles de zoom">
-          <button
-            type="button"
-            aria-label="Diminuir zoom"
-            title="Diminuir zoom"
-            onClick={() => zoomOut()}
-          >
+          <button type="button" aria-label="Diminuir zoom" title="Diminuir zoom" onClick={() => zoomOut()}>
             <Icon name="minus" size={16} />
           </button>
           <span className="roadmap-zoom-value" aria-live="polite">
             {Math.round(zoom * 100)}%
           </span>
-          <button
-            type="button"
-            aria-label="Aumentar zoom"
-            title="Aumentar zoom"
-            onClick={() => zoomIn()}
-          >
+          <button type="button" aria-label="Aumentar zoom" title="Aumentar zoom" onClick={() => zoomIn()}>
             <Icon name="plus" size={16} />
           </button>
           <i aria-hidden="true" />
@@ -152,56 +110,72 @@ function RoadmapChrome({ roadmap }) {
   );
 }
 
-function FlowCanvas({ roadmap, onSelectIsland }) {
-  // React Flow mantém o estado interativo; a carga inicial restaura as posições deste mapa.
-  const [nodes, setNodes, onNodesChange] = useNodesState(() => loadNodes(roadmap, onSelectIsland));
+function FlowCanvas({
+  roadmap,
+  onSelectIsland,
+  onConnectPersist,
+  onDeleteConnection,
+  onPositionPersist,
+  onError,
+}) {
+  const [nodes, setNodes, onNodesChange] = useNodesState(createNodes(roadmap, onSelectIsland));
   const [edges, setEdges, onEdgesChange] = useEdgesState(createEdges(roadmap));
 
- 
-useEffect(() => {
-  const novosNos = createNodes(roadmap, onSelectIsland);
+  useEffect(() => {
+    setNodes(createNodes(roadmap, onSelectIsland));
+    setEdges(createEdges(roadmap));
+  }, [roadmap, onSelectIsland, setNodes, setEdges]);
 
-  setNodes((nosAtuais) => {
-    return novosNos.map((novoNo) => {
-      const existente = nosAtuais.find(
-        (no) => no.id === novoNo.id
-      );
+  const handleConnect = useCallback(async ({ source, target }) => {
+    if (!source || !target || source === 'farol' || target === 'farol') return;
 
-      if (!existente) {
-        return novoNo;
+    const alreadyConnected = edges.some(
+      (edge) =>
+        (edge.source === source && edge.target === target) ||
+        (edge.source === target && edge.target === source),
+    );
+    if (alreadyConnected) return;
+
+    try {
+      await onConnectPersist(source, target);
+    } catch (error) {
+      onError(error.message || 'Não foi possível criar a conexão.');
+    }
+  }, [edges, onConnectPersist, onError]);
+
+  const handleDeleteEdges = useCallback(async (removed) => {
+    for (const edge of removed) {
+      try {
+        await onDeleteConnection(edge.id);
+      } catch (error) {
+        setEdges((current) =>
+          current.some((item) => item.id === edge.id) ? current : [...current, edge],
+        );
+        onError(error.message || 'Não foi possível remover a conexão.');
       }
+    }
+  }, [onDeleteConnection, onError, setEdges]);
 
-      return {
-        ...novoNo,
-        ...existente,
-        position: existente.position,
-        data: novoNo.data,
-      };
-    });
-  });
+  const handleDragStop = useCallback(async (_, node) => {
+    if (node.id === 'farol') return;
 
-  setEdges(createEdges(roadmap));
-}, [roadmap, onSelectIsland, setNodes, setEdges]);
-
-
-  const onConnect = useCallback(
-    (connection) => {
-      // Ligações criadas arrastando os conectores existem só nesta sessão e começam com aparência de progresso.
-      setEdges((currentEdges) =>
-        addEdge({ ...connection, type: 'roadmap', data: { status: 'progress' } }, currentEdges),
+    const previous = roadmap.islands.find((island) => island.id === node.id)?.position;
+    try {
+      await onPositionPersist(node.id, node.position);
+    } catch (error) {
+      setNodes((current) =>
+        current.map((item) =>
+          item.id === node.id && previous ? { ...item, position: previous } : item,
+        ),
       );
-    },
-    [setEdges],
-  );
+      onError(error.message || 'Não foi possível salvar a posição.');
+    }
+  }, [onPositionPersist, onError, roadmap.islands, setNodes]);
 
-  const onNodeClick = useCallback(
-    (_, node) => {
-      if (node.id !== 'farol') onSelectIsland(node.id);
-    },
-    [onSelectIsland],
-  );
+  const onNodeClick = useCallback((_, node) => {
+    if (node.id !== 'farol') onSelectIsland(node.id);
+  }, [onSelectIsland]);
 
-  // A key baseada no id do roadmap remonta o canvas ao trocar de mapa.
   return (
     <ReactFlow
       className="roadmap-flow"
@@ -211,29 +185,17 @@ useEffect(() => {
       edgeTypes={edgeTypes}
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
-      onConnect={onConnect}
+      onConnect={handleConnect}
+      onEdgesDelete={handleDeleteEdges}
       onNodeClick={onNodeClick}
+      onNodeDragStop={handleDragStop}
       fitView
       fitViewOptions={{ padding: 0.18 }}
       minZoom={0.25}
       maxZoom={1.5}
       nodesConnectable
       elementsSelectable
-      deleteKeyCode={null}
-      onNodeDragStop={(_, node) => {
-        const positions = Object.fromEntries(
-          nodes.map((n) => [n.id, n.id === node.id ? node.position : n.position]),
-        );
-
-        try {
-          localStorage.setItem(
-            getPositionsStorageKey(roadmap.id),
-            JSON.stringify(positions),
-          );
-        } catch {
-          // O mapa continua funcionando mesmo se o navegador não permitir salvar localmente.
-        }
-      }}
+      deleteKeyCode={['Backspace', 'Delete']}
     >
       <Background
         variant={BackgroundVariant.Lines}
@@ -246,10 +208,12 @@ useEffect(() => {
   );
 }
 
-export default function RoadmapCanvas({ roadmap, onSelectIsland }) {
+export default function RoadmapCanvas(props) {
+  const { roadmap } = props;
+
   return (
     <section className="roadmap-canvas" aria-label={`Mapa de aprendizado: ${roadmap.title}`}>
-      <FlowCanvas key={roadmap.id} roadmap={roadmap} onSelectIsland={onSelectIsland} />
+      <FlowCanvas key={roadmap.id} {...props} />
     </section>
   );
 }

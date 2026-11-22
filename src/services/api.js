@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
+const API_URL = import.meta.env?.VITE_API_URL || 'http://localhost:8080/api';
 
 export async function requisicaoAPI(endpoint, opcoes = {}) {
   const token = sessionStorage.getItem('token');
@@ -18,12 +18,19 @@ export async function requisicaoAPI(endpoint, opcoes = {}) {
 
     try {
       const dadosErro = JSON.parse(textoErro);
-      mensagem = dadosErro.detail || dadosErro.message || dadosErro.mensagem || textoErro;
+      mensagem = dadosErro.erro || dadosErro.detail || dadosErro.message || dadosErro.mensagem || textoErro;
     } catch {
       // Algumas respostas de erro não usam JSON.
     }
 
-    throw new Error(mensagem || 'Erro ao comunicar com o servidor.');
+    if (resposta.status === 401) {
+      window.dispatchEvent(new CustomEvent('farol:auth-expired'));
+      throw new Error('Sua sessão expirou. Entre novamente para continuar.');
+    }
+
+    const erro = new Error(mensagem || 'Erro ao comunicar com o servidor.');
+    erro.status = resposta.status;
+    throw erro;
   }
 
   if (resposta.status === 204) {

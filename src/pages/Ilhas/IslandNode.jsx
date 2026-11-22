@@ -4,7 +4,7 @@ import Icon from '../../components/Icon';
 const statusLabel = {
   done: 'Concluída',
   progress: 'Em andamento',
-  locked: 'Bloqueada',
+  locked: 'Não iniciada',
 };
 
 const islandShapes = [
@@ -18,7 +18,6 @@ function StatusBadge({ status }) {
     <span className={`island-status island-status-${status}`}>
       {status === 'done' && <Icon name="check" size={12} />}
       {status === 'progress' && <Icon name="sparkles" size={12} />}
-      {status === 'locked' && <Icon name="lock" size={12} />}
       {statusLabel[status]}
     </span>
   );
@@ -26,7 +25,7 @@ function StatusBadge({ status }) {
 
 function IslandNode({ data, selected }) {
   // Os valores são demonstrativos; limitar a divisão evita NaN quando total for zero.
-  const percent = data.total ? Math.round((data.completed / data.total) * 100) : 0;
+  const percent = Number.isFinite(data.percentual) ? data.percentual : null;
   // Repetir as formas por índice dá variedade sem exigir uma forma específica nos dados de cada ilha.
   const shape = islandShapes[data.index % islandShapes.length];
 
@@ -38,7 +37,7 @@ function IslandNode({ data, selected }) {
         role="button"
         tabIndex={0}
         aria-pressed={selected}
-        aria-label={`${data.title}, ${statusLabel[data.status]}, ${data.completed} de ${data.total} etapas`}
+        aria-label={`${data.title}, ${statusLabel[data.status]}, ${percent === null ? 'progresso indisponível' : `${percent}% concluído`}`}
         onKeyDown={(event) => {
           // O nó continua acessível pelo teclado mesmo sendo arrastável no canvas.
           if (event.key === 'Enter' || event.key === ' ') {
@@ -63,12 +62,12 @@ function IslandNode({ data, selected }) {
           <h3>{data.title}</h3>
           <div className="island-progress-row">
             <span className="island-progress-track">
-              <span className="island-progress-fill" style={{ width: `${percent}%` }} />
+            <span className="island-progress-fill" style={{ width: `${percent ?? 0}%` }} />
             </span>
-            <span className="island-progress-count">{data.completed}/{data.total}</span>
+            <span className="island-progress-count">{percent === null ? '—' : `${percent}%`}</span>
           </div>
           {data.status === 'progress' && (
-            <button className="island-continue nodrag" type="button" onClick={data.onSelect}>
+            <button className="island-continue nodrag" type="button" onClick={(event) => { event.stopPropagation(); data.onSelect(); }}>
               Continuar <Icon name="arrowRight" size={16} />
             </button>
           )}

@@ -4,6 +4,9 @@ import Ilhas from './pages/Ilhas';
 import LandingPage from './pages/LandingPage';
 import Painel from './pages/Painel';
 import Autenticacao from './pages/Autenticacao';
+import CadastroMentor from './pages/CadastroMentor';
+import LoginMentor from './pages/LoginMentor';
+import PainelMentor from './pages/Painel/PainelMentoria';
 
 function tokenEstaValido(token) {
   if (!token) return false;
@@ -26,7 +29,7 @@ function App() {
   const [objetivoSelecionado, setObjetivoSelecionado] = useState(null);
   const [contextoNotas, setContextoNotas] = useState(null);
   const [notasSujo, setNotasSujo] = useState(false);
-  const descarteNotaRef = useRef(() => {});
+  const descarteNotaRef = useRef(() => { });
   const [abrirModalObjetivo, setAbrirModalObjetivo] = useState(false);
   const [authLink, setAuthLink] = useState(() => {
     const parametros = new URLSearchParams(window.location.search);
@@ -47,7 +50,7 @@ function App() {
   }, []);
 
   const registrarDescarteNota = useCallback((descarte) => {
-    descarteNotaRef.current = descarte ?? (() => {});
+    descarteNotaRef.current = descarte ?? (() => { });
   }, []);
 
   const fazerLogout = useCallback(() => {
@@ -96,6 +99,23 @@ function App() {
     window.addEventListener('farol:auth-expired', tratarSessaoExpirada);
     return () => window.removeEventListener('farol:auth-expired', tratarSessaoExpirada);
   }, [fazerLogout]);
+
+  const caminhoAtual = window.location.pathname;
+
+  if (caminhoAtual === '/cadastro-mentor') {
+    return <CadastroMentor />;
+  }
+
+  if (caminhoAtual === '/login-mentor') {
+    return <LoginMentor onLoginSucesso={() => { window.location.pathname = '/painel-mentor'; }} />;
+  }
+
+  if (caminhoAtual === '/painel-mentor' || caminhoAtual === '/painelMentoria') {
+    if (!tokenEstaValido(sessionStorage.getItem('token'))) {
+      return <LoginMentor onLoginSucesso={() => { window.location.pathname = '/painel-mentor'; }} />;
+    }
+    return <PainelMentor onLogout={fazerLogout} />;
+  }
 
   if (!mostrarPainel && !mostrarAutenticacao && !authLink) {
     return <LandingPage onEntrar={() => setMostrarAutenticacao(true)} />;

@@ -1,13 +1,25 @@
 const API_URL = import.meta.env?.VITE_API_URL || 'http://localhost:8080/api';
+const ROTAS_PUBLICAS_CONTA = [
+  '/usuarios/login',
+  '/usuarios/cadastro',
+  '/usuarios/verificar-codigo',
+  '/usuarios/reenviar-codigo',
+  '/usuarios/verificar-email',
+  '/usuarios/reenviar-verificacao',
+  '/usuarios/solicitar-recuperacao',
+  '/usuarios/redefinir-senha',
+];
 
 export async function requisicaoAPI(endpoint, opcoes = {}) {
   const token = sessionStorage.getItem('token');
+  const rota = endpoint.split('?')[0];
+  const rotaPublica = ROTAS_PUBLICAS_CONTA.includes(rota);
 
   const resposta = await fetch(`${API_URL}${endpoint}`, {
     ...opcoes,
     headers: {
       'Content-Type': 'application/json',
-      ...(token && { Authorization: `Bearer ${token}` }),
+      ...(token && !rotaPublica && { Authorization: `Bearer ${token}` }),
       ...opcoes.headers,
     },
   });
@@ -23,7 +35,7 @@ export async function requisicaoAPI(endpoint, opcoes = {}) {
       // Algumas respostas de erro não usam JSON.
     }
 
-    if (resposta.status === 401) {
+    if (resposta.status === 401 && token && !rotaPublica) {
       window.dispatchEvent(new CustomEvent('farol:auth-expired'));
       throw new Error('Sua sessão expirou. Entre novamente para continuar.');
     }

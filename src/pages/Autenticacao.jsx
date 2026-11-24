@@ -14,6 +14,10 @@ export default function Autenticacao({
   const [verificationToken] = useState(initialVerificationToken || '');
   const [resetToken] = useState(initialResetToken || '');
   const [verificationEmail, setVerificationEmail] = useState('');
+  const [verificationCode, setVerificationCode] = useState('');
+  const [codeCountdown, setCodeCountdown] = useState(0);
+  const [codeLoading, setCodeLoading] = useState(false);
+  const [loginSuccessNotice, setLoginSuccessNotice] = useState('');
   const [recoveryEmail, setRecoveryEmail] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
@@ -21,6 +25,14 @@ export default function Autenticacao({
   const [actionError, setActionError] = useState('');
   const [resendVisible, setResendVisible] = useState(false);
   const verificationStarted = useRef(false);
+
+  useEffect(() => {
+    if (codeCountdown <= 0) return;
+    const interval = setInterval(() => {
+      setCodeCountdown((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [codeCountdown]);
 
   useEffect(() => {
     if (!verificationToken || verificationStarted.current) return;
@@ -68,6 +80,9 @@ export default function Autenticacao({
 
   function showScreen(nextScreen) {
     setScreen(nextScreen);
+    if (nextScreen !== 'login') {
+      setLoginSuccessNotice('');
+    }
 
     setMessages({
       login: '',
@@ -128,14 +143,63 @@ export default function Autenticacao({
 
       onLoginSuccess();
     } catch (erro) {
-      if (erro.message.toLowerCase().includes('confirme seu e-mail')) {
+      const msg = erro.message || '';
+      if (msg.toLowerCase().includes('confirme seu e-mail')) {
         setVerificationEmail(login.email.trim().toLowerCase());
         setResendVisible(true);
       }
       setMessages((previous) => ({
         ...previous,
-        login: erro.message || 'Erro ao conectar com o servidor.',
+        login: msg || 'Erro ao conectar com o servidor.',
       }));
+    }
+  }
+
+  // CONFIRMAÇÃO DE CÓDIGO DE 6 DÍGITOS
+
+  async function handleConfirmCode(event) {
+    if (event) event.preventDefault();
+    const codigoFormatado = verificationCode.trim();
+    if (!codigoFormatado || codigoFormatado.length !== 6) {
+      setActionError('O código deve conter exatamente 6 dígitos numéricos.');
+      return;
+    }
+    setCodeLoading(true);
+    setActionError('');
+    try {
+      await requisicaoAPI('/usuarios/verificar-codigo', {
+        method: 'POST',
+        body: JSON.stringify({
+          email: verificationEmail.trim().toLowerCase(),
+          codigo: codigoFormatado,
+        }),
+      });
+      setLoginSuccessNotice('E-mail confirmado com sucesso! Digite sua senha para entrar.');
+      setLogin((prev) => ({ ...prev, email: verificationEmail.trim().toLowerCase() }));
+      setActionError('');
+      setActionMessage('');
+      setResendVisible(false);
+      setVerificationCode('');
+      setScreen('login');
+    } catch (error) {
+      setActionError(error.message || 'Código de verificação inválido ou expirado.');
+    } finally {
+      setCodeLoading(false);
+    }
+  }
+
+  async function handleResendCode() {
+    if (codeCountdown > 0) return;
+    setActionError('');
+    try {
+      await requisicaoAPI('/usuarios/reenviar-codigo', {
+        method: 'POST',
+        body: JSON.stringify({ email: verificationEmail.trim().toLowerCase() }),
+      });
+      setCodeCountdown(60);
+      setActionMessage('Se a conta precisar de confirmação, enviaremos um novo código.');
+    } catch (error) {
+      setActionError(error.message || 'Não foi possível reenviar o código agora.');
     }
   }
 
@@ -276,10 +340,13 @@ export default function Autenticacao({
         ...previous,
         finish: '',
       }));
-      setVerificationEmail(userData.email.trim().toLowerCase());
-      setActionMessage(resultado.mensagem || 'Enviamos um link de confirmação para seu e-mail.');
+      const emailCadastrado = userData.email.trim().toLowerCase();
+      setVerificationEmail(emailCadastrado);
+      setVerificationCode('');
+      setCodeCountdown(60);
+      setActionMessage(resultado.mensagem || 'Código de verificação enviado para seu e-mail.');
       setActionError('');
-      setScreen('verificationNotice');
+      setScreen('confirmCode');
     } catch (erro) {
       setMessages((previous) => ({
         ...previous,
@@ -429,6 +496,97 @@ export default function Autenticacao({
                 </div>
               )}
 
+              {screen === 'confirmCode' && (
+                <div>
+                  <h2 className="mb-3 text-3xl font-bold">Confirme seu e-mail</h2>
+                  <p className="mb-2 text-sm text-slate-300">
+                    Enviamos um código de 6 dígitos para{' '}
+                    <strong className="text-white">{verificationEmail}</strong>.
+                  </p>
+                  <p className="mb-4 text-xs text-slate-400">
+                    O código é válido por <strong>10 minutos</strong>. Não esqueça de checar a pasta de spam.
+                  </p>
+
+                  {actionMessage && (
+                    <div className="mb-4 rounded-lg bg-green-500/20 p-3 text-xs text-green-300">
+                      {actionMessage}
+                    </div>
+                  )}
+
+                  {actionError && (
+                    <div role="alert" className="mb-4 rounded-lg bg-red-500/20 p-3 text-xs text-red-300">
+                      {actionError}
+                    </div>
+                  )}
+
+                  <form onSubmit={handleConfirmCode}>
+                    <div className="mb-4">
+                      <label htmlFor="codigo-verificacao-conta" className={labelClass}>Código de 6 dígitos</label>
+                      <input
+                        id="codigo-verificacao-conta"
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                        maxLength={6}
+                        autoFocus
+                        autoComplete="one-time-code"
+                        aria-label="Código de verificação de 6 dígitos"
+                        placeholder="000000"
+                        value={verificationCode}
+                        onPaste={(e) => {
+                          e.preventDefault();
+                          const colado = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
+                          setVerificationCode(colado);
+                        }}
+                        onChange={(e) => {
+                          const val = e.target.value.replace(/\D/g, '').slice(0, 6);
+                          setVerificationCode(val);
+                        }}
+                        className="w-full h-14 rounded-lg border border-gray-300 bg-gray-100 text-center font-mono text-3xl font-extrabold tracking-[0.4em] text-gray-900 outline-none transition focus:border-2 focus:border-yellow-400 focus:bg-white"
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={verificationCode.length !== 6 || codeLoading}
+                      className={`${buttonClass} disabled:opacity-50 disabled:cursor-not-allowed`}
+                    >
+                      {codeLoading ? 'Confirmando...' : 'Confirmar código'}
+                    </button>
+
+                    <div className="mt-4 flex flex-col gap-2">
+                      <button
+                        type="button"
+                        disabled={codeCountdown > 0}
+                        onClick={handleResendCode}
+                        className={`w-full py-2.5 text-xs font-semibold rounded-lg border transition ${
+                          codeCountdown > 0
+                            ? 'text-slate-400 border-slate-700 bg-slate-800/40 cursor-not-allowed'
+                            : 'text-yellow-300 border-yellow-400/40 hover:bg-yellow-400/10'
+                        }`}
+                      >
+                        {codeCountdown > 0
+                          ? `Reenviar código em ${codeCountdown}s`
+                          : 'Reenviar código'}
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setActionError('');
+                          setActionMessage('');
+                          setLoginSuccessNotice('');
+                          showScreen('login');
+                        }}
+                        className="mt-2 text-xs text-slate-400 hover:text-slate-200 text-center"
+                      >
+                        ← Voltar para o login
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              )}
+
               {screen === 'forgotPassword' && (
                 <div>
                   <button
@@ -539,7 +697,13 @@ export default function Autenticacao({
 
               {screen === 'login' && (
                 <div>
-                  <h2 className="mb-8 text-3xl font-bold">Login</h2>
+                  <h2 className="mb-6 text-3xl font-bold">Login</h2>
+
+                  {loginSuccessNotice && (
+                    <div className="mb-6 rounded-xl border border-green-500/40 bg-green-500/10 p-3.5 text-xs font-semibold text-green-300">
+                      {loginSuccessNotice}
+                    </div>
+                  )}
 
                   <form onSubmit={handleLogin}>
                     <div className="mb-5">
@@ -594,22 +758,23 @@ export default function Autenticacao({
                       <p className="mt-3 text-xs text-red-300">{messages.login}</p>
                     )}
                     {resendVisible && (
-                      <div className="mt-3">
+                      <div className="mt-3 rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-3.5">
+                        <p className="text-xs text-yellow-200">
+                          Sua conta ainda não foi confirmada.
+                        </p>
                         <button
                           type="button"
-                          onClick={handleResendVerification}
-                          className="text-left text-xs font-bold text-yellow-300 hover:underline"
+                          onClick={() => {
+                            setVerificationEmail(login.email.trim().toLowerCase());
+                            setVerificationCode('');
+                            setActionError('');
+                            setActionMessage('Digite o código de 6 dígitos enviado para seu e-mail.');
+                            setScreen('confirmCode');
+                          }}
+                          className="mt-2 block text-left text-xs font-bold text-yellow-300 hover:underline"
                         >
-                          Reenviar confirmação de e-mail
+                          Confirmar meu e-mail com código de 6 dígitos →
                         </button>
-                        {actionMessage && (
-                          <p className="mt-2 text-xs text-green-300">{actionMessage}</p>
-                        )}
-                        {actionError && (
-                          <p role="alert" className="mt-2 text-xs text-red-300">
-                            {actionError}
-                          </p>
-                        )}
                       </div>
                     )}
                   </form>

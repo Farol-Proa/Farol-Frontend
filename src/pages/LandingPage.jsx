@@ -3,6 +3,7 @@ import heroFarol from '/images/hero_farol.png';
 import heroHome from '/images/foto-da-home.png';
 import heroObjetivo from '/images/hero_objetivo.png';
 import Check from '/images/check.svg';
+import ConviteMentores from '../components/ConviteMentores';
 
 import './LandingPage.css';
 
@@ -49,6 +50,8 @@ function LandingPage({ onEntrar }) {
           </p>
         </section>
       </main>
+
+      <ConviteMentores />
 
       <section
         id="recursos"

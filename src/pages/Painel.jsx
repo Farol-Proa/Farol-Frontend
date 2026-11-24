@@ -6,6 +6,7 @@ import Calendario from './Painel/Calendario';
 import Notas from './Painel/Notas';
 import Objetivos from './Painel/Objetivos';
 import Tarefas from './Painel/Tarefas';
+import MentoriaMentorado from '../components/MentoriaMentorado';
 
 function chaveDataLocal(data) {
   const ano = data.getFullYear();
@@ -128,6 +129,10 @@ function Painel({
             onAlternarTarefa={onAlternarTarefa}
             onRemoverTarefa={onRemoverTarefa}
           />
+        </section>
+
+        <section className="mt-6">
+          <MentoriaMentorado />
         </section>
       </main>
     </div>

@@ -31,6 +31,7 @@ function App() {
   const [notasSujo, setNotasSujo] = useState(false);
   const descarteNotaRef = useRef(() => { });
   const [abrirModalObjetivo, setAbrirModalObjetivo] = useState(false);
+  const [abrirModalIa, setAbrirModalIa] = useState(false);
   const [authLink, setAuthLink] = useState(() => {
     const parametros = new URLSearchParams(window.location.search);
     const verificationToken = parametros.get('verify');
@@ -150,6 +151,7 @@ function App() {
     if (destino === 'Ilhas') {
       setObjetivoSelecionado(opcoes.objetivoId ?? null);
       setAbrirModalObjetivo(opcoes.abrirModal ?? false);
+      setAbrirModalIa(opcoes.abrirModalIa ?? false);
       return;
     }
 
@@ -212,8 +214,10 @@ function App() {
           onNavegar={navegar}
           objetivoSelecionado={objetivoSelecionado}
           abrirModalObjetivo={abrirModalObjetivo}
+          abrirModalIa={abrirModalIa}
           objetivos={dadosDashboard.objetivos}
           onAdicionarObjetivo={dadosDashboard.adicionarObjetivo}
+          onGerarObjetivoIa={dadosDashboard.gerarObjetivoIa}
           onRemoverObjetivo={dadosDashboard.removerObjetivo}
           onAdicionarEtapa={dadosDashboard.adicionarEtapa}
           onAdicionarTarefa={dadosDashboard.adicionarTarefa}

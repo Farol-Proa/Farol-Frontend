@@ -7,6 +7,7 @@ export function criarServicoMapas(request = requisicaoAPI) {
     arvore: () => request('/objetivos/arvore'),
     mapa: (id) => request(`/objetivos/${id}`),
     criarMapa: (dados) => request('/objetivos', json('POST', dados)),
+    gerarComIa: (dados) => request('/objetivos/gerar', json('POST', dados)),
     atualizarMapa: (id, dados) => request(`/objetivos/${id}`, json('PUT', dados)),
     removerMapa: (id) => request(`/objetivos/${id}`, { method: 'DELETE' }),
     criarIlha: (mapaId, dados) => request(`/objetivos/${mapaId}/etapas`, json('POST', dados)),

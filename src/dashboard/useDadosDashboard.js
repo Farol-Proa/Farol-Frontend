@@ -57,6 +57,12 @@ export function useDadosDashboard() {
     return criado;
   }
 
+  async function gerarObjetivoIa(dados) {
+    const criado = await mapasAPI.gerarComIa(dados);
+    recarregarObjetivos();
+    return criado;
+  }
+
   async function removerObjetivo(id) {
     await mapasAPI.removerMapa(id);
     recarregarObjetivos();
@@ -229,6 +235,7 @@ export function useDadosDashboard() {
     carregando,
     erro,
     adicionarObjetivo,
+    gerarObjetivoIa,
     removerObjetivo,
     adicionarEtapa,
     adicionarTarefa,

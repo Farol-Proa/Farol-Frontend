@@ -18,6 +18,16 @@ test('consulta árvore e detalhes do mapa pelas rotas documentadas', async () =>
   assert.deepEqual(chamadas.map(({ path }) => path), ['/objetivos/arvore', '/objetivos/12']);
 });
 
+test('gerarComIa envia POST para /objetivos/gerar com o payload fornecido', async () => {
+  const { chamadas, service } = criarRequestFake();
+  const dados = { titulo: 'Aprender Java', nivelConhecimento: 'INICIANTE', prazoSemanas: 8 };
+  await service.gerarComIa(dados);
+  assert.equal(chamadas.length, 1);
+  assert.equal(chamadas[0].path, '/objetivos/gerar');
+  assert.equal(chamadas[0].options.method, 'POST');
+  assert.deepEqual(JSON.parse(chamadas[0].options.body), dados);
+});
+
 test('usa os corpos documentados para conexões, posições e conteúdo estruturado', async () => {
   const { chamadas, service } = criarRequestFake();
   await service.criarConexao(12, 21, 22);

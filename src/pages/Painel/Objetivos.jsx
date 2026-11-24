@@ -72,7 +72,17 @@ function Objetivos({ objetivos, onNavegar }) {
           aria-label="Ir para Ilhas e criar um novo objetivo"
         >
           <span aria-hidden="true">+</span>
-          <strong>Criar uma nova</strong>
+          <strong>Criar manual</strong>
+        </button>
+
+        <button
+          className="painel-ilha-adicionar painel-ilha-adicionar-ia"
+          type="button"
+          onClick={() => onNavegar('Ilhas', { abrirModalIa: true })}
+          aria-label="Ir para Ilhas e criar com inteligência artificial"
+        >
+          <span aria-hidden="true">✨</span>
+          <strong>Criar com IA</strong>
         </button>
       </div>
     </article>

@@ -1245,6 +1245,18 @@
 .ilhas-action-button.danger {
   background: #562e48;
 }
+.ilhas-action-button.ilhas-btn-ia {
+  background: linear-gradient(135deg, #f5d547 0%, #e0aa14 100%);
+  color: #070b1c;
+  font-weight: 600;
+  border-color: rgba(245, 213, 71, 0.4);
+  box-shadow: 0 2px 10px rgba(245, 213, 71, 0.25);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+.ilhas-action-button.ilhas-btn-ia:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(245, 213, 71, 0.4);
+}
 .ilhas-add-stage {
   display: flex;
   align-items: end;

@@ -566,6 +566,18 @@
   text-align: center;
 }
 
+.painel-ilha-adicionar.painel-ilha-adicionar-ia {
+  border: 2px dashed #f5d547;
+  background: radial-gradient(circle at 50% 30%, rgba(245, 213, 71, 0.08), #101e3b 80%);
+  color: #f5d547;
+}
+
+.painel-ilha-adicionar.painel-ilha-adicionar-ia:hover {
+  border-color: #ffe875;
+  background: radial-gradient(circle at 50% 30%, rgba(245, 213, 71, 0.16), #132446 80%);
+  color: #ffe875;
+}
+
 .painel .painel-card {
   padding: 20px;
   border-color: rgb(154 167 199 / 0.14);

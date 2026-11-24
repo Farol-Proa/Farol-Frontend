@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import Icon from '../components/Icon';
 import Sidebar from '../components/Sidebar';
 import RoadmapCanvas from './Ilhas/RoadmapCanvas';
+import ModalGerarMapaIa from '../components/ModalGerarMapaIa';
 import { percentualProgressoObjetivo } from '../dashboard/objectiveTree';
 import './Ilhas.css';
 
@@ -87,7 +88,7 @@ function criarRoadmap(objetivo) {
   };
 }
 
-function MapHeader({ roadmap, objetivos, onChangeRoadmap, onOpenCreate, onDelete, onOpenNotes }) {
+function MapHeader({ roadmap, objetivos, onChangeRoadmap, onOpenCreate, onOpenIaModal, onDelete, onOpenNotes }) {
   return (
     <header className="ilhas-header">
       <div className="ilhas-heading">
@@ -110,6 +111,9 @@ function MapHeader({ roadmap, objetivos, onChangeRoadmap, onOpenCreate, onDelete
         </label>
         <button className="ilhas-action-button" type="button" onClick={onOpenCreate}>
           Novo objetivo
+        </button>
+        <button className="ilhas-action-button ilhas-btn-ia" type="button" onClick={onOpenIaModal}>
+          ✨ Criar com IA
         </button>
         <button className="ilhas-action-button" type="button" onClick={onOpenNotes}>
           Notas do mapa
@@ -473,8 +477,10 @@ function Ilhas({
   onNavegar,
   objetivoSelecionado,
   abrirModalObjetivo,
+  abrirModalIa,
   objetivos,
   onAdicionarObjetivo,
+  onGerarObjetivoIa,
   onRemoverObjetivo,
   onAdicionarEtapa,
   onAdicionarTarefa,
@@ -500,6 +506,7 @@ function Ilhas({
   const [selectedGoalId, setSelectedGoalId] = useState(objetivoSelecionado);
   const [selectedStageId, setSelectedStageId] = useState(null);
   const [modalAberto, setModalAberto] = useState(abrirModalObjetivo);
+  const [modalIaAberto, setModalIaAberto] = useState(abrirModalIa ?? false);
   const [tituloEtapa, setTituloEtapa] = useState('');
   const [descricaoEtapa, setDescricaoEtapa] = useState('');
   const [erroAcao, setErroAcao] = useState('');
@@ -574,6 +581,7 @@ function Ilhas({
                 setSelectedStageId(null);
               }}
               onOpenCreate={() => setModalAberto(true)}
+              onOpenIaModal={() => setModalIaAberto(true)}
               onDelete={excluirObjetivo}
               onOpenNotes={() => onNavegar('Anotações', { objetivoId: objetivo.id })}
             />
@@ -625,9 +633,18 @@ function Ilhas({
           <section className="ilhas-empty-state">
             <h1>{carregando ? 'Carregando seus objetivos...' : 'Sua jornada começa aqui'}</h1>
             <p>{erro || 'Crie um objetivo para começar a montar seu mapa de etapas.'}</p>
-            <button type="button" onClick={() => setModalAberto(true)}>
-              Criar objetivo
-            </button>
+            <div className="ilhas-empty-actions">
+              <button type="button" onClick={() => setModalAberto(true)}>
+                Criar manual
+              </button>
+              <button
+                type="button"
+                className="ilhas-btn-ia"
+                onClick={() => setModalIaAberto(true)}
+              >
+                ✨ Criar com IA
+              </button>
+            </div>
           </section>
         )}
         {erroAcao && (
@@ -670,6 +687,17 @@ function Ilhas({
           }}
         />
       )}
+      <ModalGerarMapaIa
+        aberto={modalIaAberto}
+        onFechar={() => setModalIaAberto(false)}
+        onGerar={async (dados) => {
+          const mapaGerado = await onGerarObjetivoIa(dados);
+          if (mapaGerado?.id) {
+            setSelectedGoalId(mapaGerado.id);
+            setSelectedStageId(null);
+          }
+        }}
+      />
     </div>
   );
 }

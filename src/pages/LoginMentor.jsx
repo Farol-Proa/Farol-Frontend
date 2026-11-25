@@ -16,6 +16,21 @@ export default function LoginMentor({ onLoginSucesso }) {
   const [msgVerificacao, setMsgVerificacao] = useState("");
   const [erroVerificacao, setErroVerificacao] = useState("");
   const [sucessoVerificacao, setSucessoVerificacao] = useState("");
+  const [enviandoAnalise, setEnviandoAnalise] = useState(false);
+  const [msgAnalise, setMsgAnalise] = useState("");
+
+  async function solicitarAnaliseManual() {
+    setEnviandoAnalise(true);
+    setMsgAnalise("");
+    try {
+      const res = await requisicaoAPI("/mentoria/solicitar-analise", { method: "POST" });
+      setMsgAnalise(res?.mensagem || "E-mail de notificação enviado para a equipe com sucesso!");
+    } catch (err) {
+      setMsgAnalise(err.message || "Erro ao solicitar análise.");
+    } finally {
+      setEnviandoAnalise(false);
+    }
+  }
 
   useEffect(() => {
     if (contagemReenvio <= 0) return;
@@ -245,6 +260,21 @@ export default function LoginMentor({ onLoginSucesso }) {
                   <div>
                     <h4 className="font-bold">{avisoStatus.titulo}</h4>
                     <p className="mt-1 text-xs leading-relaxed opacity-90">{avisoStatus.mensagem}</p>
+                    {avisoStatus.tipo === "pendente" && (
+                      <div className="mt-3">
+                        <button
+                          type="button"
+                          onClick={solicitarAnaliseManual}
+                          disabled={enviandoAnalise}
+                          className="inline-flex items-center gap-1.5 rounded-lg bg-yellow-400 px-3 py-1.5 text-xs font-bold text-slate-900 transition hover:bg-yellow-300 disabled:opacity-50"
+                        >
+                          {enviandoAnalise ? "Enviando notificação..." : "Notificar equipe para análise →"}
+                        </button>
+                        {msgAnalise && (
+                          <p className="mt-2 text-xs font-semibold text-green-300">{msgAnalise}</p>
+                        )}
+                      </div>
+                    )}
                     {avisoStatus.link && (
                       <a
                         href={avisoStatus.link}

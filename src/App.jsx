@@ -7,6 +7,7 @@ import Autenticacao from './pages/Autenticacao';
 import CadastroMentor from './pages/CadastroMentor';
 import LoginMentor from './pages/LoginMentor';
 import PainelMentor from './pages/Painel/PainelMentoria';
+import ConfirmarMentor from './pages/ConfirmarMentor';
 
 function tokenEstaValido(token) {
   if (!token) return false;
@@ -102,6 +103,10 @@ function App() {
   }, [fazerLogout]);
 
   const caminhoAtual = window.location.pathname;
+
+  if (caminhoAtual === '/confirmar-mentor') {
+    return <ConfirmarMentor />;
+  }
 
   if (caminhoAtual === '/cadastro-mentor') {
     return <CadastroMentor />;

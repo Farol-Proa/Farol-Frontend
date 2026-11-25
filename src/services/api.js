@@ -8,6 +8,8 @@ const ROTAS_PUBLICAS_CONTA = [
   '/usuarios/reenviar-verificacao',
   '/usuarios/solicitar-recuperacao',
   '/usuarios/redefinir-senha',
+  '/mentoria/decisao-admin/detalhes',
+  '/mentoria/decisao-admin/executar',
 ];
 
 export async function requisicaoAPI(endpoint, opcoes = {}) {

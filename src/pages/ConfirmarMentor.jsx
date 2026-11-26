@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Logo from '../components/Logo';
 import { requisicaoAPI } from '../services/api';
 
 export default function ConfirmarMentor() {
@@ -76,11 +77,9 @@ export default function ConfirmarMentor() {
       {/* Topo / Marca */}
       <header className="max-w-xl mx-auto w-full flex items-center justify-between pb-6 border-b border-[#1A2944]">
         <a href="/" className="flex items-center gap-3 group">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#315CF5] text-xl shadow-lg shadow-blue-500/20 group-hover:scale-105 transition">
-            🗼
-          </span>
+          <Logo className="h-9 w-auto" />
           <div>
-            <h1 className="text-lg font-bold tracking-tight">Farol</h1>
+            <h1 className="text-lg font-bold tracking-tight text-white group-hover:text-blue-400 transition-colors">Farol</h1>
             <p className="text-xs text-slate-400">Validação de Mentores</p>
           </div>
         </a>

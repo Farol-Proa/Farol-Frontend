@@ -29,7 +29,20 @@ const desenhos = {
     <path d="M10 11v5M14 11v5" />
   </>
 ),
+  creditCard: (
+    <>
+      <rect x="2" y="5" width="20" height="14" rx="2" />
+      <line x1="2" y1="10" x2="22" y2="10" />
+    </>
+  ),
   sailboat: <><path d="M12 3v12M12 4 5 13h7M12 7l7 6h-7" /><path d="M3 17c2 2 4 2 6 0 2 2 4 2 6 0 2 2 4 2 6 0" /></>,
+  close: <path d="M18 6 6 18M6 6l12 12" />,
+  arrowUp: <path d="m18 15-6-6-6 6" />,
+  arrowDown: <path d="m6 9 6 6 6-6" />,
+  externalLink: <><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" /></>,
+  bookOpen: <><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" /></>,
+  list: <><line x1="8" y1="6" x2="21" y2="6" /><line x1="8" y1="12" x2="21" y2="12" /><line x1="8" y1="18" x2="21" y2="18" /><line x1="3" y1="6" x2="3.01" y2="6" /><line x1="3" y1="12" x2="3.01" y2="12" /><line x1="3" y1="18" x2="3.01" y2="18" /></>,
+  code: <><polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" /></>,
 };
 
 function Icon({ name, className = '', size = 20, fill = 'none' }) {

@@ -7,6 +7,7 @@ import Notas from './Painel/Notas';
 import Objetivos from './Painel/Objetivos';
 import Tarefas from './Painel/Tarefas';
 import MentoriaMentorado from '../components/MentoriaMentorado';
+import Planos from './Planos';
 
 function chaveDataLocal(data) {
   const ano = data.getFullYear();
@@ -61,79 +62,86 @@ function Painel({
           </div>
         </header>
 
-        <section className="painel-welcome">
-          <div>
-            <span className="painel-eyebrow">BEM-VINDO DE VOLTA</span>
-            <h2>Olá, {usuario.nome?.split(' ')[0] || 'visitante'}!</h2>
-            <p>“Qualquer ideia é estupidamente útil”</p>
-          </div>
+        {activeItem === 'Planos' ? (
+          <Planos usuario={usuario} onNavegar={onNavegar} />
+        ) : (
+          <>
+            <section className="painel-welcome">
+              <div>
+                <span className="painel-eyebrow">BEM-VINDO DE VOLTA</span>
+                <h2>Olá, {usuario.nome?.split(' ')[0] || 'visitante'}!</h2>
+                <p>“Qualquer ideia é estupidamente útil”</p>
+              </div>
 
-          <div className="painel-greeting">
-            <strong>Minha jornada começa hoje.</strong>
-            <span aria-hidden="true">☀</span>
-            <p>Bom dia!</p>
-          </div>
-        </section>
+              <div className="painel-greeting">
+                <strong>Minha jornada começa hoje.</strong>
+                <span aria-hidden="true">☀</span>
+                <p>Bom dia!</p>
+              </div>
+            </section>
 
-        {erro && (
-          <p role="alert" className="painel-card">
-            {erro}
-          </p>
+            {erro && (
+              <p role="alert" className="painel-card">
+                {erro}
+              </p>
+            )}
+            {carregando && (
+              <p role="status" className="text-xs text-farol-muted">
+                Carregando seus dados...
+              </p>
+            )}
+
+            <section className="painel-grid">
+              <Notas
+                key={contextoNotas?.etapaId != null
+                  ? `ilha-${contextoNotas.etapaId}`
+                  : contextoNotas?.objetivoId != null
+                    ? `mapa-${contextoNotas.objetivoId}`
+                    : 'todas'}
+                objetivos={objetivos}
+                contexto={contextoNotas}
+                onNavegar={onNavegar}
+                onRascunhoSujo={onNotasRascunhoSujo}
+                onRegistrarDescarte={onRegistrarDescarteNota}
+              />
+
+              <Calendario
+                mesExibido={mesExibido}
+                dataSelecionada={dataSelecionada}
+                tarefas={tarefas}
+                onMudarMes={mudarMes}
+                onSelecionarData={setDataSelecionada}
+                onNavegar={onNavegar}
+              />
+
+              <article className="painel-card painel-journey min-w-0 p-4 text-center" id="objetivos">
+                <h3>Minha Jornada</h3>
+                <div className="painel-journey-ring" style={{ '--progresso': `${progressoGeral}%` }}>
+                  <span>{progressoGeral}%</span>
+                </div>
+                <p className="text-xs leading-relaxed text-farol-muted">
+                  {totalItens === 0
+                    ? 'Adicione tarefas às etapas dos seus objetivos para acompanhar seu progresso.'
+                    : `Você concluiu ${itensConcluidos} de ${totalItens} tarefas.`}
+                </p>
+              </article>
+            </section>
+
+            <section className="painel-grid-secondary">
+              <Objetivos objetivos={objetivos} onNavegar={onNavegar} />
+
+              <Tarefas
+                tarefas={tarefas}
+                onAlternarTarefa={onAlternarTarefa}
+                onRemoverTarefa={onRemoverTarefa}
+              />
+            </section>
+
+            <section className="mt-6">
+              <MentoriaMentorado />
+            </section>
+          </>
         )}
-        {carregando && (
-          <p role="status" className="text-xs text-farol-muted">
-            Carregando seus dados...
-          </p>
-        )}
-
-        <section className="painel-grid">
-          <Notas
-            key={contextoNotas?.etapaId != null
-              ? `ilha-${contextoNotas.etapaId}`
-              : contextoNotas?.objetivoId != null
-                ? `mapa-${contextoNotas.objetivoId}`
-                : 'todas'}
-            objetivos={objetivos}
-            contexto={contextoNotas}
-            onNavegar={onNavegar}
-            onRascunhoSujo={onNotasRascunhoSujo}
-            onRegistrarDescarte={onRegistrarDescarteNota}
-          />
-
-          <Calendario
-            mesExibido={mesExibido}
-            dataSelecionada={dataSelecionada}
-            tarefas={tarefas}
-            onMudarMes={mudarMes}
-            onSelecionarData={setDataSelecionada}
-          />
-
-          <article className="painel-card painel-journey min-w-0 p-4 text-center" id="objetivos">
-            <h3>Minha Jornada</h3>
-            <div className="painel-journey-ring" style={{ '--progresso': `${progressoGeral}%` }}>
-              <span>{progressoGeral}%</span>
-            </div>
-            <p className="text-xs leading-relaxed text-farol-muted">
-              {totalItens === 0
-                ? 'Adicione tarefas às etapas dos seus objetivos para acompanhar seu progresso.'
-                : `Você concluiu ${itensConcluidos} de ${totalItens} tarefas.`}
-            </p>
-          </article>
-        </section>
-
-        <section className="painel-grid-secondary">
-          <Objetivos objetivos={objetivos} onNavegar={onNavegar} />
-
-          <Tarefas
-            tarefas={tarefas}
-            onAlternarTarefa={onAlternarTarefa}
-            onRemoverTarefa={onRemoverTarefa}
-          />
-        </section>
-
-        <section className="mt-6">
-          <MentoriaMentorado />
-        </section>
       </main>
     </div>
   );

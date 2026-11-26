@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Logo from "../components/Logo";
 import { requisicaoAPI } from "../services/api";
 
 export default function LoginMentor({ onLoginSucesso }) {
@@ -18,6 +19,44 @@ export default function LoginMentor({ onLoginSucesso }) {
   const [sucessoVerificacao, setSucessoVerificacao] = useState("");
   const [enviandoAnalise, setEnviandoAnalise] = useState(false);
   const [msgAnalise, setMsgAnalise] = useState("");
+
+  const [modalRecuperacao, setModalRecuperacao] = useState(false);
+  const [emailRecuperacao, setEmailRecuperacao] = useState("");
+  const [msgRecuperacao, setMsgRecuperacao] = useState("");
+  const [erroRecuperacao, setErroRecuperacao] = useState("");
+  const [enviandoRecuperacao, setEnviandoRecuperacao] = useState(false);
+  const [recuperacaoSucesso, setRecuperacaoSucesso] = useState(false);
+
+  function abrirRecuperarSenha() {
+    setEmailRecuperacao(email.trim());
+    setMsgRecuperacao("");
+    setErroRecuperacao("");
+    setRecuperacaoSucesso(false);
+    setModalRecuperacao(true);
+  }
+
+  async function handleSolicitarRecuperacao(e) {
+    if (e) e.preventDefault();
+    if (!emailRecuperacao.trim()) {
+      setErroRecuperacao("Informe o e-mail cadastrado.");
+      return;
+    }
+    setEnviandoRecuperacao(true);
+    setErroRecuperacao("");
+    setMsgRecuperacao("");
+    try {
+      await requisicaoAPI("/usuarios/solicitar-recuperacao", {
+        method: "POST",
+        body: JSON.stringify({ email: emailRecuperacao.trim().toLowerCase() }),
+      });
+      setRecuperacaoSucesso(true);
+      setMsgRecuperacao("Enviamos as instruções para recuperação de senha para o seu e-mail. Verifique sua caixa de entrada e spam.");
+    } catch (err) {
+      setErroRecuperacao(err.message || "Não foi possível enviar o e-mail de recuperação.");
+    } finally {
+      setEnviandoRecuperacao(false);
+    }
+  }
 
   async function solicitarAnaliseManual() {
     setEnviandoAnalise(true);
@@ -164,53 +203,56 @@ export default function LoginMentor({ onLoginSucesso }) {
       <div className="grid min-h-screen lg:grid-cols-[0.85fr_1.15fr]">
 
         {/* LADO ESQUERDO */}
-        <section className="relative hidden flex-col justify-between overflow-hidden bg-[#315CF5] p-10 lg:flex xl:p-14">
-          <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full border border-white/10" />
-          <div className="absolute -bottom-40 -left-32 h-96 w-96 rounded-full border border-white/10" />
+        <section className="relative hidden flex-col justify-between overflow-hidden bg-gradient-to-br from-[#0A1633] via-[#0E204A] to-[#081226] border-r border-[#1B2B4D] p-10 lg:flex xl:p-14">
+          <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full border border-blue-500/10 bg-blue-500/5 blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-40 -left-32 h-96 w-96 rounded-full border border-amber-500/10 bg-amber-500/5 blur-3xl pointer-events-none" />
 
-          <a href="/" className="relative flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white text-2xl">
-              🗼
-            </div>
-            <span className="text-3xl font-extrabold">Farol</span>
+          <a href="/" className="relative flex items-center gap-3 group">
+            <Logo className="h-10 w-auto" />
+            <span className="text-2xl font-extrabold tracking-tight text-white group-hover:text-blue-400 transition-colors">
+              Farol
+            </span>
           </a>
 
           <div className="relative max-w-lg">
-            <span className="rounded-full border border-white/30 bg-white/10 px-4 py-2 text-xs font-bold uppercase tracking-widest">
-              Área do mentor
+            <span className="inline-flex items-center gap-2 rounded-full border border-[#FFDF36]/30 bg-[#FFDF36]/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#FFDF36]">
+              <span className="h-2 w-2 rounded-full bg-[#FFDF36] animate-pulse" />
+              Área do Mentor
             </span>
 
-            <h1 className="mt-8 text-4xl font-extrabold leading-tight xl:text-5xl">
+            <h1 className="mt-8 text-4xl font-extrabold leading-tight xl:text-5xl text-white">
               Continue iluminando{" "}
               <span className="text-[#FFDF36]">novos caminhos.</span>
             </h1>
 
-            <p className="mt-6 max-w-md text-base leading-relaxed text-blue-100">
+            <p className="mt-6 max-w-md text-base leading-relaxed text-slate-300">
               Acesse sua conta e continue compartilhando sua experiência
-              para ajudar outras pessoas a alcançarem seus objetivos.
+              para orientar pessoas e transformar objetivos em realidade.
             </p>
 
-            <div className="mt-10 space-y-5">
+            <div className="mt-10 space-y-4">
               {[
-                ["01", "Acompanhe seus mentorados"],
-                ["02", "Organize seus encontros"],
-                ["03", "Compartilhe conhecimento"],
+                ["01", "Acompanhe seus mentorados e planos de ação"],
+                ["02", "Organize suas sessões e disponibilidades"],
+                ["03", "Compartilhe conhecimento e impulsione vidas"],
               ].map(([numero, texto]) => (
-                <div key={numero} className="flex items-center gap-4">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#183DAD] font-bold text-[#FFDF36]">
+                <div key={numero} className="flex items-center gap-4 rounded-xl border border-white/5 bg-white/[0.03] p-3">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#14264A] font-bold text-[#FFDF36] border border-[#2B4075]">
                     {numero}
                   </span>
-                  <p className="text-sm font-medium text-white">{texto}</p>
+                  <p className="text-sm font-medium text-slate-200">{texto}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="relative flex items-end justify-between">
-            <p className="text-xs text-blue-100">
+          <div className="relative flex items-center justify-between border-t border-white/10 pt-6">
+            <p className="text-xs text-slate-400">
               Farol — Que ilumina o seu caminho!
             </p>
-            <span className="text-7xl">🧭</span>
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+              Portal do Voluntário
+            </span>
           </div>
         </section>
 
@@ -220,10 +262,8 @@ export default function LoginMentor({ onLoginSucesso }) {
 
             {/* CABEÇALHO MOBILE */}
             <div className="mb-10 flex items-center gap-3 lg:hidden">
-              <a href="/" className="flex items-center gap-2">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#315CF5] text-2xl">
-                  🗼
-                </div>
+              <a href="/" className="flex items-center gap-3">
+                <Logo className="h-9 w-auto" />
                 <span className="text-2xl font-extrabold">Farol</span>
               </a>
             </div>
@@ -418,7 +458,7 @@ export default function LoginMentor({ onLoginSucesso }) {
 
                     <button
                       type="button"
-                      onClick={recuperarSenha}
+                      onClick={abrirRecuperarSenha}
                       className="text-xs font-semibold text-blue-400 transition hover:text-blue-300"
                     >
                       Esqueceu a senha?
@@ -493,6 +533,80 @@ export default function LoginMentor({ onLoginSucesso }) {
           </div>
         </section>
       </div>
+
+      {/* MODAL DE RECUPERAÇÃO DE SENHA */}
+      {modalRecuperacao && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-2xl border border-[#2B4075] bg-[#0D1930] p-6 shadow-2xl">
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="text-xl font-bold text-white">Recuperar senha</h3>
+              <button
+                type="button"
+                onClick={() => setModalRecuperacao(false)}
+                className="rounded-lg p-1 text-slate-400 hover:bg-white/10 hover:text-white"
+              >
+                ✕
+              </button>
+            </div>
+
+            {recuperacaoSucesso ? (
+              <div className="space-y-4">
+                <div className="rounded-xl border border-green-500/30 bg-green-500/10 p-4 text-sm text-green-300">
+                  {msgRecuperacao}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setModalRecuperacao(false)}
+                  className="w-full rounded-xl bg-[#FFDF36] py-3 text-sm font-extrabold text-[#101827] hover:bg-yellow-300"
+                >
+                  Voltar ao login
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSolicitarRecuperacao} className="space-y-4">
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  Digite o e-mail cadastrado na sua conta de mentor. Enviaremos um link seguro para você redefinir sua senha.
+                </p>
+
+                <div>
+                  <label className="mb-1.5 block text-xs font-semibold text-slate-300">E-mail</label>
+                  <input
+                    type="email"
+                    required
+                    value={emailRecuperacao}
+                    onChange={(e) => setEmailRecuperacao(e.target.value)}
+                    placeholder="seuemail@exemplo.com"
+                    className="w-full rounded-xl border border-[#35496E] bg-[#14264A] px-4 py-3 text-sm text-white outline-none focus:border-blue-500"
+                  />
+                </div>
+
+                {erroRecuperacao && (
+                  <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-3 text-xs text-red-300">
+                    {erroRecuperacao}
+                  </div>
+                )}
+
+                <div className="flex gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setModalRecuperacao(false)}
+                    className="flex-1 rounded-xl border border-[#35496E] py-2.5 text-xs font-semibold text-slate-300 hover:bg-[#1A2944]"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={enviandoRecuperacao}
+                    className="flex-1 rounded-xl bg-[#FFDF36] py-2.5 text-xs font-extrabold text-[#101827] hover:bg-yellow-300 disabled:opacity-50"
+                  >
+                    {enviandoRecuperacao ? "Enviando..." : "Enviar link"}
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
     </main>
   );
 }

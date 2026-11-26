@@ -29,6 +29,9 @@ function Header({ onEntrar }) {
         <a className="text-xs text-farol-muted no-underline hover:text-white" href="#recursos">
           Recursos
         </a>
+        <a className="text-xs text-farol-muted no-underline hover:text-white" href="#planos">
+          Planos
+        </a>
         <a className="text-xs text-farol-muted no-underline hover:text-white" href="#como-funciona">
           Como funciona
         </a>

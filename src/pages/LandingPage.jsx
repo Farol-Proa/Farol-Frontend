@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import heroFarol from '/images/hero_farol.png';
 import heroHome from '/images/foto-da-home.png';
@@ -8,6 +9,23 @@ import ConviteMentores from '../components/ConviteMentores';
 import './LandingPage.css';
 
 function LandingPage({ onEntrar }) {
+  const [modalHomologacao, setModalHomologacao] = useState(false);
+  const [planoSelecionadoModal, setPlanoSelecionadoModal] = useState('');
+  const [mostrarComparativo, setMostrarComparativo] = useState(false);
+
+  useEffect(() => {
+    if (window.location.hash === '#planos') {
+      const el = document.getElementById('planos');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, []);
+
+  const abrirModalPlano = (nomePlano) => {
+    setPlanoSelecionadoModal(nomePlano);
+    setModalHomologacao(true);
+  };
   return (
     <div className="landing-page min-h-screen bg-farol-background text-farol-text">
       <Header onEntrar={onEntrar} />
@@ -254,54 +272,142 @@ function LandingPage({ onEntrar }) {
           <h2>Nossos Planos</h2>
 
           <div className="landing-planos__cards">
-            <article className="landing-planos__card">
-              <h3>Grátis</h3>
-              <div className="landing-planos__preco">R$0,00</div>
+            <article className="landing-planos__card flex flex-col justify-between">
+              <div>
+                <h3>Grátis</h3>
+                <div className="landing-planos__preco">R$0,00</div>
 
-              <p>Uma rota para aprender, sem perder seus descobrimentos.</p>
+                <p>Comece sua jornada no Farol sem nenhum custo.</p>
 
-              <ul>
-                <li>Resumo de TCC</li>
-                <li>Plano de revisão</li>
-                <li>Anotações de aula</li>
-              </ul>
+                <ul>
+                  <li>Até 4 objetivos ativos</li>
+                  <li>Anotações e documentos com BlockNote</li>
+                  <li>Calendário de tarefas e prazos</li>
+                  <li>Organização visual em Ilhas</li>
+                </ul>
+              </div>
+
+              <button
+                type="button"
+                className="button-primary mt-6 w-full text-center cursor-pointer justify-center"
+                onClick={onEntrar}
+              >
+                Começar gratuitamente <span aria-hidden="true">→</span>
+              </button>
             </article>
 
-            <article className="landing-planos__card">
-              <h3>Mensal</h3>
+            <article className="landing-planos__card flex flex-col justify-between">
+              <div>
+                <h3>Mensal</h3>
 
-              <div className="landing-planos__preco">
-                R$14,90 <small>a.m</small>
+                <div className="landing-planos__preco">
+                  R$14,90 <small>a.m</small>
+                </div>
+
+                <p>Mais recursos e flexibilidade para seus planos avançados.</p>
+
+                <ul>
+                  <li>Até 8 objetivos ativos simultâneos</li>
+                  <li>Geração de trilhas com Inteligência Artificial</li>
+                  <li>Acesso a mentorias com profissionais</li>
+                  <li>Temas e personalizações exclusivas</li>
+                </ul>
               </div>
 
-              <p>Clareza para os projetos e os detalhes de cada dia.</p>
-
-              <ul>
-                <li>Ideias para projetos</li>
-                <li>Próximas entregas</li>
-                <li>Notas de reunião</li>
-              </ul>
+              <button
+                type="button"
+                onClick={() => abrirModalPlano('Premium Mensal')}
+                className="button-secondary mt-6 w-full text-center justify-center flex items-center cursor-pointer"
+              >
+                Escolher plano Mensal <span aria-hidden="true">→</span>
+              </button>
             </article>
 
-            <article className="landing-planos__card">
-              <div className="landing-planos__titulo-anual">
-                <h3>Anual</h3>
-                <span>R$99,00 a.a</span>
+            <article className="landing-planos__card flex flex-col justify-between">
+              <div>
+                <div className="landing-planos__titulo-anual">
+                  <h3>Anual</h3>
+                  <span>R$99,00 a.a</span>
+                </div>
+
+                <div className="landing-planos__preco">
+                  R$8,25 <small>a.m</small>
+                </div>
+
+                <p>Continue evoluindo com a melhor economia ao longo do ano.</p>
+
+                <ul>
+                  <li>Todos os benefícios do plano Mensal</li>
+                  <li>Equivalente a R$8,25 por mês</li>
+                  <li>Economia garantida em 12 meses</li>
+                  <li>Suporte e novidades com prioridade</li>
+                </ul>
               </div>
 
-              <div className="landing-planos__preco">
-                R$8,25 <small>a.m</small>
-              </div>
-
-              <p>Espaço para o que você quer viver, além das tarefas.</p>
-
-              <ul>
-                <li>Planejar uma viagem</li>
-                <li>Começar um novo hábito</li>
-                <li>Lembrar de quem importa</li>
-              </ul>
+              <button
+                type="button"
+                onClick={() => abrirModalPlano('Premium Anual')}
+                className="button-primary mt-6 w-full text-center justify-center flex items-center cursor-pointer"
+                style={{
+                  background: 'linear-gradient(90deg, #FFB52E, #FF8A22)',
+                  color: '#10234A',
+                  fontWeight: 800,
+                }}
+              >
+                Escolher plano Anual <span aria-hidden="true">→</span>
+              </button>
             </article>
           </div>
+
+          <div className="mt-8 text-center">
+            <button
+              type="button"
+              onClick={() => setMostrarComparativo((prev) => !prev)}
+              className="inline-flex items-center gap-2 font-semibold text-yellow-300 hover:text-yellow-200 transition cursor-pointer text-sm"
+            >
+              {mostrarComparativo
+                ? 'Recolher comparativo detalhado ↑'
+                : 'Comparar todos os recursos e planos detalhados ↓'}
+            </button>
+          </div>
+
+          {mostrarComparativo && (
+            <div className="mt-8 overflow-x-auto rounded-2xl border border-white/10 bg-white/[0.02] p-6 text-left">
+              <h3 className="text-base font-bold text-white mb-4">
+                Comparativo detalhado de benefícios
+              </h3>
+              <table className="w-full text-left text-xs">
+                <thead>
+                  <tr className="border-b border-white/10 text-slate-400">
+                    <th className="pb-3 font-semibold">Recurso</th>
+                    <th className="pb-3 font-semibold text-center w-28">Grátis</th>
+                    <th className="pb-3 font-semibold text-center w-32">Mensal</th>
+                    <th className="pb-3 font-semibold text-center w-32 text-amber-300">Anual</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5">
+                  {[
+                    ['Objetivos ativos simultâneos', 'Até 4', 'Até 8', 'Até 8'],
+                    ['Criação de Ilhas e conexões', '✓ Ilimitado', '✓ Ilimitado', '✓ Ilimitado'],
+                    ['Anotações com BlockNote', '✓ Incluído', '✓ Incluído', '✓ Incluído'],
+                    ['Calendário e prazos civis', '✓ Incluído', '✓ Incluído', '✓ Incluído'],
+                    ['Geração de metas por IA', '—', '✓ Incluído', '✓ Incluído'],
+                    ['Mentoria com voluntários', '—', '✓ Incluído', '✓ Incluído'],
+                    ['Backup automático', '—', '✓ Incluído', '✓ Incluído'],
+                    ['Temas personalizados', '—', '✓ Incluído', '✓ Incluído'],
+                    ['Valor da assinatura', 'R$ 0,00', 'R$ 14,90/mês', 'R$ 99,00/ano (-45%)'],
+                  ].map(([recurso, gratis, mensal, anual]) => (
+                    <tr key={recurso} className="hover:bg-white/[0.02]">
+                      <td className="py-2.5 text-slate-200 font-medium">{recurso}</td>
+                      <td className="py-2.5 text-center text-slate-300">{gratis}</td>
+                      <td className="py-2.5 text-center text-slate-300">{mensal}</td>
+                      <td className="py-2.5 text-center font-semibold text-amber-300">{anual}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </section>
 
@@ -388,6 +494,67 @@ function LandingPage({ onEntrar }) {
         <span>02 Encontre sua direção</span>
         <span>03 Avance no seu ritmo</span>
       </footer>
+
+      {/* MODAL DE HOMOLOGAÇÃO DE PAGAMENTO */}
+      {modalHomologacao && (
+        <div className="fixed inset-0 z-[1200] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-lg rounded-3xl border border-blue-500/30 bg-[#0A1633] p-7 shadow-2xl text-left">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-400/10 text-2xl text-amber-300 border border-amber-400/20">
+                  ✦
+                </div>
+                <div>
+                  <span className="rounded-full bg-blue-500/10 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider text-blue-300 border border-blue-500/20">
+                    {planoSelecionadoModal}
+                  </span>
+                  <h3 className="mt-1 text-xl font-bold text-white">
+                    Assinatura em homologação
+                  </h3>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setModalHomologacao(false)}
+                className="rounded-lg p-1 text-slate-400 hover:bg-white/10 hover:text-white"
+              >
+                ✕
+              </button>
+            </div>
+
+            <p className="mt-4 text-sm leading-relaxed text-slate-300">
+              Estamos finalizando a integração segura com nosso gateway de pagamentos online (PIX e cartão de crédito).
+            </p>
+
+            <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-xs text-slate-300 leading-relaxed space-y-2">
+              <p className="font-semibold text-white">Enquanto isso, você já pode começar a usar o Farol:</p>
+              <p>• Crie sua conta gratuita no plano <strong>Freemium</strong> agora mesmo.</p>
+              <p>• Comece a estruturar seus objetivos, etapas e Ilhas imediatamente.</p>
+              <p>• Você receberá um convite prioritário por e-mail com condições especiais para membros pioneiros assim que o checkout estiver liberado!</p>
+            </div>
+
+            <div className="mt-6 flex flex-col sm:flex-row gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  setModalHomologacao(false);
+                  onEntrar();
+                }}
+                className="flex-1 rounded-full bg-gradient-to-r from-[#FFB52E] to-[#FF8A22] px-5 py-3 text-sm font-extrabold text-[#10234A] shadow-lg transition hover:scale-[1.02] text-center cursor-pointer"
+              >
+                Começar grátis no Freemium →
+              </button>
+              <button
+                type="button"
+                onClick={() => setModalHomologacao(false)}
+                className="rounded-full border border-slate-600 px-5 py-3 text-sm font-semibold text-slate-300 hover:bg-white/5 text-center cursor-pointer"
+              >
+                Voltar aos planos
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,5 +1,6 @@
 
 import { useEffect, useState } from "react";
+import Logo from "../components/Logo";
 import { requisicaoAPI } from "../services/api";
 
 const areasDisponiveis = [
@@ -253,54 +254,57 @@ export default function CadastroMentor() {
       <div className="grid min-h-screen lg:grid-cols-[0.85fr_1.15fr]">
 
         {/* LADO ESQUERDO */}
-        <section className="relative hidden flex-col justify-between overflow-hidden bg-[#315CF5] p-10 lg:flex xl:p-14">
-          <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full border border-white/10" />
-          <div className="absolute -bottom-40 -left-32 h-96 w-96 rounded-full border border-white/10" />
+        <section className="relative hidden flex-col justify-between overflow-hidden bg-gradient-to-br from-[#0A1633] via-[#0E204A] to-[#081226] border-r border-[#1B2B4D] p-10 lg:flex xl:p-14">
+          <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full border border-blue-500/10 bg-blue-500/5 blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-40 -left-32 h-96 w-96 rounded-full border border-amber-500/10 bg-amber-500/5 blur-3xl pointer-events-none" />
 
-          <a href="/" className="relative flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white text-2xl">
-              🗼
-            </div>
-            <span className="text-3xl font-extrabold">Farol</span>
+          <a href="/" className="relative flex items-center gap-3 group">
+            <Logo className="h-10 w-auto" />
+            <span className="text-2xl font-extrabold tracking-tight text-white group-hover:text-blue-400 transition-colors">
+              Farol
+            </span>
           </a>
 
           <div className="relative max-w-lg">
-            <span className="rounded-full border border-white/30 bg-white/10 px-4 py-2 text-xs font-bold uppercase tracking-widest">
-              Seja um mentor voluntário
+            <span className="inline-flex items-center gap-2 rounded-full border border-[#FFDF36]/30 bg-[#FFDF36]/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#FFDF36]">
+              <span className="h-2 w-2 rounded-full bg-[#FFDF36] animate-pulse" />
+              Programa de Mentoria
             </span>
 
-            <h1 className="mt-8 text-4xl font-extrabold leading-tight xl:text-5xl">
+            <h1 className="mt-8 text-4xl font-extrabold leading-tight xl:text-5xl text-white">
               Sua experiência pode iluminar{" "}
               <span className="text-[#FFDF36]">novos caminhos.</span>
             </h1>
 
-            <p className="mt-6 max-w-md text-base leading-relaxed text-blue-100">
+            <p className="mt-6 max-w-md text-base leading-relaxed text-slate-300">
               Compartilhe seus conhecimentos, ajude pessoas a superar
-              desafios e faça parte de uma comunidade que acredita no
-              desenvolvimento de todos.
+              desafios e faça parte de uma rede comprometida com o
+              desenvolvimento e a clareza de objetivos.
             </p>
 
-            <div className="mt-10 space-y-5">
+            <div className="mt-10 space-y-4">
               {[
-                ["01", "Compartilhe sua experiência"],
-                ["02", "Conecte-se com pessoas que precisam de orientação"],
+                ["01", "Compartilhe sua experiência profissional"],
+                ["02", "Conecte-se com pessoas em busca de orientação"],
                 ["03", "Ajude outras pessoas a alcançar seus objetivos"],
               ].map(([numero, texto]) => (
-                <div key={numero} className="flex items-center gap-4">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#183DAD] font-bold text-[#FFDF36]">
+                <div key={numero} className="flex items-center gap-4 rounded-xl border border-white/5 bg-white/[0.03] p-3">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#14264A] font-bold text-[#FFDF36] border border-[#2B4075]">
                     {numero}
                   </span>
-                  <p className="text-sm font-medium text-white">{texto}</p>
+                  <p className="text-sm font-medium text-slate-200">{texto}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="relative flex items-end justify-between">
-            <p className="text-xs text-blue-100">
+          <div className="relative flex items-center justify-between border-t border-white/10 pt-6">
+            <p className="text-xs text-slate-400">
               Farol — Que ilumina o seu caminho!
             </p>
-            <span className="text-7xl">🧭</span>
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+              Ambiente de Mentores
+            </span>
           </div>
         </section>
 
@@ -310,10 +314,10 @@ export default function CadastroMentor() {
 
             {/* CABEÇALHO MOBILE */}
             <div className="mb-8 flex items-center gap-3 lg:hidden">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#315CF5] text-2xl">
-                🗼
-              </div>
-              <span className="text-2xl font-extrabold">Farol</span>
+              <a href="/" className="flex items-center gap-3">
+                <Logo className="h-9 w-auto" />
+                <span className="text-2xl font-extrabold">Farol</span>
+              </a>
             </div>
 
             <div className="mb-8">
@@ -827,17 +831,34 @@ function Campo({
   onChange,
   required = false,
 }) {
+  const [mostrar, setMostrar] = useState(false);
+  const ehSenha = type === "password";
+  const tipoInput = ehSenha ? (mostrar ? "text" : "password") : type;
+
   return (
     <div>
       <label className="mb-2 block text-sm font-semibold">{label}</label>
-      <input
-        type={type}
-        required={required}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        className="w-full rounded-xl border border-[#35496E] bg-[#14264A] px-4 py-3 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10"
-      />
+      <div className="relative">
+        <input
+          type={tipoInput}
+          required={required}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          className={`w-full rounded-xl border border-[#35496E] bg-[#14264A] px-4 py-3 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 ${
+            ehSenha ? "pr-20" : ""
+          }`}
+        />
+        {ehSenha && (
+          <button
+            type="button"
+            onClick={() => setMostrar((prev) => !prev)}
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-semibold text-blue-400 hover:text-blue-300"
+          >
+            {mostrar ? "Ocultar" : "Mostrar"}
+          </button>
+        )}
+      </div>
     </div>
   );
 }

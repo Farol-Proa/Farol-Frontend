@@ -25,9 +25,19 @@ function App() {
   const [mostrarPainel, setMostrarPainel] = useState(() =>
     tokenEstaValido(sessionStorage.getItem('token')),
   );
-  const [mostrarAutenticacao, setMostrarAutenticacao] = useState(false);
-  const [paginaAtiva, setPaginaAtiva] = useState('Início');
+  const [mostrarAutenticacao, setMostrarAutenticacao] = useState(() => {
+    const parametros = new URLSearchParams(window.location.search);
+    return parametros.get('entrar') === 'true';
+  });
+  const [paginaAtiva, setPaginaAtiva] = useState(() => {
+    if (window.location.pathname === '/planos' && tokenEstaValido(sessionStorage.getItem('token'))) {
+      return 'Planos';
+    }
+    return 'Início';
+  });
   const [objetivoSelecionado, setObjetivoSelecionado] = useState(null);
+  const [etapaSelecionadaInicial, setEtapaSelecionadaInicial] = useState(null);
+  const [tarefaFocoId, setTarefaFocoId] = useState(null);
   const [contextoNotas, setContextoNotas] = useState(null);
   const [notasSujo, setNotasSujo] = useState(false);
   const descarteNotaRef = useRef(() => { });
@@ -62,10 +72,29 @@ function App() {
     setNotasSujo(false);
     limparObjetivos();
 
+    window.history.replaceState(null, '', '/');
+
     setMostrarPainel(false);
     setMostrarAutenticacao(false);
     setPaginaAtiva('Início');
   }, [limparObjetivos]);
+
+  useEffect(() => {
+    const verificarSessaoNavegador = () => {
+      if (!tokenEstaValido(sessionStorage.getItem('token'))) {
+        setMostrarPainel(false);
+        setMostrarAutenticacao(false);
+        setPaginaAtiva('Início');
+      }
+    };
+
+    window.addEventListener('pageshow', verificarSessaoNavegador);
+    window.addEventListener('popstate', verificarSessaoNavegador);
+    return () => {
+      window.removeEventListener('pageshow', verificarSessaoNavegador);
+      window.removeEventListener('popstate', verificarSessaoNavegador);
+    };
+  }, []);
 
   useEffect(() => {
     const token = sessionStorage.getItem('token');
@@ -123,6 +152,23 @@ function App() {
     return <PainelMentor onLogout={fazerLogout} />;
   }
 
+  if (caminhoAtual === '/planos') {
+    if (!tokenEstaValido(sessionStorage.getItem('token'))) {
+      window.location.replace('/#planos');
+      return <LandingPage onEntrar={() => setMostrarAutenticacao(true)} />;
+    }
+  }
+
+  if (caminhoAtual === '/login' || caminhoAtual === '/cadastro') {
+    return (
+      <Autenticacao
+        onLoginSuccess={() => {
+          window.location.href = '/';
+        }}
+      />
+    );
+  }
+
   if (!mostrarPainel && !mostrarAutenticacao && !authLink) {
     return <LandingPage onEntrar={() => setMostrarAutenticacao(true)} />;
   }
@@ -153,8 +199,20 @@ function App() {
 
     setPaginaAtiva(destino);
 
+    if (destino === 'Planos') {
+      window.history.replaceState(null, '', '/planos');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    if (window.location.pathname === '/planos') {
+      window.history.replaceState(null, '', '/');
+    }
+
     if (destino === 'Ilhas') {
       setObjetivoSelecionado(opcoes.objetivoId ?? null);
+      setEtapaSelecionadaInicial(opcoes.etapaId ?? null);
+      setTarefaFocoId(opcoes.tarefaId ?? null);
       setAbrirModalObjetivo(opcoes.abrirModal ?? false);
       setAbrirModalIa(opcoes.abrirModalIa ?? false);
       return;
@@ -172,6 +230,7 @@ function App() {
       Anotações: 'anotacoes',
       Calendário: 'calendario',
       Mentoria: 'mentoria',
+      Planos: 'inicio',
     };
 
     window.requestAnimationFrame(() => {
@@ -217,7 +276,14 @@ function App() {
       {paginaAtiva === 'Ilhas' && (
         <Ilhas
           onNavegar={navegar}
+          onLogout={sairPainel}
           objetivoSelecionado={objetivoSelecionado}
+          etapaSelecionadaInicial={etapaSelecionadaInicial}
+          tarefaFocoId={tarefaFocoId}
+          onLimparFocoTarefa={() => {
+            setEtapaSelecionadaInicial(null);
+            setTarefaFocoId(null);
+          }}
           abrirModalObjetivo={abrirModalObjetivo}
           abrirModalIa={abrirModalIa}
           objetivos={dadosDashboard.objetivos}

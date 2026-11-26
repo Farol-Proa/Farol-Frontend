@@ -1,4 +1,10 @@
-import { filtrarTarefasPorPrazo, formatarPrazo } from '../../dashboard/taskDates';
+import {
+  filtrarTarefasPorPrazo,
+  formatarPrazo,
+  extrairDataCivil,
+  formatarHorarioPrazo,
+} from '../../dashboard/taskDates';
+import Icon from '../../components/Icon';
 
 function obterDiasDoMes(mesExibido) {
   const ano = mesExibido.getFullYear();
@@ -21,7 +27,7 @@ function obterDiasDoMes(mesExibido) {
   return dias;
 }
 
-function Calendario({ mesExibido, dataSelecionada, tarefas, onMudarMes, onSelecionarData }) {
+function Calendario({ mesExibido, dataSelecionada, tarefas = [], onMudarMes, onSelecionarData, onNavegar }) {
   const dias = obterDiasDoMes(mesExibido);
   const tarefasDoDia = filtrarTarefasPorPrazo(tarefas, dataSelecionada);
 
@@ -61,7 +67,9 @@ function Calendario({ mesExibido, dataSelecionada, tarefas, onMudarMes, onSeleci
             return <div className="dia-vazio" key={`vazio-${indice}`} />;
           }
 
-          const temTarefa = tarefas.some((tarefa) => tarefa.prazo === item.dataFormatada);
+          const temTarefa = tarefas.some(
+            (tarefa) => extrairDataCivil(tarefa.prazo) === item.dataFormatada
+          );
 
           return (
             <button
@@ -90,15 +98,83 @@ function Calendario({ mesExibido, dataSelecionada, tarefas, onMudarMes, onSeleci
         </p>
       ) : (
         <ul className="calendario-tarefas-dia">
-          {tarefasDoDia.map((tarefa) => (
-            <li key={tarefa.id}>
-              <span className={tarefa.concluida ? 'tarefa-concluida' : ''}>{tarefa.texto}</span>
-              <small>
-                {tarefa.objetivoNome} · {tarefa.etapaNome}
-              </small>
-            </li>
-          ))}
+          {tarefasDoDia.map((tarefa) => {
+            const horario = formatarHorarioPrazo(tarefa.prazo);
+
+            return (
+              <li
+                key={tarefa.id}
+                className="group relative transition hover:border-blue-500/50"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex-1 min-w-0 space-y-1">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <span
+                        className={`rounded px-1.5 py-0.5 text-[10px] font-medium border ${
+                          tarefa.concluida
+                            ? 'bg-emerald-500/10 text-emerald-300 border-emerald-500/20'
+                            : 'bg-amber-500/10 text-amber-300 border-amber-500/20'
+                        }`}
+                      >
+                        {tarefa.concluida ? 'Concluída' : 'Pendente'}
+                      </span>
+                      {horario && (
+                        <span className="flex items-center gap-1 rounded bg-sky-950/40 border border-sky-800/40 px-1.5 py-0.5 text-[10px] font-mono text-sky-300">
+                          <Icon name="calendar" size={10} />
+                          {horario}
+                        </span>
+                      )}
+                    </div>
+
+                    <p
+                      className={`text-xs font-semibold leading-snug break-words ${
+                        tarefa.concluida ? 'tarefa-concluida' : 'text-white'
+                      }`}
+                    >
+                      {tarefa.texto}
+                    </p>
+
+                    <small className="block text-[11px] text-slate-400">
+                      {tarefa.objetivoNome || 'Objetivo'} · {tarefa.etapaNome || 'Ilha'}
+                    </small>
+                  </div>
+
+                  {onNavegar && (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        onNavegar('Ilhas', {
+                          objetivoId: tarefa.objetivoId,
+                          etapaId: tarefa.etapaId,
+                          tarefaId: tarefa.id,
+                        })
+                      }
+                      title={`Abrir tarefa “${tarefa.texto}” na Ilha ${tarefa.etapaNome}`}
+                      aria-label={`Abrir tarefa “${tarefa.texto}” na Ilha ${tarefa.etapaNome}`}
+                      className="shrink-0 flex items-center gap-1 rounded-lg border border-[#26395C] bg-[#101D3D] px-2 py-1 text-[11px] font-medium text-yellow-400 hover:border-yellow-400 hover:text-yellow-300 transition"
+                    >
+                      <span>Ver na Ilha</span>
+                      <Icon name="arrowRight" size={11} />
+                    </button>
+                  )}
+                </div>
+              </li>
+            );
+          })}
         </ul>
+      )}
+
+      {dataSelecionada && onNavegar && (
+        <div className="mt-3 flex items-center justify-between border-t border-[#1F2B48] pt-2.5">
+          <span className="text-[11px] text-slate-400">Definir tarefas no mapa:</span>
+          <button
+            type="button"
+            className="cursor-pointer text-xs font-semibold text-yellow-400 transition hover:text-yellow-300"
+            onClick={() => onNavegar('Ilhas')}
+          >
+            Gerenciar nas Ilhas →
+          </button>
+        </div>
       )}
     </article>
   );

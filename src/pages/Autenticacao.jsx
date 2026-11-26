@@ -69,6 +69,11 @@ export default function Autenticacao({
 
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
+  const [showRegisterPassword, setShowRegisterPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showResetPassword, setShowResetPassword] = useState(false);
+  const [showConfirmResetPassword, setShowConfirmResetPassword] = useState(false);
 
   const [messages, setMessages] = useState({
     login: '',
@@ -650,25 +655,43 @@ export default function Autenticacao({
                   <h2 className="mb-5 text-3xl font-bold">Criar nova senha</h2>
                   <form onSubmit={handleResetPassword}>
                     <label className={labelClass}>Nova senha</label>
-                    <input
-                      type="password"
-                      required
-                      minLength={8}
-                      maxLength={72}
-                      value={newPassword}
-                      onChange={(event) => setNewPassword(event.target.value)}
-                      className={inputClass}
-                    />
+                    <div className="relative">
+                      <input
+                        type={showResetPassword ? 'text' : 'password'}
+                        required
+                        minLength={8}
+                        maxLength={72}
+                        value={newPassword}
+                        onChange={(event) => setNewPassword(event.target.value)}
+                        className={`${inputClass} pr-16`}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowResetPassword((prev) => !prev)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-slate-500 hover:text-slate-800"
+                      >
+                        {showResetPassword ? 'Ocultar' : 'Mostrar'}
+                      </button>
+                    </div>
                     <label className={`${labelClass} mt-4`}>Confirmar nova senha</label>
-                    <input
-                      type="password"
-                      required
-                      minLength={8}
-                      maxLength={72}
-                      value={confirmNewPassword}
-                      onChange={(event) => setConfirmNewPassword(event.target.value)}
-                      className={inputClass}
-                    />
+                    <div className="relative">
+                      <input
+                        type={showConfirmResetPassword ? 'text' : 'password'}
+                        required
+                        minLength={8}
+                        maxLength={72}
+                        value={confirmNewPassword}
+                        onChange={(event) => setConfirmNewPassword(event.target.value)}
+                        className={`${inputClass} pr-16`}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowConfirmResetPassword((prev) => !prev)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-slate-500 hover:text-slate-800"
+                      >
+                        {showConfirmResetPassword ? 'Ocultar' : 'Mostrar'}
+                      </button>
+                    </div>
                     <button type="submit" className={buttonClass}>
                       Redefinir senha
                     </button>
@@ -726,20 +749,28 @@ export default function Autenticacao({
 
                     <div className="mb-3">
                       <label className={labelClass}>Senha</label>
-
-                      <input
-                        type="password"
-                        placeholder="Insira a sua senha"
-                        className={inputClass}
-                        value={login.password}
-                        onChange={(e) =>
-                          setLogin({
-                            ...login,
-                            password: e.target.value,
-                          })
-                        }
-                        required
-                      />
+                      <div className="relative">
+                        <input
+                          type={showLoginPassword ? 'text' : 'password'}
+                          placeholder="Insira a sua senha"
+                          className={`${inputClass} pr-16`}
+                          value={login.password}
+                          onChange={(e) =>
+                            setLogin({
+                              ...login,
+                              password: e.target.value,
+                            })
+                          }
+                          required
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowLoginPassword((prev) => !prev)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-slate-500 hover:text-slate-800"
+                        >
+                          {showLoginPassword ? 'Ocultar' : 'Mostrar'}
+                        </button>
+                      </div>
                     </div>
 
                     <button
@@ -911,30 +942,46 @@ export default function Autenticacao({
 
                     <div className="mb-4">
                       <label className={labelClass}>Senha</label>
-
-                      <input
-                        type="password"
-                        placeholder="Insira sua senha"
-                        className={inputClass}
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        minLength={8}
-                        required
-                      />
+                      <div className="relative">
+                        <input
+                          type={showRegisterPassword ? 'text' : 'password'}
+                          placeholder="Insira sua senha"
+                          className={`${inputClass} pr-16`}
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          minLength={8}
+                          required
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowRegisterPassword((prev) => !prev)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-slate-500 hover:text-slate-800"
+                        >
+                          {showRegisterPassword ? 'Ocultar' : 'Mostrar'}
+                        </button>
+                      </div>
                     </div>
 
                     <div className="mb-5">
                       <label className={labelClass}>Confirme a senha</label>
-
-                      <input
-                        type="password"
-                        placeholder="Confirme sua senha"
-                        className={inputClass}
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        minLength={8}
-                        required
-                      />
+                      <div className="relative">
+                        <input
+                          type={showConfirmPassword ? 'text' : 'password'}
+                          placeholder="Confirme sua senha"
+                          className={`${inputClass} pr-16`}
+                          value={confirmPassword}
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                          minLength={8}
+                          required
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowConfirmPassword((prev) => !prev)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-slate-500 hover:text-slate-800"
+                        >
+                          {showConfirmPassword ? 'Ocultar' : 'Mostrar'}
+                        </button>
+                      </div>
                     </div>
 
                     <button type="submit" className={buttonClass}>
@@ -973,17 +1020,25 @@ function SocialButtons({ onSocial }) {
       <button
         type="button"
         onClick={() => onSocial('Google')}
-        className="h-11 flex-1 rounded-lg border border-gray-300 bg-gray-100 text-xl font-bold text-gray-700 transition hover:bg-white hover:-translate-y-0.5"
+        className="h-11 flex-1 rounded-lg border border-gray-300 bg-gray-100 px-3 text-xs font-bold text-gray-700 transition hover:bg-white hover:-translate-y-0.5 flex items-center justify-center gap-2"
       >
-        G
+        <span className="text-base font-extrabold">G</span>
+        <span>Google</span>
+        <span className="rounded bg-amber-200/90 px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wide text-amber-900">
+          Em breve
+        </span>
       </button>
 
       <button
         type="button"
-        onClick={() => onSocial('facebook')}
-        className="h-11 flex-1 rounded-lg border border-gray-300 bg-gray-100 text-xl font-bold text-gray-700 transition hover:bg-white hover:-translate-y-0.5"
+        onClick={() => onSocial('Facebook')}
+        className="h-11 flex-1 rounded-lg border border-gray-300 bg-gray-100 px-3 text-xs font-bold text-gray-700 transition hover:bg-white hover:-translate-y-0.5 flex items-center justify-center gap-2"
       >
-        f
+        <span className="text-base font-extrabold">f</span>
+        <span>Facebook</span>
+        <span className="rounded bg-amber-200/90 px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wide text-amber-900">
+          Em breve
+        </span>
       </button>
     </div>
   );

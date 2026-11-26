@@ -1,3 +1,17 @@
+export function extrairDataCivil(prazo) {
+  if (!prazo || typeof prazo !== 'string') return '';
+  const trimmed = prazo.trim();
+  const match = trimmed.match(/^(\d{4}-\d{2}-\d{2})/);
+  return match ? match[1] : '';
+}
+
+export function formatarHorarioPrazo(prazo) {
+  if (!prazo || typeof prazo !== 'string') return '';
+  const trimmed = prazo.trim();
+  const match = trimmed.match(/[T\s](\d{2}:\d{2})/);
+  return match ? match[1] : '';
+}
+
 export function mapearTarefa(tarefa) {
   const mapeada = {
     id: tarefa.id,
@@ -14,13 +28,16 @@ export function mapearTarefa(tarefa) {
 }
 
 export function filtrarTarefasPorPrazo(tarefas, prazo) {
-  if (!prazo) return [];
-  return tarefas.filter((tarefa) => tarefa.prazo === prazo);
+  if (!prazo || !Array.isArray(tarefas)) return [];
+  const dataAlvo = extrairDataCivil(prazo);
+  if (!dataAlvo) return [];
+  return tarefas.filter((tarefa) => extrairDataCivil(tarefa.prazo) === dataAlvo);
 }
 
 export function formatarPrazo(prazo) {
-  if (!prazo) return '';
-  const [ano, mes, dia] = prazo.split('-');
+  const dataCivil = extrairDataCivil(prazo);
+  if (!dataCivil) return '';
+  const [ano, mes, dia] = dataCivil.split('-');
   return `${dia}/${mes}/${ano}`;
 }
 

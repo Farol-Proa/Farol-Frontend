@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import LogoFarol from "../../components/Logo";
 import { requisicaoAPI } from "../../services/api";
 
 const menu = [
@@ -10,10 +11,8 @@ const menu = [
 
 function Logo() {
   return (
-    <div className="flex items-center gap-2">
-      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#315CF5] text-xl">
-        🗼
-      </div>
+    <div className="flex items-center gap-3">
+      <LogoFarol className="h-9 w-auto" />
       <span className="text-2xl font-extrabold tracking-tight text-white">
         Farol
       </span>
@@ -267,7 +266,9 @@ export default function PainelMentor({ onLogout }) {
 
           <div className="mt-auto p-4">
             <div className="rounded-2xl border border-blue-900 bg-[#12264D] p-4">
-              <div className="mb-3 text-2xl">🗼</div>
+              <div className="mb-2 inline-flex items-center gap-1.5 rounded-lg bg-amber-400/10 px-2.5 py-1 text-xs font-bold text-amber-300">
+                ✦ Mentoria Farol
+              </div>
               <h3 className="font-bold">Continue iluminando caminhos!</h3>
               <p className="mt-2 text-xs leading-relaxed text-blue-200">
                 Sua experiência pode fazer a diferença na jornada de outra
@@ -349,8 +350,8 @@ export default function PainelMentor({ onLogout }) {
                   </p>
                 </div>
 
-                <div className="flex h-32 items-center justify-center text-7xl md:w-40">
-                  🗼
+                <div className="hidden md:flex h-32 items-center justify-center md:w-40 opacity-80 drop-shadow-[0_0_20px_rgba(255,223,54,0.3)]">
+                  <LogoFarol className="h-20 w-auto" />
                 </div>
               </div>
             </section>

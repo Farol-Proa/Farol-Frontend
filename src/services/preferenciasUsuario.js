@@ -56,6 +56,69 @@ export function obterChaveStorage(usuario = null) {
   return `farol:preferencias:${idOuEmail}`;
 }
 
+export function obterUltimoMapaAcessado(usuario = null) {
+  try {
+    const storage = obterStorage();
+    if (!storage) return null;
+    const u = usuario || obterUsuarioAtual();
+    const idOuEmail = u.id || u.email || 'padrao';
+    return storage.getItem(`farol:ultimo_mapa:${idOuEmail}`);
+  } catch {
+    return null;
+  }
+}
+
+export function salvarUltimoMapaAcessado(mapaId, usuario = null) {
+  try {
+    if (mapaId == null) return;
+    const storage = obterStorage();
+    if (!storage) return;
+    const u = usuario || obterUsuarioAtual();
+    const idOuEmail = u.id || u.email || 'padrao';
+    storage.setItem(`farol:ultimo_mapa:${idOuEmail}`, String(mapaId));
+  } catch {
+    // silencioso
+  }
+}
+
+export function resolverObjetivoInicial({
+  objetivos = [],
+  objetivoSelecionado = null,
+  mapaPadraoId = 'ultimo',
+  ultimoMapaAcessadoId = null,
+}) {
+  if (!Array.isArray(objetivos) || objetivos.length === 0) {
+    return null;
+  }
+
+  // 1. Se foi passado explicitamente (ex: usuário clicou num card específico no Painel para abrir a Ilha)
+  if (objetivoSelecionado != null) {
+    const encontrado = objetivos.find((o) => String(o.id) === String(objetivoSelecionado));
+    if (encontrado) {
+      return encontrado.id;
+    }
+  }
+
+  // 2. Se a preferência for um mapa específico (não 'ultimo')
+  if (mapaPadraoId && mapaPadraoId !== 'ultimo') {
+    const mapaConfigurado = objetivos.find((o) => String(o.id) === String(mapaPadraoId));
+    if (mapaConfigurado) {
+      return mapaConfigurado.id;
+    }
+  }
+
+  // 3. Se a preferência for 'ultimo' (ou como fallback caso o mapa configurado tenha sido excluído)
+  if (ultimoMapaAcessadoId != null) {
+    const ultimoAcessado = objetivos.find((o) => String(o.id) === String(ultimoMapaAcessadoId));
+    if (ultimoAcessado) {
+      return ultimoAcessado.id;
+    }
+  }
+
+  // 4. Fallback final: primeiro objetivo disponível
+  return objetivos[0]?.id ?? null;
+}
+
 export function mesclarPreferencias(base, overrides) {
   if (!overrides || typeof overrides !== 'object') {
     return { ...base };

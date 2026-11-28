@@ -17,7 +17,14 @@ import { GoalNode } from './GoalIsland';
 
 const flowNodeTypes = { ...nodeTypes, lighthouse: GoalNode };
 
-function createNodes(roadmap, onSelectIsland) {
+const gridColorByTheme = {
+  'oceano-noturno': 'rgba(252, 252, 252, 0.14)',
+  'oceano-profundo': 'rgba(93, 122, 255, 0.18)',
+  'contraste-suave': 'rgba(255, 255, 255, 0.08)',
+};
+
+function createNodes(roadmap, onSelectIsland, opcoes = {}) {
+  const { exibirBarco = true, exibirProgressoNos = true } = opcoes;
   const progressIsland = roadmap.islands.find((island) => island.status === 'progress');
   const lighthouseY = (progressIsland?.position.y ?? 100) + (progressIsland ? 35 : 100);
 
@@ -34,7 +41,13 @@ function createNodes(roadmap, onSelectIsland) {
       id: island.id,
       type: 'island',
       position: island.position,
-      data: { ...island, index, onSelect: () => onSelectIsland(island.id) },
+      data: {
+        ...island,
+        index,
+        onSelect: () => onSelectIsland(island.id),
+        exibirBarco,
+        exibirProgressoNos,
+      },
       style: { width: NODE_WIDTH },
       draggable: true,
     })),
@@ -117,14 +130,19 @@ function FlowCanvas({
   onDeleteConnection,
   onPositionPersist,
   onError,
+  temaOceano = 'oceano-noturno',
+  exibirBarco = true,
+  exibirProgressoNos = true,
 }) {
-  const [nodes, setNodes, onNodesChange] = useNodesState(createNodes(roadmap, onSelectIsland));
+  const [nodes, setNodes, onNodesChange] = useNodesState(
+    createNodes(roadmap, onSelectIsland, { exibirBarco, exibirProgressoNos }),
+  );
   const [edges, setEdges, onEdgesChange] = useEdgesState(createEdges(roadmap));
 
   useEffect(() => {
-    setNodes(createNodes(roadmap, onSelectIsland));
+    setNodes(createNodes(roadmap, onSelectIsland, { exibirBarco, exibirProgressoNos }));
     setEdges(createEdges(roadmap));
-  }, [roadmap, onSelectIsland, setNodes, setEdges]);
+  }, [roadmap, onSelectIsland, setNodes, setEdges, exibirBarco, exibirProgressoNos]);
 
   const handleConnect = useCallback(async ({ source, target }) => {
     if (!source || !target || source === 'farol' || target === 'farol') return;
@@ -178,7 +196,7 @@ function FlowCanvas({
 
   return (
     <ReactFlow
-      className="roadmap-flow"
+      className={`roadmap-flow tema-${temaOceano}`}
       nodes={nodes}
       edges={edges}
       nodeTypes={flowNodeTypes}
@@ -201,7 +219,7 @@ function FlowCanvas({
         variant={BackgroundVariant.Lines}
         gap={32}
         size={1}
-        color="rgba(252, 252, 252, 0.14)"
+        color={gridColorByTheme[temaOceano] || 'rgba(252, 252, 252, 0.14)'}
       />
       <RoadmapChrome roadmap={roadmap} />
     </ReactFlow>
@@ -209,11 +227,25 @@ function FlowCanvas({
 }
 
 export default function RoadmapCanvas(props) {
-  const { roadmap } = props;
+  const {
+    roadmap,
+    temaOceano = 'oceano-noturno',
+    exibirBarco = true,
+    exibirProgressoNos = true,
+  } = props;
 
   return (
-    <section className="roadmap-canvas" aria-label={`Mapa de aprendizado: ${roadmap.title}`}>
-      <FlowCanvas key={roadmap.id} {...props} />
+    <section
+      className={`roadmap-canvas tema-${temaOceano}`}
+      aria-label={`Mapa de aprendizado: ${roadmap.title}`}
+    >
+      <FlowCanvas
+        key={roadmap.id}
+        {...props}
+        temaOceano={temaOceano}
+        exibirBarco={exibirBarco}
+        exibirProgressoNos={exibirProgressoNos}
+      />
     </section>
   );
 }

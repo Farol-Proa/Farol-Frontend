@@ -60,12 +60,14 @@ function IslandNode({ data, selected }) {
           </div>
           <p className="island-category">{data.category}</p>
           <h3>{data.title}</h3>
-          <div className="island-progress-row">
-            <span className="island-progress-track">
-            <span className="island-progress-fill" style={{ width: `${percent ?? 0}%` }} />
-            </span>
-            <span className="island-progress-count">{percent === null ? '—' : `${percent}%`}</span>
-          </div>
+          {data.exibirProgressoNos !== false && (
+            <div className="island-progress-row">
+              <span className="island-progress-track">
+                <span className="island-progress-fill" style={{ width: `${percent ?? 0}%` }} />
+              </span>
+              <span className="island-progress-count">{percent === null ? '—' : `${percent}%`}</span>
+            </div>
+          )}
           {data.status === 'progress' && (
             <button className="island-continue nodrag" type="button" onClick={(event) => { event.stopPropagation(); data.onSelect(); }}>
               Continuar <Icon name="arrowRight" size={16} />
@@ -74,7 +76,7 @@ function IslandNode({ data, selected }) {
         </div>
       </div>
       {data.tag && <span className="island-tag">{data.tag}</span>}
-      {data.status === 'progress' && (
+      {data.status === 'progress' && data.exibirBarco !== false && (
         <span className="roadmap-boat" aria-hidden="true">
           <Icon name="sailboat" size={20} />
         </span>

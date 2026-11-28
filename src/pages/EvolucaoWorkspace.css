@@ -1,0 +1,775 @@
+/* Workspace de Minha Evolução (Seção Objetivos) - Farol */
+
+.farol-evolucao-screen {
+  display: flex;
+  width: 100%;
+  height: 100dvh;
+  min-height: 560px;
+  gap: 16px;
+  overflow: hidden;
+  padding: 16px;
+  background: #070b1c;
+  color: #eef1ff;
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+}
+
+.farol-evolucao-main {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 18px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+/* Scrollbar sutil */
+.farol-evolucao-main::-webkit-scrollbar {
+  width: 6px;
+}
+.farol-evolucao-main::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 999px;
+}
+.farol-evolucao-main::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+}
+.farol-evolucao-main::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+/* Header principal */
+.farol-evolucao-header {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 4px;
+}
+
+.farol-evolucao-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: #f5d547;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.farol-evolucao-eyebrow span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 8px #f5d547;
+}
+
+.farol-evolucao-heading h1 {
+  margin: 4px 0 0;
+  color: #eef1ff;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.2;
+}
+
+.farol-evolucao-subtitle {
+  margin: 4px 0 0;
+  color: #8e97c2;
+  font-size: 14px;
+}
+
+.farol-evolucao-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.farol-evolucao-btn-voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 1px solid #26395c;
+  border-radius: 12px;
+  background: #10234a;
+  color: #eef1ff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 160ms ease;
+}
+
+.farol-evolucao-btn-voltar:hover {
+  background: #18336c;
+  border-color: #3b82f6;
+}
+
+/* Barra de controles do período */
+.farol-evolucao-periodo-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 18px;
+  background: #0b142f;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+}
+
+.farol-evolucao-periodo-tabs {
+  display: flex;
+  align-items: center;
+  background: #070d1e;
+  padding: 4px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  gap: 4px;
+}
+
+.farol-evolucao-periodo-tab {
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: #8e97c2;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 160ms ease;
+}
+
+.farol-evolucao-periodo-tab:hover {
+  color: #eef1ff;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.farol-evolucao-periodo-tab.is-active {
+  background: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+}
+
+.farol-evolucao-periodo-nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.farol-evolucao-nav-btn {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #101d3d;
+  color: #eef1ff;
+  cursor: pointer;
+  transition: all 160ms ease;
+}
+
+.farol-evolucao-nav-btn:hover:not(:disabled) {
+  background: #1a2f60;
+  border-color: #3b82f6;
+}
+
+.farol-evolucao-nav-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.farol-evolucao-periodo-titulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  color: #93c5fd;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.farol-evolucao-periodo-hoje-btn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #101d3d;
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 160ms ease;
+}
+
+.farol-evolucao-periodo-hoje-btn:hover {
+  background: #1a2f60;
+  color: #ffffff;
+}
+
+/* Grid de Destaque Geral */
+.farol-evolucao-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 16px;
+}
+
+.farol-evolucao-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 18px;
+  border-radius: 16px;
+  background: #0b142f;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  transition: transform 160ms ease, border-color 160ms ease;
+}
+
+.farol-evolucao-card:hover {
+  border-color: rgba(59, 130, 246, 0.35);
+  transform: translateY(-1px);
+}
+
+.farol-evolucao-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.farol-evolucao-card-badge {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: 10px;
+}
+
+.farol-evolucao-card-badge.gold {
+  background: rgba(245, 213, 71, 0.15);
+  color: #f5d547;
+  border: 1px solid rgba(245, 213, 71, 0.3);
+}
+
+.farol-evolucao-card-badge.blue {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.farol-evolucao-card-badge.teal {
+  background: rgba(20, 184, 166, 0.15);
+  color: #2dd4bf;
+  border: 1px solid rgba(20, 184, 166, 0.3);
+}
+
+.farol-evolucao-card-badge.purple {
+  background: rgba(168, 85, 247, 0.15);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.farol-evolucao-card-tag {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #94a3b8;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.farol-evolucao-card-tag.positive {
+  background: rgba(34, 197, 94, 0.12);
+  color: #4ade80;
+  border-color: rgba(34, 197, 94, 0.25);
+}
+
+.farol-evolucao-card-tag.neutral {
+  background: rgba(148, 163, 184, 0.12);
+  color: #94a3b8;
+}
+
+.farol-evolucao-card-label {
+  color: #8e97c2;
+  font-size: 13px;
+  font-weight: 500;
+  margin: 0 0 4px;
+}
+
+.farol-evolucao-card-valor {
+  color: #ffffff;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0 0 6px;
+}
+
+.farol-evolucao-card-desc {
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Seções de Conteúdo */
+.farol-evolucao-secao {
+  padding: 22px;
+  border-radius: 18px;
+  background: #0b142f;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.farol-evolucao-secao-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 14px;
+}
+
+.farol-evolucao-secao-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.farol-evolucao-secao-title h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.farol-evolucao-secao-desc {
+  font-size: 13px;
+  color: #8e97c2;
+  margin: 4px 0 0;
+}
+
+.farol-evolucao-pills-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.farol-evolucao-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  background: #070d1e;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: #94a3b8;
+}
+
+.farol-evolucao-pill strong {
+  color: #ffffff;
+}
+
+.farol-evolucao-pill.success {
+  color: #4ade80;
+  border-color: rgba(34, 197, 94, 0.25);
+  background: rgba(34, 197, 94, 0.08);
+}
+
+/* Gráfico de Barras Moderno Farol */
+.farol-grafico-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: #070d1e;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.farol-grafico-barras {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+  height: 180px;
+  padding: 10px 4px 0;
+}
+
+.farol-grafico-coluna {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.farol-grafico-trilha {
+  width: 100%;
+  max-width: 44px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px 8px 4px 4px;
+  overflow: hidden;
+  position: relative;
+  transition: all 160ms ease;
+}
+
+.farol-grafico-trilha:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.farol-grafico-preenchimento {
+  width: 100%;
+  background: linear-gradient(180deg, #60a5fa 0%, #2563eb 100%);
+  border-radius: 8px 8px 0 0;
+  transition: height 300ms ease;
+  position: relative;
+}
+
+.farol-grafico-preenchimento.completo {
+  background: linear-gradient(180deg, #f5d547 0%, #eab308 100%);
+}
+
+.farol-grafico-label-coluna {
+  margin-top: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #94a3b8;
+  text-align: center;
+}
+
+.farol-grafico-sublabel-coluna {
+  font-size: 10px;
+  color: #64748b;
+  text-align: center;
+}
+
+.farol-grafico-legenda {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  font-size: 12px;
+  color: #8e97c2;
+}
+
+.farol-grafico-legenda-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.farol-grafico-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+.farol-grafico-dot.blue {
+  background: #3b82f6;
+}
+
+.farol-grafico-dot.gold {
+  background: #f5d547;
+}
+
+/* Lista de Mapas / Objetivos */
+.farol-evolucao-mapas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+.farol-evolucao-mapa-card {
+  padding: 16px;
+  border-radius: 14px;
+  background: #070d1e;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color 160ms ease;
+}
+
+.farol-evolucao-mapa-card:hover {
+  border-color: rgba(59, 130, 246, 0.4);
+}
+
+.farol-evolucao-mapa-topo {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.farol-evolucao-mapa-nome {
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 2px;
+}
+
+.farol-evolucao-mapa-desc {
+  font-size: 12px;
+  color: #8e97c2;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.farol-evolucao-barra-trilha {
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.farol-evolucao-barra-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+  transition: width 300ms ease;
+}
+
+.farol-evolucao-barra-fill.concluido {
+  background: linear-gradient(90deg, #f5d547, #4ade80);
+}
+
+.farol-evolucao-mapa-rodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+/* Selos Náuticos Farol */
+.farol-selos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.farol-selo-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #070d1e;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.farol-selo-icone {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border-radius: 10px;
+  background: rgba(245, 213, 71, 0.12);
+  color: #f5d547;
+  border: 1px solid rgba(245, 213, 71, 0.25);
+  flex-shrink: 0;
+}
+
+.farol-selo-info strong {
+  display: block;
+  font-size: 13px;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.farol-selo-info span {
+  font-size: 11px;
+  color: #8e97c2;
+}
+
+/* Timeline de Conquistas */
+.farol-timeline-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-left: 20px;
+}
+
+.farol-timeline-container::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 7px;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.farol-timeline-item {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.farol-timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+.farol-timeline-dot {
+  position: absolute;
+  left: -20px;
+  top: 14px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #0b142f;
+  border: 2px solid #3b82f6;
+  box-shadow: 0 0 6px rgba(59, 130, 246, 0.6);
+}
+
+.farol-timeline-dot.gold {
+  border-color: #f5d547;
+  box-shadow: 0 0 6px rgba(245, 213, 71, 0.6);
+}
+
+.farol-timeline-dot.green {
+  border-color: #22c55e;
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.6);
+}
+
+.farol-timeline-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: #070d1e;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: border-color 160ms ease;
+}
+
+.farol-timeline-card:hover {
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.farol-timeline-card-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.farol-timeline-icon {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #93c5fd;
+  flex-shrink: 0;
+}
+
+.farol-timeline-titulo {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 2px;
+}
+
+.farol-timeline-subtitulo {
+  font-size: 12px;
+  color: #8e97c2;
+  margin: 0;
+}
+
+.farol-timeline-data {
+  font-size: 11px;
+  font-weight: 500;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+/* Estados vazios humanizados */
+.farol-evolucao-vazio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 32px 16px;
+  background: #070d1e;
+  border-radius: 14px;
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  gap: 10px;
+}
+
+.farol-evolucao-vazio-icone {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(59, 130, 246, 0.1);
+  color: #60a5fa;
+  margin-bottom: 2px;
+}
+
+.farol-evolucao-vazio h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.farol-evolucao-vazio p {
+  font-size: 13px;
+  color: #8e97c2;
+  max-width: 420px;
+  margin: 0;
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .farol-evolucao-screen {
+    flex-direction: column;
+    padding: 8px;
+  }
+  .farol-evolucao-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .farol-evolucao-periodo-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

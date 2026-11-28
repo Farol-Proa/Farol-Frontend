@@ -6,6 +6,12 @@ import EditorBlocosVisual from './Ilhas/EditorBlocosVisual';
 import ModalGerarMapaIa from '../components/ModalGerarMapaIa';
 import { percentualProgressoObjetivo } from '../dashboard/objectiveTree';
 import { normalizarConteudoIlha } from '../dashboard/conteudoIlha';
+import {
+  obterPreferencias,
+  obterUltimoMapaAcessado,
+  salvarUltimoMapaAcessado,
+  resolverObjetivoInicial,
+} from '../services/preferenciasUsuario';
 import './Ilhas.css';
 
 function formatarPrazoAmigavel(prazoIso) {
@@ -1076,6 +1082,7 @@ function Ilhas({
   carregando,
   erro,
 }) {
+  const [preferencias, setPreferencias] = useState(() => obterPreferencias());
   const [selectedGoalId, setSelectedGoalId] = useState(objetivoSelecionado);
   const [selectedStageId, setSelectedStageId] = useState(etapaSelecionadaInicial ?? null);
   const [tarefaDestacadaId, setTarefaDestacadaId] = useState(tarefaFocoId ?? null);
@@ -1084,6 +1091,20 @@ function Ilhas({
   const [tituloEtapa, setTituloEtapa] = useState('');
   const [descricaoEtapa, setDescricaoEtapa] = useState('');
   const [erroAcao, setErroAcao] = useState('');
+
+  useEffect(() => {
+    function aoAtualizarPreferencias(evento) {
+      if (evento?.detail) {
+        setPreferencias(evento.detail);
+      } else {
+        setPreferencias(obterPreferencias());
+      }
+    }
+    window.addEventListener('farol:preferencias-atualizadas', aoAtualizarPreferencias);
+    return () => {
+      window.removeEventListener('farol:preferencias-atualizadas', aoAtualizarPreferencias);
+    };
+  }, []);
 
   useEffect(() => {
     if (objetivoSelecionado != null) {
@@ -1103,7 +1124,21 @@ function Ilhas({
     }
   }, [tarefaFocoId]);
 
-  const goalIdAtivo = selectedGoalId ?? objetivos[0]?.id ?? null;
+  const goalIdAtivo = useMemo(() => {
+    return resolverObjetivoInicial({
+      objetivos,
+      objetivoSelecionado: selectedGoalId,
+      mapaPadraoId: preferencias?.ilhas?.mapaPadraoId,
+      ultimoMapaAcessadoId: obterUltimoMapaAcessado(),
+    });
+  }, [objetivos, selectedGoalId, preferencias?.ilhas?.mapaPadraoId]);
+
+  useEffect(() => {
+    if (goalIdAtivo) {
+      salvarUltimoMapaAcessado(goalIdAtivo);
+    }
+  }, [goalIdAtivo]);
+
   const objetivoBase = objetivos.find((item) => String(item.id) === String(goalIdAtivo));
   const objetivo = objetivoBase;
   const roadmap = useMemo(() => (objetivo ? criarRoadmap(objetivo) : null), [objetivo]);
@@ -1201,6 +1236,9 @@ function Ilhas({
             {roadmap.islands.length === 0 && <p role="status">Este mapa ainda não tem ilhas. Crie uma etapa para começar.</p>}
             <RoadmapCanvas
               roadmap={roadmap}
+              temaOceano={preferencias?.ilhas?.estiloOceano || preferencias?.ilhas?.temaOceano || 'oceano-noturno'}
+              exibirBarco={preferencias?.ilhas?.exibirBarco !== false}
+              exibirProgressoNos={preferencias?.ilhas?.exibirProgressoNos !== false}
               onSelectIsland={selecionarIlha}
               onConnectPersist={(source, target) => onCriarConexao(objetivo.id, Number(source), Number(target))}
               onDeleteConnection={onRemoverConexao}

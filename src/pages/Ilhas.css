@@ -121,7 +121,7 @@
 
 .roadmap-canvas {
   /* Personalize estas duas cores para trocar o fundo do mapa e as linhas da grade. */
-  --roadmap-background: RGB(24, 54, 192);
+  --roadmap-background: radial-gradient(circle at 50% 30%, #1e42ea 0%, #1836c0 50%, #0d2288 100%);
   --roadmap-grid-line: rgba(252, 252, 252, 0.144);
   position: relative;
   min-height: 0;
@@ -131,6 +131,27 @@
   border-radius: 28px;
   background: var(--roadmap-background);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.04);
+}
+
+.roadmap-canvas.tema-oceano-noturno,
+.roadmap-flow.tema-oceano-noturno {
+  --roadmap-background: radial-gradient(circle at 50% 30%, #1e42ea 0%, #1836c0 50%, #0d2288 100%);
+  --roadmap-grid-line: rgba(252, 252, 252, 0.14);
+  background: var(--roadmap-background);
+}
+
+.roadmap-canvas.tema-oceano-profundo,
+.roadmap-flow.tema-oceano-profundo {
+  --roadmap-background: radial-gradient(circle at 50% 30%, #0d1842 0%, #080f2b 50%, #040817 100%);
+  --roadmap-grid-line: rgba(93, 122, 255, 0.18);
+  background: var(--roadmap-background);
+}
+
+.roadmap-canvas.tema-contraste-suave,
+.roadmap-flow.tema-contraste-suave {
+  --roadmap-background: radial-gradient(circle at 50% 30%, #1a295c 0%, #141f47 50%, #0f1736 100%);
+  --roadmap-grid-line: rgba(255, 255, 255, 0.08);
+  background: var(--roadmap-background);
 }
 
 /* O tema global usa texto claro; o exemplo padrão do React Flow usa texto escuro nos nós e controles brancos. */

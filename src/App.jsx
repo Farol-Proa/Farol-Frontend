@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useDadosDashboard } from './dashboard/useDadosDashboard';
 import Ilhas from './pages/Ilhas';
 import CalendarioWorkspace from './pages/CalendarioWorkspace';
+import MentoriaWorkspace from './pages/MentoriaWorkspace';
 import LandingPage from './pages/LandingPage';
 import Painel from './pages/Painel';
 import Autenticacao from './pages/Autenticacao';
@@ -219,7 +220,7 @@ function App() {
       return;
     }
 
-    if (destino === 'Calendário') {
+    if (destino === 'Calendário' || destino === 'Mentoria') {
       return;
     }
 
@@ -261,7 +262,7 @@ function App() {
   return (
     <>
       {/* hidden mantém o estado local do painel ao alternar entre as telas. */}
-      <div hidden={paginaAtiva === 'Ilhas' || paginaAtiva === 'Calendário'}>
+      <div hidden={paginaAtiva === 'Ilhas' || paginaAtiva === 'Calendário' || paginaAtiva === 'Mentoria'}>
         <Painel
           objetivos={dadosDashboard.objetivos}
           tarefas={dadosDashboard.tarefas}
@@ -324,6 +325,15 @@ function App() {
           onNavegar={navegar}
           onLogout={sairPainel}
           onAlternarTarefa={dadosDashboard.alternarTarefa}
+        />
+      )}
+
+      {paginaAtiva === 'Mentoria' && (
+        <MentoriaWorkspace
+          onNavegar={navegar}
+          onLogout={sairPainel}
+          objetivos={dadosDashboard.objetivos}
+          tarefas={dadosDashboard.tarefas}
         />
       )}
     </>

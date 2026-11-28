@@ -1,0 +1,56 @@
+/* Mentoria Workspace Full-Page Layout */
+.farol-mentoria-workspace {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #070C1E;
+  color: #F8FAFC;
+  overflow-x: hidden;
+}
+
+.farol-mentoria-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 100vh;
+  overflow-y: auto;
+  background: radial-gradient(circle at 10% 10%, rgba(56, 189, 248, 0.05) 0%, transparent 40%),
+              radial-gradient(circle at 90% 90%, rgba(99, 102, 241, 0.05) 0%, transparent 40%),
+              #070C1E;
+}
+
+.farol-mentoria-header {
+  height: 64px;
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  background: rgba(13, 25, 48, 0.85);
+  border-bottom: 1px solid #1E3156;
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.farol-mentoria-content {
+  flex: 1;
+  padding: 24px 32px;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .farol-mentoria-workspace {
+    flex-direction: column;
+  }
+  .farol-mentoria-main {
+    height: auto;
+  }
+  .farol-mentoria-content {
+    padding: 16px;
+  }
+}

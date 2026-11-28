@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useDadosDashboard } from './dashboard/useDadosDashboard';
 import Ilhas from './pages/Ilhas';
+import CalendarioWorkspace from './pages/CalendarioWorkspace';
 import LandingPage from './pages/LandingPage';
 import Painel from './pages/Painel';
 import Autenticacao from './pages/Autenticacao';
@@ -218,6 +219,10 @@ function App() {
       return;
     }
 
+    if (destino === 'Calendário') {
+      return;
+    }
+
     if (destino === 'Anotações') {
       const etapaId = opcoes.etapaId ?? null;
       const objetivoId = etapaId == null ? opcoes.objetivoId ?? null : null;
@@ -256,7 +261,7 @@ function App() {
   return (
     <>
       {/* hidden mantém o estado local do painel ao alternar entre as telas. */}
-      <div hidden={paginaAtiva === 'Ilhas'}>
+      <div hidden={paginaAtiva === 'Ilhas' || paginaAtiva === 'Calendário'}>
         <Painel
           objetivos={dadosDashboard.objetivos}
           tarefas={dadosDashboard.tarefas}
@@ -310,6 +315,15 @@ function App() {
           onCarregarIlha={dadosDashboard.carregarIlha}
           carregando={dadosDashboard.carregando}
           erro={dadosDashboard.erro}
+        />
+      )}
+
+      {paginaAtiva === 'Calendário' && (
+        <CalendarioWorkspace
+          tarefas={dadosDashboard.tarefas}
+          onNavegar={navegar}
+          onLogout={sairPainel}
+          onAlternarTarefa={dadosDashboard.alternarTarefa}
         />
       )}
     </>

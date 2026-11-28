@@ -33,7 +33,20 @@ function Calendario({ mesExibido, dataSelecionada, tarefas = [], onMudarMes, onS
 
   return (
     <article className="painel-card min-w-0 p-4" id="calendario">
-      <h3>Meu calendário</h3>
+      <div className="flex items-center justify-between gap-2 mb-1">
+        <h3 className="m-0">Meu calendário</h3>
+        {onNavegar && (
+          <button
+            type="button"
+            onClick={() => onNavegar('Calendário')}
+            title="Abrir tela cheia do calendário"
+            className="flex items-center gap-1 text-[11px] font-medium text-sky-400 hover:text-sky-300 transition"
+          >
+            <span>Tela cheia</span>
+            <Icon name="arrowRight" size={11} />
+          </button>
+        )}
+      </div>
       <p className="text-xs leading-relaxed text-farol-muted">
         Selecione um dia para ver os prazos das suas tarefas.
       </p>

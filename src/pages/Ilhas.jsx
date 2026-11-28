@@ -5,6 +5,7 @@ import RoadmapCanvas from './Ilhas/RoadmapCanvas';
 import EditorBlocosVisual from './Ilhas/EditorBlocosVisual';
 import ModalGerarMapaIa from '../components/ModalGerarMapaIa';
 import { percentualProgressoObjetivo } from '../dashboard/objectiveTree';
+import { normalizarConteudoIlha } from '../dashboard/conteudoIlha';
 import './Ilhas.css';
 
 function formatarPrazoAmigavel(prazoIso) {
@@ -562,7 +563,7 @@ function DetalhesEtapa({
   const tarefasConcluidas = tarefas.filter((t) => t.concluida).length;
   const topicos = etapa.topicos ?? [];
   const topicosConcluidos = topicos.filter((tp) => tp.concluido).length;
-  const blocos = etapa.conteudo?.blocks ?? [];
+  const blocos = normalizarConteudoIlha(etapa.conteudo).blocks;
 
   return (
     <>

@@ -5,6 +5,8 @@ import {
   estadoInicialNotas,
   notasReducer,
   rascunhoNotasSujo,
+  extrairTextoDocumento,
+  extrairPreviaDocumento,
 } from './notasState.js';
 
 const documento = [
@@ -150,4 +152,21 @@ test('falha comum ao salvar conserva o rascunho para nova tentativa manual', () 
   assert.equal(estado.titulo, 'Rascunho local');
   assert.equal(estado.erro, 'Servidor indisponível.');
   assert.equal(rascunhoNotasSujo(estado), true);
+});
+
+test('alterar associação de ilha ou mapa torna rascunho de nota existente sujo', () => {
+  let estado = notasReducer(estadoInicialNotas, { tipo: 'selecionar-nota', nota: notaSalva });
+  assert.equal(rascunhoNotasSujo(estado), false);
+
+  estado = notasReducer(estado, { tipo: 'alterar-associacao', objetivoId: null, etapaId: 55 });
+  assert.equal(rascunhoNotasSujo(estado), true);
+  assert.equal(estado.etapaId, 55);
+});
+
+test('extrairTextoDocumento e extrairPreviaDocumento extraem texto de blocos BlockNote', () => {
+  assert.equal(extrairTextoDocumento(null), '');
+  assert.equal(extrairTextoDocumento([]), '');
+  assert.equal(extrairTextoDocumento(documento), 'Meu texto');
+  assert.equal(extrairPreviaDocumento(documento), 'Meu texto');
+  assert.equal(extrairPreviaDocumento([]), 'Nota sem conteúdo');
 });

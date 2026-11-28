@@ -10,6 +10,25 @@ function documentoTemConteudo(conteudo) {
   });
 }
 
+export function extrairTextoDocumento(conteudo) {
+  if (!Array.isArray(conteudo)) return '';
+  return conteudo
+    .map((bloco) => {
+      if (Array.isArray(bloco.content)) {
+        return bloco.content
+          .map((item) => (typeof item === 'string' ? item : item?.text ?? ''))
+          .join('');
+      }
+      return '';
+    })
+    .join(' ');
+}
+
+export function extrairPreviaDocumento(conteudo) {
+  const texto = extrairTextoDocumento(conteudo).trim();
+  return texto || 'Nota sem conteúdo';
+}
+
 export const estadoInicialNotas = {
   notas: [],
   carregando: true,
@@ -24,6 +43,8 @@ export const estadoInicialNotas = {
   conteudoSalvo: [],
   objetivoId: null,
   etapaId: null,
+  objetivoIdSalvo: null,
+  etapaIdSalvo: null,
   revisao: null,
   conflito: false,
   chaveEditorNovo: 0,
@@ -33,8 +54,12 @@ export function rascunhoNotasSujo(estado) {
   if (estado.notaNova) {
     return Boolean(estado.titulo.trim()) || documentoTemConteudo(estado.conteudo);
   }
-  return estado.titulo !== estado.tituloSalvo ||
-    JSON.stringify(estado.conteudo) !== JSON.stringify(estado.conteudoSalvo);
+  return (
+    estado.titulo !== estado.tituloSalvo ||
+    JSON.stringify(estado.conteudo) !== JSON.stringify(estado.conteudoSalvo) ||
+    estado.objetivoId !== estado.objetivoIdSalvo ||
+    estado.etapaId !== estado.etapaIdSalvo
+  );
 }
 
 export function dadosAtualizacaoNota(estado) {
@@ -59,6 +84,8 @@ function estadoDaNota(estado, nota) {
     conteudoSalvo: copiarConteudo(conteudo),
     objetivoId: nota.objetivoId ?? null,
     etapaId: nota.etapaId ?? null,
+    objetivoIdSalvo: nota.objetivoId ?? null,
+    etapaIdSalvo: nota.etapaId ?? null,
     revisao: nota.revisao,
     erro: '',
     sucesso: '',

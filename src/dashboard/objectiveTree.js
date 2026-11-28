@@ -1,4 +1,5 @@
 import { mapearTarefa } from './taskDates.js';
+import { normalizarConteudoIlha } from './conteudoIlha.js';
 
 export function percentualProgressoObjetivo(objetivo) {
   const percentual = objetivo?.progresso?.percentual;
@@ -44,7 +45,7 @@ export function mapearArvoreObjetivos(objetivos = []) {
           ? { x: etapa.posicaoX, y: etapa.posicaoY }
           : null
       ),
-      conteudo: etapa.conteudo?.conteudo ?? etapa.conteudo ?? { schemaVersion: 1, blocks: [] },
+      conteudo: normalizarConteudoIlha(etapa.conteudo),
       topicos: (etapa.topicos ?? etapa.conteudo?.topicos ?? etapa.conteudo?.topics ?? []).map(mapearTopico),
       progresso: typeof etapa.progresso === 'number'
         ? { percentual: etapa.progresso, concluida: Boolean(etapa.concluida) }

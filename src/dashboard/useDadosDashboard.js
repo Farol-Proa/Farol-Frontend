@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { mapasAPI } from '../services/mapasApi';
 import { mapearArvoreObjetivos } from './objectiveTree';
+import { normalizarConteudoIlha } from './conteudoIlha.js';
 
 export function useDadosDashboard() {
   const [objetivos, setObjetivos] = useState([]);
@@ -114,7 +115,9 @@ export function useDadosDashboard() {
         if (Number.isFinite(resposta.posicaoX) && Number.isFinite(resposta.posicaoY)) {
           atualizada.posicao = { x: resposta.posicaoX, y: resposta.posicaoY };
         }
-        if (resposta.conteudo !== undefined) atualizada.conteudo = resposta.conteudo;
+        if (resposta.conteudo !== undefined) {
+          atualizada.conteudo = normalizarConteudoIlha(resposta.conteudo);
+        }
         return atualizada;
       }),
     })));
@@ -188,8 +191,18 @@ export function useDadosDashboard() {
   }
 
   async function salvarConteudo(ilhaId, conteudo) {
-    await mapasAPI.salvarConteudo(ilhaId, conteudo);
+    const payload = normalizarConteudoIlha(conteudo);
+    const resposta = await mapasAPI.salvarConteudo(ilhaId, payload);
+    const conteudoSalvo = normalizarConteudoIlha(resposta?.conteudo ?? payload);
+    setObjetivos((atuais) => atuais.map((objetivo) => ({
+      ...objetivo,
+      etapas: (objetivo.etapas ?? []).map((etapa) => {
+        if (String(etapa.id) !== String(ilhaId)) return etapa;
+        return { ...etapa, conteudo: conteudoSalvo };
+      }),
+    })));
     recarregarObjetivos();
+    return conteudoSalvo;
   }
 
   async function concluirTopico(ilhaId, topicoId, concluido) {

@@ -3,6 +3,7 @@ import { useDadosDashboard } from './dashboard/useDadosDashboard';
 import Ilhas from './pages/Ilhas';
 import CalendarioWorkspace from './pages/CalendarioWorkspace';
 import MentoriaWorkspace from './pages/MentoriaWorkspace';
+import AnotacoesWorkspace from './pages/AnotacoesWorkspace';
 import LandingPage from './pages/LandingPage';
 import Painel from './pages/Painel';
 import Autenticacao from './pages/Autenticacao';
@@ -228,6 +229,7 @@ function App() {
       const etapaId = opcoes.etapaId ?? null;
       const objetivoId = etapaId == null ? opcoes.objetivoId ?? null : null;
       setContextoNotas(etapaId == null && objetivoId == null ? null : { objetivoId, etapaId });
+      return;
     }
 
     const secoes = {
@@ -262,7 +264,7 @@ function App() {
   return (
     <>
       {/* hidden mantém o estado local do painel ao alternar entre as telas. */}
-      <div hidden={paginaAtiva === 'Ilhas' || paginaAtiva === 'Calendário' || paginaAtiva === 'Mentoria'}>
+      <div hidden={paginaAtiva === 'Ilhas' || paginaAtiva === 'Calendário' || paginaAtiva === 'Mentoria' || paginaAtiva === 'Anotações'}>
         <Painel
           objetivos={dadosDashboard.objetivos}
           tarefas={dadosDashboard.tarefas}
@@ -334,6 +336,19 @@ function App() {
           onLogout={sairPainel}
           objetivos={dadosDashboard.objetivos}
           tarefas={dadosDashboard.tarefas}
+        />
+      )}
+
+      {paginaAtiva === 'Anotações' && (
+        <AnotacoesWorkspace
+          objetivos={dadosDashboard.objetivos}
+          contexto={contextoNotas}
+          onNavegar={navegar}
+          onLogout={sairPainel}
+          onNotasRascunhoSujo={atualizarEstadoRascunhoNota}
+          onRegistrarDescarteNota={registrarDescarteNota}
+          onCarregarIlha={dadosDashboard.carregarIlha}
+          onSalvarConteudo={dadosDashboard.salvarConteudo}
         />
       )}
     </>

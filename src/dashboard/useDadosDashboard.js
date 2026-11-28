@@ -78,6 +78,9 @@ export function useDadosDashboard() {
   async function adicionarTarefa(etapaId, { titulo, prazo, obrigatoria = true }) {
     await mapasAPI.criarTarefa(etapaId, { titulo, prazo: prazo || null, obrigatoria });
     recarregarObjetivos();
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('farol:intensivo-atualizado'));
+    }
   }
 
   async function atualizarPrazoTarefa(id, prazo) {
@@ -88,11 +91,17 @@ export function useDadosDashboard() {
   async function alternarTarefa(id, concluida) {
     await mapasAPI.concluirTarefa(id, !concluida);
     recarregarObjetivos();
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('farol:intensivo-atualizado'));
+    }
   }
 
   async function removerTarefa(id) {
     await mapasAPI.removerTarefa(id);
     recarregarObjetivos();
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('farol:intensivo-atualizado'));
+    }
   }
 
   async function atualizarIlha(id, dados) {

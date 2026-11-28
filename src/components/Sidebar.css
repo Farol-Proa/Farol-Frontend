@@ -12,17 +12,25 @@
   height: 100%;
   flex: 1;
   flex-direction: column;
-  padding: 16px;
+  padding: 14px 12px;
   border: 1px solid rgb(255 255 255 / 0.06);
-  border-radius: 28px;
+  border-radius: 24px;
   background: #0b1128;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+
+.farol-sidebar-panel::-webkit-scrollbar {
+  display: none;
 }
 
 .farol-sidebar-brand {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 8px;
+  padding: 6px 8px;
   color: #eef1ff;
   font-size: 20px;
   font-weight: 600;
@@ -31,8 +39,8 @@
 
 .farol-brand-mark {
   display: grid;
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   flex: 0 0 auto;
   place-items: center;
   border-radius: 50%;
@@ -42,13 +50,14 @@
 }
 
 .farol-sidebar-nav {
-  margin-top: 24px;
+  flex-shrink: 0;
+  margin-top: 14px;
 }
 
 .farol-sidebar-nav ul {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
   padding: 0;
   margin: 0;
   list-style: none;
@@ -57,15 +66,15 @@
 .farol-nav-link,
 .farol-settings-link {
   display: flex;
-  min-height: 40px;
+  min-height: 38px;
   align-items: center;
   gap: 12px;
-  padding: 10px 12px;
+  padding: 8px 12px;
   border: 0;
   border-radius: 12px;
   background: transparent;
   color: #c9cfee;
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 500;
   text-align: left;
   text-decoration: none;
@@ -89,60 +98,106 @@
 }
 
 .farol-streak-card {
+  flex-shrink: 0;
   position: relative;
   overflow: hidden;
   margin-top: auto;
-  padding: 20px;
-  border: 1px solid rgb(245 213 71 / 0.2);
-  border-radius: 24px;
-  background: linear-gradient(180deg, #1b2559, #0d1333);
+  margin-bottom: 8px;
+  padding: 10px 10px 12px;
+  border: 1px solid rgba(251, 191, 36, 0.22);
+  border-radius: 18px;
+  background: linear-gradient(180deg, #18224d 0%, #0c1228 100%);
+  box-shadow: 0 6px 20px -4px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.farol-streak-card:hover {
+  border-color: rgba(251, 191, 36, 0.38);
+  box-shadow: 0 10px 26px -6px rgba(0, 0, 0, 0.6);
 }
 
 .farol-streak-card::after {
   position: absolute;
-  top: -32px;
-  right: -32px;
-  width: 112px;
-  height: 112px;
+  top: -36px;
+  right: -36px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
-  background: rgb(245 213 71 / 0.2);
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.14) 0%, transparent 70%);
   content: '';
-  filter: blur(28px);
+  filter: blur(20px);
+  pointer-events: none;
 }
 
-.farol-streak-icon {
+.farol-streak-visual {
   position: relative;
   z-index: 1;
-  display: grid;
-  width: 36px;
-  height: 36px;
-  place-items: center;
+  width: 100%;
+  height: 94px;
+  min-height: 94px;
+  max-height: 94px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 12px;
-  background: rgb(245 213 71 / 0.15);
-  color: #f5d547;
+  overflow: hidden;
+}
+
+.farol-streak-info {
+  position: relative;
+  z-index: 1;
+  margin-top: 8px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
 }
 
 .farol-streak-count {
   position: relative;
   z-index: 1;
-  margin: 16px 0 0;
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 5px;
   color: #eef1ff;
-  font-size: 30px;
+  line-height: 1.2;
+}
+
+.farol-streak-number {
+  font-size: 18px;
+  font-weight: 800;
+  color: #fde047;
+  letter-spacing: -0.02em;
+}
+
+.farol-streak-label {
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: -0.025em;
+  color: #eef1ff;
 }
 
 .farol-streak-copy {
   position: relative;
   z-index: 1;
-  margin: 4px 0 0;
-  color: #8e97c2;
-  font-size: 12px;
-  line-height: 1.6;
+  margin: 0;
+  color: #94a3b8;
+  font-size: 11px;
+  line-height: 1.35;
+  max-width: 175px;
+  text-align: center;
 }
 
 .farol-settings-link {
-  margin-top: 12px;
+  flex-shrink: 0;
+  margin-top: 2px;
   width: 100%;
 }
 

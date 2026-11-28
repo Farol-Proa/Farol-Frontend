@@ -8,6 +8,7 @@ import Objetivos from './Painel/Objetivos';
 import Tarefas from './Painel/Tarefas';
 import MentoriaMentorado from '../components/MentoriaMentorado';
 import Planos from './Planos';
+import CardIntensivoFarol from '../components/CardIntensivoFarol';
 import { obterPreferencias } from '../services/preferenciasUsuario';
 
 function chaveDataLocal(data) {
@@ -166,17 +167,7 @@ function Painel({
                 )}
 
                 {exibirJornada && (
-                  <article className="painel-card painel-journey min-w-0 p-4 text-center" id="objetivos">
-                    <h3>Minha Jornada</h3>
-                    <div className="painel-journey-ring" style={{ '--progresso': `${progressoGeral}%` }}>
-                      <span>{progressoGeral}%</span>
-                    </div>
-                    <p className="text-xs leading-relaxed text-farol-muted">
-                      {totalItens === 0
-                        ? 'Adicione tarefas às etapas dos seus objetivos para acompanhar seu progresso.'
-                        : `Você concluiu ${itensConcluidos} de ${totalItens} tarefas.`}
-                    </p>
-                  </article>
+                  <CardIntensivoFarol tarefas={tarefas} />
                 )}
               </section>
             )}

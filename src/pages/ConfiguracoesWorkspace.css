@@ -1,0 +1,909 @@
+/* Workspace de Configurações do Farol */
+
+.farol-config-workspace-root {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #070b1c;
+  color: #eef1ff;
+  font-family: inherit;
+  overflow-x: hidden;
+}
+
+/* Área principal */
+.farol-config-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 24px 32px 48px;
+}
+
+/* Cabeçalho superior */
+.farol-config-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgb(255 255 255 / 0.08);
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.farol-config-header-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.farol-config-btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  margin-top: 2px;
+  border-radius: 12px;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  background: #111a3b;
+  color: #c9cfee;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 160ms ease;
+}
+
+.farol-config-btn-back:hover {
+  background: #1a2552;
+  color: #fff;
+  border-color: rgb(255 255 255 / 0.2);
+}
+
+.farol-config-titles {
+  display: flex;
+  flex-direction: column;
+}
+
+.farol-config-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #f5d547;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.farol-config-titles h1 {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.farol-config-titles p {
+  font-size: 13px;
+  color: #8e97c2;
+  margin: 4px 0 0;
+}
+
+/* Ações no cabeçalho (Salvar / Cancelar) */
+.farol-config-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.farol-config-pending-alert {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  background: rgb(245 213 71 / 0.12);
+  border: 1px solid rgb(245 213 71 / 0.3);
+  color: #f5d547;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.farol-config-pending-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f5d547;
+  box-shadow: 0 0 10px #f5d547;
+  animation: pulse-dot 2s infinite ease-in-out;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.farol-config-btn-cancel {
+  padding: 9px 18px;
+  border-radius: 12px;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  background: transparent;
+  color: #c9cfee;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 160ms ease;
+}
+
+.farol-config-btn-cancel:hover:not(:disabled) {
+  background: rgb(255 255 255 / 0.06);
+  color: #fff;
+}
+
+.farol-config-btn-save {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 20px;
+  border-radius: 12px;
+  border: none;
+  background: #3b5bff;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 16px -2px rgb(59 91 255 / 0.5);
+  transition: all 160ms ease;
+}
+
+.farol-config-btn-save:hover:not(:disabled) {
+  background: #4d6cff;
+  box-shadow: 0 6px 20px -2px rgb(59 91 255 / 0.7);
+  transform: translateY(-1px);
+}
+
+/* Feedback flutuante */
+.farol-config-feedback {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 24px;
+  animation: slide-in 200ms ease;
+}
+
+.farol-config-feedback.success {
+  background: rgb(16 185 129 / 0.12);
+  border: 1px solid rgb(16 185 129 / 0.3);
+  color: #34d399;
+}
+
+.farol-config-feedback.error {
+  background: rgb(239 68 68 / 0.12);
+  border: 1px solid rgb(239 68 68 / 0.3);
+  color: #f87171;
+}
+
+@keyframes slide-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Layout em duas colunas */
+.farol-config-layout {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+/* Menu lateral de seções */
+.farol-config-sidebar-nav {
+  width: 260px;
+  flex: 0 0 260px;
+  position: sticky;
+  top: 0;
+  border: 1px solid rgb(255 255 255 / 0.06);
+  border-radius: 20px;
+  background: #0b1128;
+  padding: 14px;
+  box-shadow: 0 8px 32px -8px rgb(0 0 0 / 0.4);
+}
+
+.farol-config-sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.farol-config-nav-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: none;
+  background: transparent;
+  color: #aeb7d8;
+  text-align: left;
+  cursor: pointer;
+  transition: all 160ms ease;
+}
+
+.farol-config-nav-item:hover {
+  background: #141b3d;
+  color: #eef1ff;
+}
+
+.farol-config-nav-item.is-active {
+  background: #1a2552;
+  color: #fff;
+  border: 1px solid rgb(59 91 255 / 0.4);
+  box-shadow: 0 4px 16px -4px rgb(59 91 255 / 0.3);
+}
+
+.farol-config-nav-icon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: rgb(255 255 255 / 0.05);
+  color: inherit;
+  flex: 0 0 auto;
+}
+
+.farol-config-nav-item.is-active .farol-config-nav-icon {
+  background: #3b5bff;
+  color: #fff;
+}
+
+.farol-config-nav-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.farol-config-nav-label {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.farol-config-nav-sub {
+  font-size: 11px;
+  color: #8e97c2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.farol-config-nav-footer {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgb(255 255 255 / 0.06);
+}
+
+.farol-config-btn-restore {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px dashed rgb(255 255 255 / 0.12);
+  background: transparent;
+  color: #8e97c2;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 160ms ease;
+}
+
+.farol-config-btn-restore:hover {
+  background: rgb(255 255 255 / 0.05);
+  color: #c9cfee;
+  border-color: rgb(255 255 255 / 0.25);
+}
+
+/* Área de cartões */
+.farol-config-cards-container {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-width: 860px;
+}
+
+/* Estilo geral dos cartões */
+.farol-config-card {
+  padding: 28px;
+  border-radius: 24px;
+  background: #0d1430;
+  border: 1px solid rgb(255 255 255 / 0.07);
+  box-shadow: 0 10px 30px -10px rgb(0 0 0 / 0.5);
+  scroll-margin-top: 24px;
+}
+
+.farol-config-card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgb(255 255 255 / 0.06);
+  margin-bottom: 22px;
+}
+
+.farol-config-card-badge {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  flex: 0 0 auto;
+}
+
+.farol-config-card-badge.blue {
+  background: rgb(59 91 255 / 0.16);
+  color: #5d7aff;
+  border: 1px solid rgb(59 91 255 / 0.3);
+}
+
+.farol-config-card-badge.amber {
+  background: rgb(245 213 71 / 0.16);
+  color: #f5d547;
+  border: 1px solid rgb(245 213 71 / 0.3);
+}
+
+.farol-config-card-badge.teal {
+  background: rgb(20 184 166 / 0.16);
+  color: #2dd4bf;
+  border: 1px solid rgb(20 184 166 / 0.3);
+}
+
+.farol-config-card-badge.yellow {
+  background: rgb(234 179 8 / 0.16);
+  color: #facc15;
+  border: 1px solid rgb(234 179 8 / 0.3);
+}
+
+.farol-config-card-badge.red {
+  background: rgb(239 68 68 / 0.16);
+  color: #f87171;
+  border: 1px solid rgb(239 68 68 / 0.3);
+}
+
+.farol-config-card-header h2 {
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  line-height: 1.25;
+}
+
+.farol-config-card-header p {
+  font-size: 12px;
+  color: #8e97c2;
+  margin: 3px 0 0;
+}
+
+/* Card Perfil */
+.farol-config-profile-box {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 20px;
+  border-radius: 18px;
+  background: #090e24;
+  border: 1px solid rgb(255 255 255 / 0.05);
+  flex-wrap: wrap;
+}
+
+.farol-config-avatar-wrapper {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.farol-config-avatar {
+  display: grid;
+  place-items: center;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b5bff, #1b2559);
+  color: #fff;
+  font-size: 26px;
+  font-weight: 700;
+  border: 2px solid rgb(245 213 71 / 0.5);
+  box-shadow: 0 0 24px -4px rgb(59 91 255 / 0.6);
+}
+
+.farol-config-avatar-badge {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #10b981;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  border: 2px solid #090e24;
+}
+
+.farol-config-profile-fields {
+  display: flex;
+  gap: 24px;
+  flex: 1;
+  min-width: 240px;
+  flex-wrap: wrap;
+}
+
+.farol-config-field-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 140px;
+}
+
+.farol-config-field-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #7b85b2;
+}
+
+.farol-config-field-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #eef1ff;
+  margin: 3px 0 0;
+}
+
+.farol-config-plan-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 3px;
+}
+
+.farol-config-plan-tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 8px;
+  background: rgb(245 213 71 / 0.16);
+  border: 1px solid rgb(245 213 71 / 0.3);
+  color: #f5d547;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.farol-config-plan-link {
+  background: none;
+  border: none;
+  color: #5d7aff;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+.farol-config-plan-link:hover {
+  text-decoration: underline;
+  color: #8fa3ff;
+}
+
+.farol-config-card-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgb(255 255 255 / 0.03);
+  border: 1px solid rgb(255 255 255 / 0.05);
+  font-size: 12px;
+  color: #8e97c2;
+  margin-top: 18px;
+  line-height: 1.4;
+}
+
+.farol-config-card-note svg {
+  color: #f5d547;
+  flex: 0 0 auto;
+  margin-top: 1px;
+}
+
+/* Switches & Toggles */
+.farol-config-switches-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.farol-config-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: #090e24;
+  border: 1px solid rgb(255 255 255 / 0.04);
+  transition: all 160ms ease;
+}
+
+.farol-config-toggle-row:hover {
+  border-color: rgb(255 255 255 / 0.08);
+  background: #0c1330;
+}
+
+.farol-config-toggle-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.farol-config-toggle-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #eef1ff;
+  cursor: pointer;
+}
+
+.farol-config-toggle-desc {
+  font-size: 11px;
+  color: #8e97c2;
+  margin: 2px 0 0;
+}
+
+/* Toggle Switch estilo Farol / iOS */
+.farol-switch {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  flex: 0 0 44px;
+  border-radius: 9999px;
+  border: none;
+  background: #1b2559;
+  cursor: pointer;
+  padding: 2px;
+  transition: background-color 200ms ease, box-shadow 200ms ease;
+}
+
+.farol-switch:focus-visible {
+  outline: 2px solid #f5d547;
+  outline-offset: 2px;
+}
+
+.farol-switch.is-checked {
+  background: #3b5bff;
+  box-shadow: 0 0 12px rgb(59 91 255 / 0.5);
+}
+
+.farol-switch.is-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.farol-switch-thumb {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.3);
+  transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateX(0);
+}
+
+.farol-switch.is-checked .farol-switch-thumb {
+  transform: translateX(20px);
+}
+
+/* Grupos e Seletores */
+.farol-config-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.farol-config-group-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #eef1ff;
+  margin: 0;
+}
+
+.farol-config-group-desc {
+  font-size: 11px;
+  color: #8e97c2;
+  margin: 2px 0 10px;
+}
+
+.farol-config-select {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  background: #090e24;
+  color: #eef1ff;
+  font-size: 13px;
+  font-weight: 500;
+  outline: none;
+  transition: all 160ms ease;
+}
+
+.farol-config-select:focus {
+  border-color: #3b5bff;
+  box-shadow: 0 0 0 3px rgb(59 91 255 / 0.25);
+}
+
+/* Radio Cards para Minha Jornada */
+.farol-config-radio-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.farol-config-radio-card {
+  display: flex;
+  flex-direction: column;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: #090e24;
+  border: 1px solid rgb(255 255 255 / 0.08);
+  color: #c9cfee;
+  text-align: left;
+  cursor: pointer;
+  transition: all 160ms ease;
+}
+
+.farol-config-radio-card:hover {
+  background: #0e1638;
+  border-color: rgb(255 255 255 / 0.16);
+}
+
+.farol-config-radio-card.is-selected {
+  background: #141f4a;
+  border-color: #3b5bff;
+  color: #fff;
+  box-shadow: 0 4px 18px -4px rgb(59 91 255 / 0.35);
+}
+
+.farol-config-radio-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.farol-config-radio-desc {
+  font-size: 11px;
+  color: #8e97c2;
+  margin-top: 4px;
+  line-height: 1.35;
+}
+
+/* Permissão de Notificação Box */
+.farol-config-permission-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: rgb(59 91 255 / 0.1);
+  border: 1px solid rgb(59 91 255 / 0.25);
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.farol-config-permission-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.farol-config-permission-info svg {
+  color: #5d7aff;
+  flex: 0 0 auto;
+}
+
+.farol-config-permission-info strong {
+  display: block;
+  font-size: 13px;
+  color: #fff;
+}
+
+.farol-config-permission-info p {
+  font-size: 11px;
+  color: #8e97c2;
+  margin: 1px 0 0;
+}
+
+.farol-config-btn-permission {
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: none;
+  background: #3b5bff;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 160ms ease;
+}
+
+.farol-config-btn-permission:hover {
+  background: #4d6cff;
+}
+
+/* Card Segurança */
+.farol-config-security-box {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 20px;
+  border-radius: 18px;
+  background: #090e24;
+  border: 1px solid rgb(255 255 255 / 0.05);
+}
+
+.farol-config-security-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.farol-config-security-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+}
+
+.farol-config-security-desc {
+  font-size: 12px;
+  color: #8e97c2;
+  margin: 3px 0 0;
+  max-width: 480px;
+}
+
+.farol-config-btn-security {
+  padding: 9px 18px;
+  border-radius: 12px;
+  border: 1px solid rgb(59 91 255 / 0.4);
+  background: #141f4a;
+  color: #5d7aff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 160ms ease;
+  white-space: nowrap;
+}
+
+.farol-config-btn-security:hover:not(:disabled) {
+  background: #1b2961;
+  color: #fff;
+  border-color: #3b5bff;
+}
+
+.farol-config-btn-security:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.farol-config-btn-logout {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: 12px;
+  border: 1px solid rgb(239 68 68 / 0.3);
+  background: rgb(239 68 68 / 0.1);
+  color: #f87171;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 160ms ease;
+}
+
+.farol-config-btn-logout:hover {
+  background: rgb(239 68 68 / 0.2);
+  color: #fff;
+  border-color: rgb(239 68 68 / 0.5);
+}
+
+.farol-config-security-divider {
+  height: 1px;
+  background: rgb(255 255 255 / 0.06);
+}
+
+.farol-config-feedback-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.farol-config-feedback-inline.success {
+  background: rgb(16 185 129 / 0.15);
+  border: 1px solid rgb(16 185 129 / 0.3);
+  color: #34d399;
+}
+
+.farol-config-feedback-inline.error {
+  background: rgb(239 68 68 / 0.15);
+  border: 1px solid rgb(239 68 68 / 0.3);
+  color: #f87171;
+}
+
+/* Responsividade */
+@media (max-width: 960px) {
+  .farol-config-layout {
+    flex-direction: column;
+  }
+
+  .farol-config-sidebar-nav {
+    width: 100%;
+    flex: none;
+    position: static;
+    overflow-x: auto;
+  }
+
+  .farol-config-sidebar-nav ul {
+    flex-direction: row;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .farol-config-nav-item {
+    white-space: nowrap;
+    width: auto;
+  }
+
+  .farol-config-nav-sub {
+    display: none;
+  }
+
+  .farol-config-nav-footer {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .farol-config-workspace-root {
+    flex-direction: column;
+  }
+
+  .farol-config-main {
+    height: auto;
+    padding: 16px 16px 32px;
+  }
+
+  .farol-config-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .farol-config-header-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .farol-config-card {
+    padding: 20px;
+    border-radius: 18px;
+  }
+}

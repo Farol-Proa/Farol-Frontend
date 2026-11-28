@@ -81,7 +81,8 @@
   color: #eef1ff;
 }
 
-.farol-nav-link.is-active {
+.farol-nav-link.is-active,
+.farol-settings-link.is-active {
   background: #3b5bff;
   color: white;
   box-shadow: 0 8px 24px -10px rgb(59 91 255 / 0.9);

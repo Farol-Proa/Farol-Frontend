@@ -4,6 +4,7 @@ import Ilhas from './pages/Ilhas';
 import CalendarioWorkspace from './pages/CalendarioWorkspace';
 import MentoriaWorkspace from './pages/MentoriaWorkspace';
 import AnotacoesWorkspace from './pages/AnotacoesWorkspace';
+import ConfiguracoesWorkspace from './pages/ConfiguracoesWorkspace';
 import LandingPage from './pages/LandingPage';
 import Painel from './pages/Painel';
 import Autenticacao from './pages/Autenticacao';
@@ -221,7 +222,7 @@ function App() {
       return;
     }
 
-    if (destino === 'Calendário' || destino === 'Mentoria') {
+    if (destino === 'Calendário' || destino === 'Mentoria' || destino === 'Configurações') {
       return;
     }
 
@@ -264,7 +265,7 @@ function App() {
   return (
     <>
       {/* hidden mantém o estado local do painel ao alternar entre as telas. */}
-      <div hidden={paginaAtiva === 'Ilhas' || paginaAtiva === 'Calendário' || paginaAtiva === 'Mentoria' || paginaAtiva === 'Anotações'}>
+      <div hidden={paginaAtiva === 'Ilhas' || paginaAtiva === 'Calendário' || paginaAtiva === 'Mentoria' || paginaAtiva === 'Anotações' || paginaAtiva === 'Configurações'}>
         <Painel
           objetivos={dadosDashboard.objetivos}
           tarefas={dadosDashboard.tarefas}
@@ -349,6 +350,14 @@ function App() {
           onRegistrarDescarteNota={registrarDescarteNota}
           onCarregarIlha={dadosDashboard.carregarIlha}
           onSalvarConteudo={dadosDashboard.salvarConteudo}
+        />
+      )}
+
+      {paginaAtiva === 'Configurações' && (
+        <ConfiguracoesWorkspace
+          onNavegar={navegar}
+          onLogout={sairPainel}
+          objetivos={dadosDashboard.objetivos}
         />
       )}
     </>
